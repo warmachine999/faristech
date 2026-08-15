@@ -277,6 +277,30 @@ html[dir="rtl"] .orbit-label{direction:rtl}
 .meter-row:nth-child(3) .meter i{background:linear-gradient(90deg,var(--orange),#ffd36e)}
 @media(max-width:720px){.trade-choice{grid-template-columns:1fr}.meter-row{grid-template-columns:48px 1fr 35px}}
 
+
+/* ===== Electronics Lab ===== */
+.lab-section{padding-top:92px}
+.lab-shell{display:grid;grid-template-columns:1.4fr .8fr;gap:16px}
+.lab-canvas-card,.lab-controls-card{padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow)}
+#labCanvas{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:#0a0d13}
+.lab-caption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:.72rem}
+.lab-controls{display:grid;gap:11px}
+.lab-control{padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.lab-control label{display:flex;justify-content:space-between;gap:8px;font-size:.74rem;font-weight:800;margin-bottom:7px}
+.lab-control input[type=range],.lab-control select{width:100%}
+.lab-control input[type=range]{accent-color:var(--purple)}
+.lab-control select{padding:8px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--text)}
+.lab-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.lab-stat{padding:11px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.025)}
+.lab-stat small{display:block;color:var(--muted);font-size:.68rem}.lab-stat b{font-size:.95rem}
+.lab-status{margin-top:12px;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.025);font-size:.78rem}
+.lab-status.good{border-color:rgba(35,239,157,.25)}.lab-status.warn{border-color:rgba(255,156,42,.3)}.lab-status.bad{border-color:rgba(255,77,95,.35)}
+.lab-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+.lab-actions .btn{font-size:.76rem}
+.cap-label{color:#ffb3c7}
+@media(max-width:1000px){.lab-shell{grid-template-columns:1fr}}
+@media(max-width:720px){.lab-section{padding-top:72px}.lab-stats{grid-template-columns:1fr 1fr}}
+
 </style>
 </head>
 
@@ -451,6 +475,71 @@ html[dir="rtl"] .orbit-label{direction:rtl}
       <p id="aboutText" data-i18n="aboutText">I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week. This website is my online workshop — a place to share what I'm making and what I'm learning along the way.</p>
       <div class="skill-pills">
         <span class="skill">Tinkercad</span><span class="skill">Shapr3D</span><span class="skill">ESP32</span><span class="skill">Arduino</span><span class="skill">Robotics</span><span class="skill">Fast Learner</span><span class="skill">Visual Learner</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section lab-section" id="electronicsLab">
+  <div class="section-head">
+    <div><div class="eyebrow">⚡ ELECTRONICS LAB</div><h2>Build & test a real-style circuit</h2></div>
+    <p>Interactive educational simulator based on the circuit model from your uploaded HTML. The battery, resistor and LED affect the calculated current and brightness.</p>
+  </div>
+
+  <div class="lab-shell">
+    <div class="lab-canvas-card">
+      <canvas id="labCanvas" width="900" height="520" aria-label="Interactive battery resistor LED and capacitor circuit"></canvas>
+      <div class="lab-caption">
+        <span>🔵 Moving electrons • 💡 LED brightness • 🔥 simulated failure</span>
+        <span>Educational approximation — not a SPICE model</span>
+      </div>
+    </div>
+
+    <div class="lab-controls-card">
+      <div class="lab-controls">
+        <div class="lab-control">
+          <label>Battery <span><b id="labVOut">9.0</b> V</span></label>
+          <input id="labVoltage" type="range" min="0" max="24" step="0.1" value="9">
+        </div>
+        <div class="lab-control">
+          <label>Resistor <span><b id="labROut">1000</b> Ω</span></label>
+          <input id="labResistance" type="range" min="10" max="5000" step="10" value="1000">
+        </div>
+        <div class="lab-control">
+          <label>LED forward voltage <span><b id="labVfOut">2.0</b> V</span></label>
+          <input id="labVf" type="range" min="1.5" max="3.5" step="0.1" value="2">
+        </div>
+        <div class="lab-control">
+          <label>LED max current <span><b id="labMaxOut">20</b> mA</span></label>
+          <input id="labMaxCurrent" type="range" min="5" max="50" step="1" value="20">
+        </div>
+        <div class="lab-control">
+          <label>Capacitor voltage rating <span><b id="labCapRatingOut">10</b> V</span></label>
+          <select id="labCapRating">
+            <option value="6.3">6.3 V</option>
+            <option value="10" selected>10 V</option>
+            <option value="16">16 V</option>
+            <option value="25">25 V</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="lab-stats">
+        <div class="lab-stat"><small>Current</small><b><span id="labCurrentOut">7.00</span> mA</b></div>
+        <div class="lab-stat"><small>LED brightness</small><b><span id="labBrightnessOut">35</span>%</b></div>
+        <div class="lab-stat"><small>Capacitor voltage</small><b><span id="labCapVoltageOut">0.00</span> V</b></div>
+        <div class="lab-stat"><small>Capacitor</small><b id="labCapState">Charging</b></div>
+      </div>
+
+      <div id="labStatus" class="lab-status good">
+        <b>✅ Circuit operating normally.</b><br>
+        Adjust the battery, resistor and capacitor rating to explore what changes.
+      </div>
+
+      <div class="lab-actions">
+        <button class="btn primary" id="labPause">⏸ Pause electrons</button>
+        <button class="btn outline" id="labReset">↻ Reset simulator</button>
       </div>
     </div>
   </div>
@@ -824,6 +913,166 @@ document.querySelectorAll(".trade-option").forEach(btn=>{
   });
 });
 updateTrade("fast");
+
+
+/* ===== Electronics Lab simulator ===== */
+const labCanvas=document.getElementById("labCanvas");
+const labCtx=labCanvas.getContext("2d");
+const labVoltage=document.getElementById("labVoltage");
+const labResistance=document.getElementById("labResistance");
+const labVf=document.getElementById("labVf");
+const labMaxCurrent=document.getElementById("labMaxCurrent");
+const labCapRating=document.getElementById("labCapRating");
+const labVOut=document.getElementById("labVOut"),labROut=document.getElementById("labROut");
+const labVfOut=document.getElementById("labVfOut"),labMaxOut=document.getElementById("labMaxOut");
+const labCapRatingOut=document.getElementById("labCapRatingOut");
+const labCurrentOut=document.getElementById("labCurrentOut"),labBrightnessOut=document.getElementById("labBrightnessOut");
+const labCapVoltageOut=document.getElementById("labCapVoltageOut"),labCapState=document.getElementById("labCapState");
+const labStatus=document.getElementById("labStatus"),labPause=document.getElementById("labPause"),labReset=document.getElementById("labReset");
+
+let labRunning=true;
+let labCapVoltage=0;
+let labFailure=0;
+let labParticles=[];
+const labElectrons=Array.from({length:32},(_,i)=>i/32);
+
+function labCircuit(){
+  const V=+labVoltage.value,R=+labResistance.value,Vf=+labVf.value,Imax=+labMaxCurrent.value,capRating=+labCapRating.value;
+  const idealmA=Math.max(0,(V-Vf)/R*1000);
+  const current=Math.min(idealmA,Imax);
+  const brightness=V<=Vf?0:Math.min(100,(current/Imax)*100);
+  return {V,R,Vf,Imax,capRating,idealmA,current,brightness,overloaded:idealmA>Imax};
+}
+function labUpdateUI(){
+  const c=labCircuit();
+  labVOut.textContent=c.V.toFixed(1);labROut.textContent=c.R.toFixed(0);labVfOut.textContent=c.Vf.toFixed(1);labMaxOut.textContent=c.Imax.toFixed(0);
+  labCapRatingOut.textContent=c.capRating.toFixed(c.capRating%1?1:0);
+  labCurrentOut.textContent=c.current.toFixed(2);labBrightnessOut.textContent=c.brightness.toFixed(0);labCapVoltageOut.textContent=labCapVoltage.toFixed(2);
+
+  if(labFailure>0){
+    labCapState.textContent="FAILED";
+    labStatus.className="lab-status bad";
+    labStatus.innerHTML="<b>🔥 Capacitor failure simulated.</b><br>The battery voltage exceeded the selected polarized capacitor rating. This is a visual educational effect.";
+  }else if(c.V>c.capRating){
+    labCapState.textContent="OVER RATING";
+    labStatus.className="lab-status warn";
+    labStatus.innerHTML="<b>⚠ Capacitor overvoltage.</b><br>The capacitor is being stressed. Lower the battery or choose a higher voltage rating.";
+  }else if(c.overloaded){
+    labCapState.textContent="Charging";
+    labStatus.className="lab-status warn";
+    labStatus.innerHTML="<b>⚠ Current too high.</b><br>The resistor is too small for the selected LED limit. Increase resistance or reduce the battery voltage.";
+  }else if(c.V<=c.Vf){
+    labCapState.textContent="Charging";
+    labStatus.className="lab-status good";
+    labStatus.innerHTML="<b>◌ LED is off.</b><br>There is not enough voltage to overcome the LED forward voltage.";
+  }else{
+    labCapState.textContent="Charging";
+    labStatus.className="lab-status good";
+    labStatus.innerHTML="<b>✅ Circuit operating normally.</b><br>Electrons are moving and the LED brightness follows calculated current.";
+  }
+}
+[labVoltage,labResistance,labVf,labMaxCurrent,labCapRating].forEach(x=>x.addEventListener("input",()=>{ if(+labVoltage.value<=+labCapRating.value) labFailure=0; labUpdateUI(); }));
+
+labPause.addEventListener("click",()=>{labRunning=!labRunning;labPause.textContent=labRunning?"⏸ Pause electrons":"▶ Start electrons";});
+labReset.addEventListener("click",()=>{
+  labVoltage.value=9;labResistance.value=1000;labVf.value=2;labMaxCurrent.value=20;labCapRating.value=10;
+  labCapVoltage=0;labFailure=0;labElectrons.forEach((_,i)=>labElectrons[i]=i/labElectrons.length);
+  labUpdateUI();
+});
+
+function labPathPoint(u){
+  u=((u%1)+1)%1;
+  const xL=95,xR=805,yT=120,yB=400;
+  const topLen=xR-xL,side=yB-yT;let d=u*(2*topLen+2*side);
+  if(d<topLen)return{x:xL+d,y:yB};
+  d-=topLen;if(d<side)return{x:xR,y:yB-d};
+  d-=side;if(d<topLen)return{x:xR-d,y:yT};
+  d-=topLen;return{x:xL,y:yT+d};
+}
+function labFire(x,y){
+  labCtx.save();
+  for(let i=0;i<10;i++){
+    const px=x+(Math.random()-.5)*34,py=y+(Math.random()-.5)*28;
+    labCtx.fillStyle=["#ff4d5f","#ff9c2a","#ffd75a"][i%3];
+    labCtx.globalAlpha=.65+.35*Math.random();
+    labCtx.beginPath();labCtx.arc(px,py,3+Math.random()*8,0,Math.PI*2);labCtx.fill();
+  }
+  labCtx.restore();
+}
+function drawLab(){
+  const c=labCircuit();
+
+  // simplified capacitor charge model: approaches battery voltage gradually
+  if(labRunning && labFailure===0){
+    const dt=0.016;
+    labCapVoltage += (c.V-labCapVoltage) * Math.min(1,dt*0.85);
+    if(c.V>c.capRating) {
+      // failure after the simulated capacitor is driven above its rating
+      if(labCapVoltage > c.capRating*0.92) labFailure=Math.min(1,labFailure+dt*0.35);
+    }
+  }
+  if(labFailure>0) labFailure=Math.min(1,labFailure+0.004);
+
+  if(labRunning && labFailure===0){
+    const speed=Math.max(0,c.current/10);
+    const dt=.00032*speed;
+    for(let i=0;i<labElectrons.length;i++)labElectrons[i]=(labElectrons[i]+dt)%1;
+  }
+
+  labCtx.clearRect(0,0,labCanvas.width,labCanvas.height);
+  const w=labCanvas.width,h=labCanvas.height;
+
+  // board
+  labCtx.fillStyle="#0b0f17";labCtx.fillRect(0,0,w,h);
+  labCtx.strokeStyle="#1c2432";labCtx.lineWidth=1;
+  for(let x=0;x<w;x+=36){labCtx.beginPath();labCtx.moveTo(x,0);labCtx.lineTo(x,h);labCtx.stroke();}
+  for(let y=0;y<h;y+=36){labCtx.beginPath();labCtx.moveTo(0,y);labCtx.lineTo(w,y);labCtx.stroke();}
+
+  // wires
+  labCtx.lineWidth=8;labCtx.lineCap="round";labCtx.strokeStyle="#7f8999";
+  labCtx.beginPath();labCtx.moveTo(95,120);labCtx.lineTo(805,120);labCtx.lineTo(805,400);labCtx.lineTo(95,400);labCtx.closePath();labCtx.stroke();
+
+  // resistor
+  labCtx.strokeStyle="#f0c36a";labCtx.lineWidth=7;labCtx.beginPath();
+  labCtx.moveTo(330,120);labCtx.lineTo(360,120);labCtx.lineTo(375,102);labCtx.lineTo(405,138);labCtx.lineTo(435,102);labCtx.lineTo(465,138);labCtx.lineTo(495,102);labCtx.lineTo(510,120);labCtx.lineTo(540,120);labCtx.stroke();
+  labCtx.fillStyle="#f0c36a";labCtx.textAlign="center";labCtx.font="bold 18px Arial";labCtx.fillText("RESISTOR",435,84);labCtx.font="15px Arial";labCtx.fillText(c.R+" Ω",435,165);
+
+  // battery
+  labCtx.strokeStyle="#e8edf5";labCtx.lineWidth=7;labCtx.beginPath();labCtx.moveTo(55,218);labCtx.lineTo(125,218);labCtx.moveTo(70,270);labCtx.lineTo(110,270);labCtx.stroke();
+  labCtx.fillStyle="#fff";labCtx.font="bold 24px Arial";labCtx.fillText("+",42,212);labCtx.fillText("−",42,282);labCtx.font="bold 16px Arial";labCtx.fillText("BATTERY",86,318);labCtx.font="14px Arial";labCtx.fillText(c.V.toFixed(1)+" V",86,340);
+
+  // LED
+  const ledColor=getComputedStyle(document.documentElement).getPropertyValue("--ledColor")||"#2be7ff";
+  const glow=c.brightness;
+  labCtx.beginPath();labCtx.arc(805,260,26,0,Math.PI*2);labCtx.fillStyle=glow>0?ledColor:"#303642";labCtx.shadowBlur=glow>0?12+glow*.38:0;labCtx.shadowColor=ledColor;labCtx.fill();labCtx.shadowBlur=0;
+  labCtx.strokeStyle="#f2f4f8";labCtx.lineWidth=3;labCtx.stroke();
+  labCtx.fillStyle=ledColor;labCtx.font="bold 16px Arial";labCtx.fillText("LED",805,310);labCtx.font="14px Arial";labCtx.fillText(c.brightness.toFixed(0)+"%",805,332);
+
+  // polarized capacitor on lower branch
+  const capX=585,capY=400;
+  labCtx.strokeStyle="#a2c7ff";labCtx.lineWidth=4;
+  labCtx.beginPath();labCtx.moveTo(565,390);labCtx.lineTo(565,420);labCtx.moveTo(585,390);labCtx.lineTo(585,420);labCtx.stroke();
+  labCtx.fillStyle="#9bbcff";labCtx.font="bold 17px Arial";labCtx.fillText("C",595,410);labCtx.font="bold 18px Arial";labCtx.fillText("+",552,385);
+  labCtx.fillStyle=labFailure?"#ff5c68":"#8fb4ff";labCtx.font="14px Arial";labCtx.fillText(labCapVoltage.toFixed(1)+" V / "+c.capRating+" V",590,444);
+
+  // electrons
+  for(let i=0;i<labElectrons.length;i++){
+    const p=labPathPoint(labElectrons[i]);
+    labCtx.beginPath();labCtx.arc(p.x,p.y,6,0,Math.PI*2);labCtx.fillStyle="#72d6ff";labCtx.shadowBlur=12;labCtx.shadowColor="#72d6ff";labCtx.fill();labCtx.shadowBlur=0;
+  }
+  labCtx.fillStyle="#8fd3ff";labCtx.font="15px Arial";labCtx.textAlign="left";labCtx.fillText("Electron flow →",110,438);
+
+  // visual failure effect (2D only)
+  if(labFailure>0){
+    labFire(585,400);
+    labCtx.fillStyle="rgba(255,50,80,.12)";labCtx.fillRect(0,0,w,h);
+    labCtx.fillStyle="#ff6674";labCtx.font="bold 23px Arial";labCtx.textAlign="center";labCtx.fillText("⚠ SIMULATED CAPACITOR FAILURE",450,55);
+  }
+  labUpdateUI();
+  requestAnimationFrame(drawLab);
+}
+labUpdateUI();
+drawLab();
 
 const sections=[...document.querySelectorAll("main section[id]")];
 const navLinks=[...document.querySelectorAll(".nav a[data-nav]")];
