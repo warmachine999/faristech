@@ -766,7 +766,7 @@ document.getElementById("resetProfile").addEventListener("click",()=>{
 document.getElementById("addProject").addEventListener("click",()=>{
   const title=document.getElementById("newTitle").value.trim();const desc=document.getElementById("newDescription").value.trim();const cat=document.getElementById("newCategory").value;
   if(!title||!desc){alert("Add a title and description.");return}
-  const meta={3d:["3D MODEL","▣","Ask to make a 3D model"],pcb:["PCB DESIGN","▤","Ask to design a PCB"],esp:["ESP32","⌁","Ask about this project"],arduino:["ARDUINO","A","Ask about this project"],electronics:["ELECTRONICS","⌘","Ask about electronics"],robotics:["ROBOTICS","◈","Ask about robotics"]}[cat];
+  const meta={"3d":["3D MODEL","▣","Ask to make a 3D model"],pcb:["PCB DESIGN","▤","Ask to design a PCB"],esp:["ESP32","⌁","Ask about this project"],arduino:["ARDUINO","A","Ask about this project"],electronics:["ELECTRONICS","⌘","Ask about electronics"],robotics:["ROBOTICS","◈","Ask about robotics"]}[cat];
   state.projects.push({title,cat,tag:meta[0],icon:meta[1],desc,action:meta[2]});
   persist();document.getElementById("newTitle").value="";document.getElementById("newDescription").value="";
 });
