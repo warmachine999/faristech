@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070811">
+<meta name="description" content="FarisTech — 3D design, PCB design, ESP32, Arduino, sensors, electronics, robotics and 3D printing.">
+<title>FarisTech — Build • Design • Invent</title>
+<style>
+:root{
+  --bg:#070811;--bg2:#0c0e18;--panel:rgba(15,17,29,.82);--panel2:#111321;
+  --text:#f8f8ff;--muted:#a8aab9;--line:rgba(255,255,255,.11);
+  --purple:#9356ff;--purple2:#6b35ff;--cyan:#2be7ff;--pink:#ff4ebc;--orange:#ff9c2a;--green:#23ef9d;--red:#ff4d5f;
+  --shadow:0 28px 90px rgba(0,0,0,.40);--radius:18px
+}
+html[data-theme="light"]{
+  --bg:#f5f7fb;--bg2:#ffffff;--panel:rgba(255,255,255,.88);--panel2:#fff;
+  --text:#11131a;--muted:#626878;--line:rgba(20,24,35,.12);
+  --purple:#6b35ff;--purple2:#4e27d2;--cyan:#007f96;--pink:#c82277;--orange:#d97900;--green:#078c5d;--red:#d5263b;
+  --shadow:0 22px 65px rgba(20,30,50,.12)
+}
+html[data-theme="caramel"]{
+  --bg:#24160c;--bg2:#321f11;--panel:rgba(57,35,17,.88);--panel2:#412613;
+  --text:#fff8ee;--muted:#d5bfa7;--line:rgba(255,220,180,.14);
+  --purple:#ff8d29;--purple2:#da5d10;--cyan:#66e0ff;--pink:#ff77aa;--orange:#ffad31;--green:#72edb2;--red:#ff6b6b;
+  --shadow:0 28px 90px rgba(0,0,0,.48)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:
+  radial-gradient(circle at 75% 5%,color-mix(in srgb,var(--purple) 17%,transparent),transparent 26%),
+  radial-gradient(circle at 8% 40%,color-mix(in srgb,var(--cyan) 7%,transparent),transparent 22%),
+  var(--bg);color:var(--text);line-height:1.55;overflow-x:hidden
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:58px 58px;mask-image:linear-gradient(to bottom,#000,transparent 78%)
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.container{max-width:1500px;margin:auto;padding-left:5%;padding-right:5%}
+.topbar{
+  position:sticky;top:0;z-index:100;min-height:74px;display:flex;align-items:center;justify-content:space-between;
+  gap:20px;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line)
+}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1px;min-width:max-content}
+.brand-icon{width:42px;height:42px;display:block;filter:drop-shadow(0 0 16px color-mix(in srgb,var(--purple) 40%,transparent))}
+.brand-name em{font-style:normal;color:var(--orange)}.brand-sub{display:block;font-size:.58rem;color:var(--muted);font-weight:700;letter-spacing:1px}
+.nav{display:flex;align-items:center;gap:24px;font-size:.9rem;font-weight:700}
+.nav a{color:var(--muted);padding:10px 0;position:relative}
+.nav a:hover,.nav a.active{color:var(--text)}
+.nav a.active:after{content:"";position:absolute;left:0;right:0;bottom:1px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--purple),var(--cyan))}
+.controls{display:flex;align-items:center;gap:8px}
+.control-btn,.control-select{
+  border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:11px;padding:9px 11px;
+  min-height:39px
+}
+.control-btn:hover,.control-select:hover{border-color:color-mix(in srgb,var(--purple) 55%,var(--line))}
+.control-select{outline:none}
+.menu{display:none;border:0;background:none;padding:7px}
+.menu span{display:block;width:25px;height:2px;background:var(--text);margin:5px;border-radius:5px}
+
+.hero{
+  min-height:calc(100vh - 74px);padding-top:70px;padding-bottom:80px;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;gap:30px
+}
+.eyebrow{font-size:.72rem;font-weight:900;letter-spacing:2px;color:var(--purple)}
+.pillline{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+.pilltag{display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:999px;font-size:.68rem;font-weight:800;color:var(--muted)}
+.pilltag.nft{color:#f1c65b;border-color:rgba(241,198,91,.35)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);display:inline-block;box-shadow:0 0 14px var(--cyan);margin-right:8px}
+.hero h1{font-size:clamp(4rem,7.1vw,7.3rem);letter-spacing:-5px;line-height:.9;margin:13px 0 24px}
+.gradient{background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-copy>p{max-width:740px;color:var(--muted);font-size:1.08rem}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 19px;border-radius:12px;
+  border:1px solid var(--line);background:rgba(255,255,255,.035);font-weight:900;transition:.2s transform,.2s box-shadow,.2s border-color
+}
+.btn:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--purple) 55%,var(--line))}
+.btn.primary{background:linear-gradient(135deg,var(--purple2),var(--purple));box-shadow:0 16px 46px color-mix(in srgb,var(--purple) 28%,transparent)}
+.btn.whatsapp{background:linear-gradient(135deg,#0fb66b,#23ef9d);color:#001f14;border:0}
+.hero-badges{display:flex;flex-wrap:wrap;gap:9px;color:var(--muted);font-size:.75rem}
+.hero-badges span{padding:8px 11px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025)}
+
+.atom-wrap{height:570px;position:relative;display:grid;place-items:center}
+.atom-core{
+  width:185px;height:185px;border-radius:50%;position:relative;z-index:5;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 26%,#3e1f78,#111321 57%,#090a10);
+  border:1px solid color-mix(in srgb,var(--purple) 65%,transparent);
+  box-shadow:0 0 55px color-mix(in srgb,var(--purple) 40%,transparent),inset 0 0 45px rgba(255,255,255,.06)
+}
+.atom-core span{font-size:4.4rem;filter:drop-shadow(0 0 20px color-mix(in srgb,var(--cyan) 70%,transparent));animation:float 3.2s ease-in-out infinite}
+.orbit{
+  position:absolute;border:1px solid rgba(255,255,255,.13);border-radius:50%;pointer-events:none
+}
+.orbit.o1{width:500px;height:235px;transform:rotate(-18deg);animation:orbitSlow 95s linear infinite}
+.orbit.o2{width:500px;height:235px;transform:rotate(58deg);animation:orbitSlowReverse 120s linear infinite}
+.orbit.o3{width:420px;height:300px;transform:rotate(30deg);border-color:color-mix(in srgb,var(--cyan) 28%,transparent);animation:orbitSlow 135s linear infinite}
+.orbit-label{
+  position:absolute;padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);
+  font-size:.66rem;font-weight:900;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.22)
+}
+.atom-wrap .l1{top:16%;left:17%;color:var(--cyan)}.atom-wrap .l2{top:9%;right:16%;color:var(--orange)}
+.atom-wrap .l3{top:35%;left:2%;color:var(--purple)}.atom-wrap .l4{top:34%;right:2%;color:var(--green)}
+.atom-wrap .l5{bottom:24%;left:7%;color:var(--pink)}.atom-wrap .l6{bottom:17%;right:8%;color:var(--cyan)}
+.atom-wrap .l7{bottom:5%;left:26%;color:var(--orange)}.atom-wrap .l8{bottom:7%;right:28%;color:var(--purple)}
+.atom-wrap .l9{top:21%;right:34%;color:#f3d35a}.atom-wrap .l10{bottom:33%;left:32%;color:#8da7ff}
+.atom-wrap .l11{top:12%;left:43%;color:#ff76c8}.atom-wrap .l12{top:52%;right:28%;color:#79f3b8}
+.atom-spark{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 22px var(--cyan);opacity:.9}
+.s1{left:24%;top:31%}.s2{right:21%;top:22%;background:var(--orange);box-shadow:0 0 22px var(--orange)}.s3{right:30%;bottom:15%;background:var(--pink);box-shadow:0 0 22px var(--pink)}
+
+.section{padding-top:98px;padding-bottom:20px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:34px}
+.section-head h2{font-size:clamp(2.4rem,4.6vw,4.15rem);line-height:1.02;letter-spacing:-2.5px;margin:8px 0 0}
+.section-head p{max-width:520px;color:var(--muted);margin:0}
+.category-strip{display:grid;grid-template-columns:repeat(8,1fr);gap:11px;margin-bottom:18px}
+.cat{
+  padding:16px 11px;border:1px solid var(--line);border-radius:14px;background:var(--panel);text-align:center;
+  box-shadow:0 14px 40px rgba(0,0,0,.18);transition:.2s
+}
+.cat:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--purple) 45%,var(--line))}
+.cat b{display:block;font-size:.85rem}.cat span{display:block;color:var(--muted);font-size:.64rem;margin-top:3px}
+
+.project-tools{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0}
+.search{flex:1;max-width:420px;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);outline:none}
+.filters{display:flex;gap:6px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:8px 11px;border-radius:999px}
+.filter.active{color:var(--text);border-color:color-mix(in srgb,var(--purple) 60%,var(--line));background:color-mix(in srgb,var(--purple) 13%,var(--panel))}
+
+.project-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.project-card{
+  min-height:275px;padding:20px;border:1px solid var(--line);border-radius:17px;background:var(--panel);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;transition:.22s;position:relative;overflow:hidden
+}
+.project-card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--purple) 52%,var(--line))}
+.project-media{height:110px;border-radius:13px;margin-bottom:15px;display:grid;place-items:center;background:
+  radial-gradient(circle at 60% 45%,color-mix(in srgb,var(--purple) 36%,transparent),transparent 33%),linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
+border:1px solid var(--line);overflow:hidden;position:relative}
+.project-media:before{content:"";position:absolute;inset:18px;border:1px dashed color-mix(in srgb,var(--cyan) 25%,transparent);border-radius:10px;transform:rotate(-7deg)}
+.project-media .bigicon{font-size:2.6rem;z-index:1}
+.project-card .tag{font-size:.63rem;font-weight:900;letter-spacing:1.2px;color:var(--purple)}
+.project-card h3{font-size:1.12rem;margin:7px 0}.project-card p{color:var(--muted);font-size:.82rem;margin:0 0 14px}
+.project-card .row{display:flex;gap:8px;margin-top:auto}.project-action{flex:1;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-weight:900;font-size:.78rem}
+.project-action.primary{background:linear-gradient(135deg,var(--purple2),var(--purple));border:0}
+.project-card .remove-project{position:absolute;right:8px;top:8px;display:none;width:27px;height:27px;border:1px solid var(--line);border-radius:50%;background:rgba(0,0,0,.45);color:#fff}
+.admin-mode .project-card .remove-project{display:block}
+
+.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
+.service-card{padding:22px;border:1px solid var(--line);border-radius:17px;background:var(--panel);min-height:290px;position:relative;overflow:hidden}
+.service-card:after{content:"";position:absolute;width:180px;height:180px;right:-90px;bottom:-90px;background:radial-gradient(circle,color-mix(in srgb,var(--purple) 18%,transparent),transparent 70%)}
+.service-icon{font-size:1.9rem;margin:18px 0 10px}.service-card h3{margin:0 0 7px;font-size:1.13rem}.service-card p{color:var(--muted);font-size:.82rem}
+.price{font-weight:900;font-size:1.05rem;margin-top:14px}.price small{color:var(--muted);font-weight:600}
+.notes{font-size:.7rem;color:var(--muted);margin-top:7px}
+
+.print-banner{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:20px}
+.print-card,.pickup-card{padding:26px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
+.print-card h3,.pickup-card h3{font-size:1.45rem;margin:0 0 8px}.print-card p,.pickup-card p{color:var(--muted)}
+.print-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.print-list span{padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.035);border:1px solid var(--line);font-size:.75rem}
+.pickup-card{display:flex;flex-direction:column;justify-content:space-between}
+
+.about{
+  display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;padding:45px;border:1px solid var(--line);border-radius:21px;
+  background:linear-gradient(125deg,color-mix(in srgb,var(--purple) 12%,transparent),rgba(255,255,255,.02))
+}
+.about h2{font-size:clamp(2.7rem,5vw,4.8rem);line-height:.98;letter-spacing:-3px;margin:12px 0}
+.about p{color:var(--muted);font-size:1rem}.skill-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:19px}.skill{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);font-size:.72rem;font-weight:800}
+
+.games-intro{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+.games-intro p{max-width:550px;color:var(--muted)}
+.game-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:15px}
+.game-card{padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow)}
+.game-card h3{margin:0 0 6px;font-size:1.25rem}.game-card>p{margin:0 0 18px;color:var(--muted);font-size:.82rem}
+.controls-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.game-control{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.game-control label{display:flex;justify-content:space-between;gap:8px;font-size:.73rem;font-weight:800}.game-control span{color:var(--muted)}
+.game-control input[type=range]{width:100%;accent-color:var(--purple);margin-top:9px}
+.game-control select{width:100%;margin-top:7px;padding:8px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--text)}
+.circuit-stage{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;margin-top:13px}
+.circuit-board{min-height:170px;border:1px solid var(--line);border-radius:15px;background:
+  linear-gradient(90deg,transparent 49%,rgba(255,255,255,.06) 50%,transparent 51%),
+  radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--purple) 18%,transparent),transparent 50%);position:relative;overflow:hidden}
+.wire{height:5px;background:var(--cyan);position:absolute;border-radius:999px;box-shadow:0 0 13px color-mix(in srgb,var(--cyan) 55%,transparent)}
+.w1{width:105px;left:29px;top:46px}.w2{width:90px;left:125px;top:98px;transform:rotate(90deg)}.w3{width:105px;right:29px;top:46px}
+.part{position:absolute;display:grid;place-items:center;font-weight:900}.battery{left:17px;top:72px;width:42px;height:56px;border:2px solid var(--orange);border-radius:6px;color:var(--orange);background:rgba(255,156,42,.06)}
+.resistor{left:98px;top:31px;width:72px;height:26px;border:2px solid #d3a974;background:rgba(211,169,116,.08);transform:skew(-22deg);color:#d3a974}
+.led{right:17px;top:33px;width:50px;height:50px;border:2px solid var(--cyan);border-radius:50%;box-shadow:0 0 18px color-mix(in srgb,var(--cyan) 65%,transparent);color:var(--cyan);font-size:1.25rem}
+.circuit-status{padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025);min-height:170px}
+.status-good{color:var(--green)}.status-warn{color:var(--orange)}.status-bad{color:var(--red)}
+.status-line{font-weight:900;font-size:.95rem;margin-bottom:7px}.status-data{font-size:.78rem;color:var(--muted);line-height:1.8}
+
+.trade-wrap{display:grid;grid-template-columns:1fr 180px;gap:15px;align-items:center}
+.trade-controls{display:grid;gap:11px}.trade-control{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
+.trade-control label{display:flex;justify-content:space-between;font-weight:800;font-size:.77rem}.trade-control input{width:100%;accent-color:var(--purple);margin-top:8px}
+.triangle{width:170px;height:150px;position:relative;margin:auto;clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(135deg,var(--purple),var(--cyan));padding:3px}
+.triangle>div{height:100%;background:var(--bg2);clip-path:inherit;position:relative}
+.tri-label{position:absolute;font-size:.65rem;font-weight:900;z-index:3}.tri-good{top:10px;left:50%;transform:translateX(-50%)}.tri-cheap{bottom:5px;left:6px}.tri-fast{bottom:5px;right:6px}
+.tri-dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 0 18px #fff;z-index:5;transform:translate(-50%,-50%)}
+.trade-result{margin-top:13px;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:.82rem}
+.trade-result b{color:var(--text)}
+
+.contact{
+  margin-top:70px;margin-bottom:65px;padding:38px;border-radius:22px;border:1px solid color-mix(in srgb,var(--purple) 38%,var(--line));
+  background:radial-gradient(circle at 13% 15%,color-mix(in srgb,var(--purple) 20%,transparent),transparent 30%),var(--panel)
+}
+.contact h2{font-size:clamp(2.4rem,4.8vw,4.1rem);line-height:.98;letter-spacing:-2.4px;margin:8px 0}.contact p{color:var(--muted)}
+.contact-grid{display:flex;justify-content:space-between;gap:20px;align-items:center}.wa-card{min-width:360px;display:flex;align-items:center;gap:12px;padding:15px 17px;border:1px solid rgba(35,239,157,.25);border-radius:14px;background:rgba(35,239,157,.055)}
+.wa-icon{width:43px;height:43px;border-radius:12px;background:#17ba75;display:grid;place-items:center;color:#042f1d;font-weight:900}.wa-card small{display:block;color:var(--muted)}.wa-card strong{font-size:.95rem}.wa-card b{margin-left:auto}
+
+.footer{padding:26px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
+.footer strong{color:var(--text)}.footer strong em{font-style:normal;color:var(--orange)}
+
+.modal{position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.open{display:flex}.backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px)}
+.modal-card{position:relative;z-index:2;width:min(600px,100%);padding:30px;border:1px solid color-mix(in srgb,var(--purple) 52%,var(--line));border-radius:20px;background:var(--bg2);box-shadow:0 35px 120px rgba(0,0,0,.6)}
+.modal-close{position:absolute;right:14px;top:9px;background:none;border:0;color:var(--text);font-size:31px}.modal-card h2{font-size:2.2rem;line-height:1.02;margin:8px 0 11px}.modal-card p{color:var(--muted);margin-bottom:22px}
+.modal-tag{color:var(--purple);font-size:.68rem;font-weight:900;letter-spacing:1.6px}
+
+.admin-panel{
+  position:fixed;top:0;right:0;bottom:0;width:min(430px,94vw);z-index:180;transform:translateX(105%);
+  transition:.28s;background:var(--bg2);border-left:1px solid var(--line);box-shadow:-30px 0 100px rgba(0,0,0,.45);overflow:auto;padding:22px
+}
+.admin-panel.open{transform:translateX(0)}
+.admin-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:18px}.admin-head h2{margin:0;font-size:1.35rem}.close-admin{border:0;background:rgba(255,255,255,.05);color:var(--text);width:35px;height:35px;border-radius:9px}
+.admin-note{padding:11px 12px;border:1px solid rgba(255,157,42,.25);background:rgba(255,157,42,.06);border-radius:11px;color:var(--muted);font-size:.72rem;margin-bottom:15px}
+.admin-group{margin:16px 0}.admin-group h3{font-size:.85rem;color:var(--purple);letter-spacing:1px}.admin-field{display:grid;gap:5px;margin:10px 0}
+.admin-field label{font-size:.73rem;color:var(--muted);font-weight:800}.admin-field input,.admin-field textarea,.admin-field select{
+  width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);outline:none
+}.admin-field textarea{min-height:90px;resize:vertical}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.admin-actions .btn{font-size:.78rem}
+.admin-project-list{display:grid;gap:8px}.admin-project-item{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:9px 10px;border:1px solid var(--line);border-radius:10px;font-size:.75rem}.danger{color:#ff8c9a;border:1px solid rgba(255,77,95,.25)!important;background:rgba(255,77,95,.06)!important}
+
+.hidden{display:none!important}
+html[dir="rtl"] .hero,html[dir="rtl"] .project-tools,html[dir="rtl"] .contact-grid{direction:rtl}
+html[dir="rtl"] .controls,html[dir="rtl"] .nav{direction:rtl}
+html[dir="rtl"] .brand{text-align:right}
+html[dir="rtl"] .hero h1{letter-spacing:-2px}
+html[dir="rtl"] .orbit-label{direction:rtl}
+
+@media(max-width:1100px){
+  .category-strip{grid-template-columns:repeat(4,1fr)}.project-grid{grid-template-columns:repeat(2,1fr)}.service-grid{grid-template-columns:repeat(2,1fr)}
+  .hero{grid-template-columns:1fr}.atom-wrap{order:-1;height:430px}.game-grid{grid-template-columns:1fr}
+}
+@media(max-width:780px){
+  .container{padding-left:6%;padding-right:6%}.topbar{min-height:68px}.nav{display:none;position:absolute;left:0;right:0;top:68px;padding:14px 6%;flex-direction:column;align-items:stretch;gap:2px;background:color-mix(in srgb,var(--bg2) 96%,transparent);border-bottom:1px solid var(--line)}
+  .nav.open{display:flex}.nav a{padding:11px}.controls{margin-left:auto}.control-select{display:none}.menu{display:block}
+  .hero{padding-top:52px;text-align:center}.hero h1{font-size:clamp(3.3rem,15vw,5.2rem);letter-spacing:-3px}.actions{justify-content:center}.hero-badges{justify-content:center}
+  .atom-wrap{height:330px}.atom-core{width:150px;height:150px}.atom-core span{font-size:3.4rem}.orbit.o1{width:350px;height:170px}.orbit.o2{width:355px;height:170px}.orbit.o3{width:310px;height:205px}
+  .orbit-label{font-size:.57rem;padding:6px 8px}.atom-wrap .l1{top:8%;left:10%}.atom-wrap .l2{top:5%;right:8%}.atom-wrap .l3{top:32%;left:0}.atom-wrap .l4{top:30%;right:0}.atom-wrap .l5{bottom:18%;left:3%}.atom-wrap .l6{bottom:14%;right:2%}.atom-wrap .l7{bottom:2%;left:22%}.atom-wrap .l8{bottom:4%;right:18%}.atom-wrap .l9{top:19%;right:27%}.atom-wrap .l10{bottom:28%;left:28%}.atom-wrap .l11{top:10%;left:40%}.atom-wrap .l12{top:45%;right:21%}
+  .section{padding-top:78px}.section-head{display:block}.section-head p{margin-top:14px}.category-strip{grid-template-columns:repeat(2,1fr)}
+  .project-tools{display:block}.search{max-width:none;width:100%;margin-bottom:10px}.filters{justify-content:flex-start}
+  .project-grid{grid-template-columns:1fr}.service-grid{grid-template-columns:1fr}.print-banner{grid-template-columns:1fr}
+  .about{grid-template-columns:1fr;padding:28px;gap:25px}.games-intro{display:block}.controls-grid{grid-template-columns:1fr}.circuit-stage{grid-template-columns:1fr}.trade-wrap{grid-template-columns:1fr}.triangle{margin-top:6px}
+  .contact-grid{display:block}.wa-card{min-width:0;margin-top:20px}.footer{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:420px){
+  .brand-sub{display:none}.category-strip{grid-template-columns:1fr 1fr}.hero h1{font-size:3.25rem}
+}
+@keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}@keyframes orbitSlow{to{transform:rotate(-18deg) rotate(360deg)}}@keyframes orbitSlowReverse{to{transform:rotate(58deg) rotate(-360deg)}}
+
+.trade-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0}
+.trade-option{padding:15px 10px;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--text);text-align:center;transition:.2s}
+.trade-option b{display:block;font-size:.82rem}.trade-option span{display:block;color:var(--muted);font-size:.68rem;margin-top:3px}
+.trade-option:hover{transform:translateY(-2px)}
+.trade-option.active.fast{border-color:rgba(41,229,255,.65);background:rgba(41,229,255,.09)}
+.trade-option.active.cheap{border-color:rgba(35,239,157,.65);background:rgba(35,239,157,.08)}
+.trade-option.active.good{border-color:rgba(255,156,42,.65);background:rgba(255,156,42,.08)}
+.trade-meter{display:grid;gap:10px;margin-top:15px}
+.meter-row{display:grid;grid-template-columns:55px 1fr 38px;align-items:center;gap:9px;font-size:.73rem}
+.meter{height:9px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;border:1px solid var(--line)}
+.meter i{display:block;height:100%;width:50%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .35s ease}
+.meter-row:nth-child(2) .meter i{background:linear-gradient(90deg,var(--green),#7affc8)}
+.meter-row:nth-child(3) .meter i{background:linear-gradient(90deg,var(--orange),#ffd36e)}
+@media(max-width:720px){.trade-choice{grid-template-columns:1fr}.meter-row{grid-template-columns:48px 1fr 35px}}
+
+</style>
+</head>
+
+<body>
+<header class="topbar container">
+  <a href="#home" class="brand">
+    <svg class="brand-icon" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="8" fill="currentColor"/>
+      <ellipse cx="32" cy="32" rx="28" ry="10" fill="none" stroke="currentColor" stroke-width="3"/>
+      <ellipse cx="32" cy="32" rx="10" ry="28" fill="none" stroke="var(--cyan)" stroke-width="3" transform="rotate(32 32 32)"/>
+      <path d="M39 10 L28 29 H35 L25 54 L43 31 H35 Z" fill="var(--orange)"/>
+    </svg>
+    <span class="brand-name">FARIS<em>TECH</em><small class="brand-sub" data-i18n="tagline">The only limitation is your imagination.</small></span>
+  </a>
+
+  <nav class="nav">
+    <a href="#home" class="active" data-nav="home" data-i18n="home">Home</a>
+    <a href="#projects" data-nav="projects" data-i18n="projects">Projects</a>
+    <a href="#services" data-nav="services" data-i18n="whatMake">What I Make</a>
+    <a href="#about" data-nav="about" data-i18n="about">About</a>
+    <a href="#contact" data-nav="contact" data-i18n="contact">Contact</a>
+  </nav>
+
+  <div class="controls">
+    <select id="themeSelect" class="control-select" aria-label="Theme">
+      <option value="dark">🌙 Dark</option>
+      <option value="light">☀️ Light</option>
+      <option value="caramel">🍮 Caramel</option>
+    </select>
+    <select id="languageSelect" class="control-select" aria-label="Language">
+      <option value="en">EN</option>
+      <option value="ar">عربي</option>
+    </select>
+    <button class="control-btn" id="modeBtn" type="button">👤</button>
+    <button class="menu" id="menuBtn" type="button" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="container">
+
+<section id="home" class="hero">
+  <div class="hero-copy">
+    <div class="pillline">
+      <span class="pilltag"><span class="pulse"></span><span data-i18n="makerTag">MAKER • ELECTRONICS • 3D DESIGNING</span></span>
+      <span class="pilltag nft">✦ NFT / DIGITAL</span>
+    </div>
+    <div class="eyebrow" data-i18n="creativeTag">CREATIVE TECH • PROTOTYPES • PRINTING</div>
+    <h1 data-i18n="heroTitle">Build something<br><span class="gradient">awesome.</span></h1>
+    <p data-i18n="heroText">I turn ideas into 3D models, PCB designs, electronics and real working projects. Designed for makers, inventors and curious people.</p>
+    <div class="actions">
+      <a class="btn primary" href="#projects" data-i18n="explore">Explore Projects ↗</a>
+      <a class="btn outline" href="#contact" data-i18n="work">Work With Me</a>
+    </div>
+    <div class="hero-badges">
+      <span>💸 <span data-i18n="cheap">Cheap starting prices</span></span>
+      <span>⚡ <span data-i18n="fastLearner">Fast learner</span></span>
+      <span>👁️ <span data-i18n="visualLearner">Visual learner</span></span>
+      <span>🎓 <span data-i18n="schoolFriendly">School & maker friendly</span></span>
+    </div>
+  </div>
+
+  <div class="atom-wrap">
+    <div class="grid" aria-hidden="true"></div>
+    <div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div>
+    <div class="atom-core"><span>⚡</span></div>
+    <span class="orbit-label l1">3D</span><span class="orbit-label l2">PCB</span>
+    <span class="orbit-label l3">ESP32</span><span class="orbit-label l4">Arduino</span>
+    <span class="orbit-label l5">Sensors</span><span class="orbit-label l6">Motors</span>
+    <span class="orbit-label l7">Displays</span><span class="orbit-label l8">RFID</span>
+    <span class="orbit-label l9">LEDs</span><span class="orbit-label l10">Servos</span>
+    <span class="orbit-label l11">IoT</span><span class="orbit-label l12">Robotics</span>
+    <span class="atom-spark s1"></span><span class="atom-spark s2"></span><span class="atom-spark s3"></span>
+  </div>
+</section>
+
+<section id="projects" class="section">
+  <div class="section-head">
+    <div><div class="eyebrow">⚡ PROJECT LAB</div><h2 data-i18n="projectsTitle">Projects I'm building</h2></div>
+    <p data-i18n="projectsIntro">From a simple idea to a finished prototype — this is where the experiments happen.</p>
+  </div>
+
+  <div class="category-strip">
+    <div class="cat"><b>3D Models</b><span>Tinkercad • Shapr3D</span></div>
+    <div class="cat"><b>PCB Design</b><span>EasyEDA • KiCad</span></div>
+    <div class="cat"><b>ESP32</b><span>ESP32 • IoT</span></div>
+    <div class="cat"><b>Arduino</b><span>UNO • Nano</span></div>
+    <div class="cat"><b>Sensors</b><span>Distance • Temp</span></div>
+    <div class="cat"><b>Motors</b><span>DC • Stepper • Servo</span></div>
+    <div class="cat"><b>Displays</b><span>LCD • OLED • TFT</span></div>
+    <div class="cat"><b>Robotics</b><span>Motion • Control</span></div>
+  </div>
+
+  <div class="project-tools">
+    <input id="projectSearch" class="search" type="search" placeholder="Search projects...">
+    <div class="filters" id="filters">
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="3d">3D</button>
+      <button class="filter" data-filter="pcb">PCB</button>
+      <button class="filter" data-filter="esp">ESP</button>
+      <button class="filter" data-filter="arduino">Arduino</button>
+      <button class="filter" data-filter="electronics">Electronics</button>
+      <button class="filter" data-filter="robotics">Robotics</button>
+    </div>
+  </div>
+
+  <div id="projectGrid" class="project-grid"></div>
+</section>
+
+<section id="services" class="section">
+  <div class="section-head">
+    <div><div class="eyebrow">WHAT I MAKE</div><h2 data-i18n="makeTitle">Ideas → design → prototype</h2></div>
+    <p data-i18n="makeIntro">Technology made understandable, useful and fun — with simple options for students, makers and real projects.</p>
+  </div>
+
+  <div class="service-grid">
+    <article class="service-card">
+      <div class="service-icon" style="color:var(--purple)">◇</div><h3>3D Design</h3>
+      <p data-i18n="service3d">Send me a picture, sketch or idea. I can make a printable model, adjust it, and prepare it for real life.</p>
+      <div class="price">From <span id="price3d">10</span> SAR <small>/ simple model</small></div>
+      <div class="notes">Complexity, size and revisions can change the final price.</div>
+      <button class="btn primary ask-service" data-service="3D model" style="margin-top:13px">Ask to make a 3D model</button>
+    </article>
+
+    <article class="service-card">
+      <div class="service-icon" style="color:var(--cyan)">▤</div><h3>PCB Design</h3>
+      <p data-i18n="servicepcb">Simple one-layer boards are the cheapest. More layers, more parts and more complexity increase the design price.</p>
+      <div class="price">From <span id="pricePcb1">15</span> SAR <small>/ 1 layer</small></div>
+      <div class="notes"><span id="pricePcb2">2-layer from 25 SAR</span> • <span id="pricePcb4">4-layer from 45 SAR</span></div>
+      <button class="btn primary ask-service" data-service="PCB design" style="margin-top:13px">Ask to design a PCB</button>
+    </article>
+
+    <article class="service-card">
+      <div class="service-icon" style="color:var(--pink)">⌘</div><h3>Electronics Builds</h3>
+      <p data-i18n="serviceElectronics">ESP32, Arduino, sensors, displays, RFID, LEDs, motors, relays and hands-on prototypes.</p>
+      <div class="price">From <span id="priceElectronics">20</span> SAR <small>/ simple build</small></div>
+      <div class="notes">Parts and special modules are quoted separately.</div>
+      <button class="btn primary ask-service" data-service="electronics project" style="margin-top:13px">Ask about electronics</button>
+    </article>
+
+    <article class="service-card">
+      <div class="service-icon" style="color:var(--orange)">✦</div><h3>Robotics</h3>
+      <p data-i18n="serviceRobotics">Servo systems, sensors, motors, control, simple robots and custom motion projects.</p>
+      <div class="price">From <span id="priceRobotics">50</span> SAR <small>/ simple build</small></div>
+      <div class="notes">Complexity and components affect the final quote.</div>
+      <button class="btn primary ask-service" data-service="robotics project" style="margin-top:13px">Ask about robotics</button>
+    </article>
+  </div>
+
+  <div class="print-banner">
+    <article class="print-card">
+      <h3>🖨️ 3D Printing — Bambu Lab A1</h3>
+      <p data-i18n="printIntro">I can print your model in real life. Send me a picture, STL, sketch or idea and I can tell you what is possible.</p>
+      <div class="print-list">
+        <span>✅ Small parts</span><span>✅ Keychains</span><span>✅ School projects</span><span>✅ Functional parts</span>
+      </div>
+      <button class="btn whatsapp ask-service" data-service="3D printing">Ask for a 3D print on WhatsApp ↗</button>
+    </article>
+    <article class="pickup-card">
+      <div>
+        <h3>📦 Pickup or Shipping</h3>
+        <p data-i18n="pickup">Shipping can be expensive. Local pickup is available by arrangement if you can come and collect the finished print or project.</p>
+      </div>
+      <div class="notes">Final price depends on material, print time, size, quantity and delivery.</div>
+    </article>
+  </div>
+</section>
+
+<section id="about" class="section">
+  <div class="about">
+    <div><div class="eyebrow">ABOUT FARIS</div><h2 data-i18n="aboutTitle">Made by a maker,<br><span class="gradient">for makers.</span></h2></div>
+    <div>
+      <p id="aboutText" data-i18n="aboutText">I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week. This website is my online workshop — a place to share what I'm making and what I'm learning along the way.</p>
+      <div class="skill-pills">
+        <span class="skill">Tinkercad</span><span class="skill">Shapr3D</span><span class="skill">ESP32</span><span class="skill">Arduino</span><span class="skill">Robotics</span><span class="skill">Fast Learner</span><span class="skill">Visual Learner</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="games-intro">
+    <div><div class="eyebrow">🎮 PLAY & LEARN</div><h2 data-i18n="gamesTitle">Let's play with circuits & design</h2></div>
+    <p data-i18n="gamesIntro">Mini games that make electronics and design trade-offs easier to understand.</p>
+  </div>
+
+  <div class="game-grid">
+    <article class="game-card">
+      <h3>1. Play with Circuits ⚡</h3>
+      <p>Change the battery, resistor and LED color. Keep the current safe!</p>
+      <div class="controls-grid">
+        <div class="game-control"><label>Battery <span id="batteryValue">5V</span></label><input id="batterySlider" type="range" min="1" max="12" value="5"></div>
+        <div class="game-control"><label>Resistor <span id="resistorValue">330Ω</span></label><input id="resistorSlider" type="range" min="10" max="1000" value="330"></div>
+        <div class="game-control"><label>LED color</label><select id="ledColor"><option value="#2be7ff">Cyan</option><option value="#ff4ebc">Pink</option><option value="#ff5252">Red</option><option value="#65ff73">Green</option><option value="#ffd75a">Yellow</option><option value="#b77cff">Purple</option></select></div>
+      </div>
+      <div class="circuit-stage">
+        <div class="circuit-board" id="circuitBoard" aria-label="Interactive LED circuit">
+          <svg viewBox="0 0 520 210" width="100%" height="100%" aria-hidden="true">
+            <path d="M70 105 H145" stroke="var(--cyan)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M215 105 H305" stroke="var(--cyan)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M375 105 H450" stroke="var(--cyan)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M450 105 V165 H70 V105" fill="none" stroke="var(--cyan)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+            <rect x="38" y="72" width="42" height="66" rx="6" fill="rgba(255,156,42,.08)" stroke="var(--orange)" stroke-width="3"/>
+            <line x1="58" y1="87" x2="58" y2="105" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/>
+            <line x1="50" y1="105" x2="66" y2="105" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/>
+            <text x="51" y="126" fill="var(--orange)" font-size="22" font-weight="800">+</text>
+            <polygon points="145,92 165,80 185,92 205,80 225,92 205,104 185,92 165,104" fill="none" stroke="#d7b47e" stroke-width="5"/>
+            <rect x="295" y="78" width="78" height="54" rx="27" fill="rgba(255,255,255,.04)" stroke="var(--ledColor, var(--cyan))" stroke-width="4"/>
+            <circle id="svgLedGlow" cx="334" cy="105" r="14" fill="var(--ledColor, var(--cyan))"/>
+            <text x="334" y="157" text-anchor="middle" fill="var(--muted)" font-size="14" font-weight="700">LED</text>
+            <text x="105" y="64" fill="var(--muted)" font-size="13" font-weight="700">BATTERY</text>
+            <text x="168" y="64" fill="var(--muted)" font-size="13" font-weight="700">RESISTOR</text>
+          </svg>
+        </div>
+        <div id="circuitStatus" class="circuit-status">
+          <div class="status-line status-good">Status: Good ✅</div>
+          <div class="status-data">Voltage: 5V<br>Current: 15.2 mA<br>LED is on!</div>
+        </div>
+      </div>
+    <article class="game-card">
+      <h3>2. Fast • Cheap • Good ⚖️</h3>
+      <p>Pick <b>one main priority</b>. You can still get the other two, but pushing one too hard creates a trade-off.</p>
+      <div class="trade-choice" id="tradeChoice">
+        <button class="trade-option fast active" data-choice="fast" type="button"><b>⚡ FAST</b><span>Finish sooner</span></button>
+        <button class="trade-option cheap" data-choice="cheap" type="button"><b>💰 CHEAP</b><span>Spend less</span></button>
+        <button class="trade-option good" data-choice="good" type="button"><b>⭐ GOOD</b><span>Best quality</span></button>
+      </div>
+      <div class="trade-meter">
+        <div class="meter-row"><span>Fast</span><div class="meter"><i id="meterFast"></i></div><b id="meterFastText">90%</b></div>
+        <div class="meter-row"><span>Cheap</span><div class="meter"><i id="meterCheap"></i></div><b id="meterCheapText">45%</b></div>
+        <div class="meter-row"><span>Good</span><div class="meter"><i id="meterGood"></i></div><b id="meterGoodText">60%</b></div>
+      </div>
+      <div id="tradeResult" class="trade-result"><b>Result:</b> Fast build selected. It can be delivered sooner, but it may cost more and have fewer revisions.</div>
+    </article>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="contact-grid">
+    <div><div class="eyebrow">LET'S BUILD</div><h2 data-i18n="contactTitle">Have an idea?<br><span class="gradient">Let's make it real.</span></h2><p data-i18n="contactText">Tell me what you want to make and we can talk about the design, price and next step.</p></div>
+    <a id="whatsappLink" class="wa-card" target="_blank" rel="noopener">
+      <span class="wa-icon">✆</span><span><small>WhatsApp</small><strong id="phoneDisplay">050-934-7473</strong></span><b>↗</b>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer container">
+  <strong>FARIS<em>TECH</em></strong>
+  <span data-i18n="footerLine">Build • Design • Invent</span>
+  <span>© <span id="year"></span> FarisTech</span>
+</footer>
+
+<div id="projectModal" class="modal" aria-hidden="true">
+  <div class="backdrop" data-close="modal"></div>
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <button class="modal-close" type="button" data-close="modal">×</button>
+    <div class="modal-tag" id="modalTag">PROJECT</div><h2 id="modalTitle">Project</h2><p id="modalText"></p>
+    <a id="modalAction" class="btn primary" target="_blank" rel="noopener">Ask on WhatsApp ↗</a>
+  </div>
+</div>
+
+<aside id="adminPanel" class="admin-panel" aria-hidden="true">
+  <div class="admin-head"><h2>Creator Mode</h2><button class="close-admin" id="closeAdmin" type="button">×</button></div>
+  <div class="admin-note">This editor is a front-end prototype. Changes are saved in this browser with localStorage. To make edits public for everyone, connect this site to a database/CMS later.</div>
+
+  <div class="admin-group"><h3>PROFILE</h3>
+    <div class="admin-field"><label>Name</label><input id="editName" type="text" value="FarisTech"></div>
+    <div class="admin-field"><label>Tagline</label><input id="editTagline" type="text" value="The only limitation is your imagination."></div>
+    <div class="admin-field"><label>WhatsApp number</label><input id="editPhone" type="text" value="050-934-7473"></div>
+    <div class="admin-field"><label>About text</label><textarea id="editAbout"></textarea></div>
+    <div class="admin-actions"><button class="btn primary" id="saveProfile">Save profile</button><button class="btn danger" id="resetProfile">Reset</button></div>
+  </div>
+
+  <div class="admin-group"><h3>STARTING PRICES (SAR)</h3>
+    <div class="admin-field"><label>3D model</label><input id="editPrice3d" type="number" min="0"></div>
+    <div class="admin-field"><label>PCB 1-layer</label><input id="editPricePcb1" type="number" min="0"></div>
+    <div class="admin-field"><label>PCB 2-layer</label><input id="editPricePcb2" type="number" min="0"></div>
+    <div class="admin-field"><label>PCB 4-layer</label><input id="editPricePcb4" type="number" min="0"></div>
+    <div class="admin-field"><label>Electronics build</label><input id="editPriceElectronics" type="number" min="0"></div>
+    <div class="admin-field"><label>Robotics build</label><input id="editPriceRobotics" type="number" min="0"></div>
+    <button class="btn primary" id="savePrices">Save prices</button>
+  </div>
+
+  <div class="admin-group"><h3>ADD A PROJECT</h3>
+    <div class="admin-field"><label>Title</label><input id="newTitle" type="text" placeholder="My new project"></div>
+    <div class="admin-field"><label>Category</label><select id="newCategory"><option value="3d">3D</option><option value="pcb">PCB</option><option value="esp">ESP32</option><option value="arduino">Arduino</option><option value="electronics">Electronics</option><option value="robotics">Robotics</option></select></div>
+    <div class="admin-field"><label>Description</label><textarea id="newDescription" placeholder="What did you build?"></textarea></div>
+    <button class="btn primary" id="addProject">Add project</button>
+    <div class="admin-project-list" id="adminProjectList"></div>
+  </div>
+</aside>
+
+<script>
+const DEFAULTS={
+  name:"FarisTech",
+  tagline:"The only limitation is your imagination.",
+  phone:"050-934-7473",
+  about:"I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week. This website is my online workshop — a place to share what I'm making and what I'm learning along the way.",
+  prices:{p3d:10,p1:15,p2:25,p4:45,electronics:20,robotics:50},
+  projects:[
+    {title:"Custom 3D Models",cat:"3d",tag:"3D MODEL",icon:"▣",desc:"Practical parts, creative models and printable designs made for real-life objects.",action:"Ask to make a 3D model"},
+    {title:"PCB & Circuit Builds",cat:"pcb",tag:"PCB DESIGN",icon:"▤",desc:"Small boards, sensors, controllers and custom electronics for prototypes.",action:"Ask to design a PCB"},
+    {title:"ESP32 Sensor Node",cat:"esp",tag:"ESP32",icon:"⌁",desc:"ESP32, sensors, wireless dashboards and IoT-style experiments.",action:"Ask about this project"},
+    {title:"Arduino Controller",cat:"arduino",tag:"ARDUINO",icon:"A",desc:"Arduino microcontrollers, buttons, LEDs, motors and control projects.",action:"Ask about this project"},
+    {title:"Electronics Projects",cat:"electronics",tag:"ELECTRONICS",icon:"⌘",desc:"Displays, RFID, LEDs, motors, relays and hands-on experiments.",action:"Ask about electronics"},
+    {title:"Robotics & Motion",cat:"robotics",tag:"ROBOTICS",icon:"◈",desc:"Servos, sensors and motors combined into moving machines.",action:"Ask about robotics"}
+  ]
+};
+let state=JSON.parse(localStorage.getItem("faristech_state")||"null")||DEFAULTS;
+let activeLang=localStorage.getItem("faristech_lang")||"en";
+let theme=localStorage.getItem("faristech_theme")||"dark";
+document.documentElement.dataset.theme=theme;
+
+function waMessage(text){
+  const phone=(state.phone||"").replace(/\D/g,"");
+  const intl=phone.startsWith("966")?phone:("966"+phone.replace(/^0/,""));
+  return `https://wa.me/${intl}?text=${encodeURIComponent(text)}`;
+}
+function applyProfile(){
+  document.querySelectorAll(".brand-name").forEach(x=>{x.childNodes[0].textContent=(state.name||"FarisTech").replace(/TECH$/,"");});
+  document.querySelectorAll(".brand-sub").forEach(x=>x.textContent=state.tagline);
+  document.getElementById("aboutText").textContent=state.about;
+  document.getElementById("phoneDisplay").textContent=state.phone;
+  document.getElementById("whatsappLink").href=waMessage("Hi FarisTech! I have a project idea and would like to discuss it.");
+  document.getElementById("price3d").textContent=state.prices.p3d;
+  document.getElementById("pricePcb1").textContent=state.prices.p1;
+  document.getElementById("pricePcb2").textContent=`2-layer from ${state.prices.p2} SAR`;
+  document.getElementById("pricePcb4").textContent=`4-layer from ${state.prices.p4} SAR`;
+  document.getElementById("priceElectronics").textContent=state.prices.electronics;
+  document.getElementById("priceRobotics").textContent=state.prices.robotics;
+}
+function renderProjects(){
+  const grid=document.getElementById("projectGrid");
+  const adminList=document.getElementById("adminProjectList");
+  const q=document.getElementById("projectSearch").value.trim().toLowerCase();
+  const filter=document.querySelector(".filter.active")?.dataset.filter||"all";
+  grid.innerHTML="";
+  adminList.innerHTML="";
+  state.projects
+    .map((p,i)=>({...p,index:i}))
+    .filter(p=>(filter==="all"||p.cat===filter)&&(!q||(p.title+" "+p.desc+" "+p.tag).toLowerCase().includes(q)))
+    .forEach((p)=>{
+      const card=document.createElement("article");
+      card.className="project-card";
+      card.dataset.cat=p.cat;
+      card.innerHTML=`
+        <button class="remove-project" title="Delete project">×</button>
+        <div class="project-media"><span class="bigicon">${p.icon||"✦"}</span></div>
+        <div class="tag">${p.tag}</div>
+        <h3>${escapeHtml(p.title)}</h3>
+        <p>${escapeHtml(p.desc)}</p>
+        <div class="row">
+          <button class="project-action primary project-view" type="button">${escapeHtml(p.action||"Ask about this project")}</button>
+        </div>`;
+      card.querySelector(".project-view").addEventListener("click",()=>openProject(p));
+      card.querySelector(".remove-project").addEventListener("click",()=>deleteProject(p.index));
+      grid.appendChild(card);
+    });
+  if(!grid.children.length){
+    grid.innerHTML='<div class="project-card" style="grid-column:1/-1"><h3>No projects found</h3><p>Try another search or switch the filter.</p></div>';
+  }
+  state.projects.forEach((p,i)=>{
+    const item=document.createElement("div");
+    item.className="admin-project-item";
+    item.innerHTML=`<span>${escapeHtml(p.title)}</span><button class="control-btn danger" type="button">Remove</button>`;
+    item.querySelector("button").addEventListener("click",()=>deleteProject(i));
+    adminList.appendChild(item);
+  });
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
+function deleteProject(i){
+  if(!confirm("Remove this project?")) return;
+  state.projects.splice(i,1);persist();renderProjects();
+}
+function openProject(p){
+  document.getElementById("modalTag").textContent=p.tag;
+  document.getElementById("modalTitle").textContent=p.title;
+  document.getElementById("modalText").textContent=p.desc+" Final price depends on the project. Contact me on WhatsApp to discuss what you need.";
+  const action=document.getElementById("modalAction");
+  action.textContent=p.action||"Ask on WhatsApp ↗";
+  action.href=waMessage(`Hi FarisTech! I want to ask about "${p.title}". My idea/details are: `);
+  const m=document.getElementById("projectModal");m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+}
+function closeModal(){
+  const m=document.getElementById("projectModal");m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.style.overflow="";
+}
+document.querySelectorAll("[data-close=modal]").forEach(x=>x.addEventListener("click",closeModal));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal();document.getElementById("adminPanel").classList.remove("open")}});
+
+document.querySelectorAll(".ask-service").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const service=btn.dataset.service;
+    window.open(waMessage(`Hi FarisTech! I want to ask about ${service}. My idea/details are: `),"_blank");
+  });
+});
+
+document.getElementById("projectSearch").addEventListener("input",renderProjects);
+document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{
+  document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));btn.classList.add("active");renderProjects();
+}));
+
+document.getElementById("themeSelect").value=theme;
+document.getElementById("themeSelect").addEventListener("change",e=>{
+  theme=e.target.value;document.documentElement.dataset.theme=theme;localStorage.setItem("faristech_theme",theme);
+});
+document.getElementById("languageSelect").value=activeLang;
+
+const translations={
+en:{
+ tagline:"The only limitation is your imagination.",home:"Home",projects:"Projects",whatMake:"What I Make",about:"About",contact:"Contact",
+ makerTag:"MAKER • ELECTRONICS • 3D DESIGNING",creativeTag:"CREATIVE TECH • PROTOTYPES • PRINTING",
+ heroTitle:'Build something<br><span class="gradient">awesome.</span>',
+ heroText:"I turn ideas into 3D models, PCB designs, electronics and real working projects. Designed for makers, inventors and curious people.",
+ explore:"Explore Projects ↗",work:"Work With Me",cheap:"Cheap starting prices",fastLearner:"Fast learner",visualLearner:"Visual learner",schoolFriendly:"School & maker friendly",
+ projectsTitle:"Projects I'm building",projectsIntro:"From a simple idea to a finished prototype — this is where the experiments happen.",
+ makeTitle:"Ideas → design → prototype",makeIntro:"Technology made understandable, useful and fun — with simple options for students, makers and real projects.",
+ service3d:"Send me a picture, sketch or idea. I can make a printable model, adjust it, and prepare it for real life.",
+ servicepcb:"Simple one-layer boards are the cheapest. More layers, more parts and more complexity increase the design price.",
+ serviceElectronics:"ESP32, Arduino, sensors, displays, RFID, LEDs, motors, relays and hands-on prototypes.",
+ serviceRobotics:"Servo systems, sensors, motors, control, simple robots and custom motion projects.",
+ printIntro:"I can print your model in real life. Send me a picture, STL, sketch or idea and I can tell you what is possible.",
+ pickup:"Shipping can be expensive. Local pickup is available by arrangement if you can come and collect the finished print or project.",
+ aboutTitle:'Made by a maker,<br><span class="gradient">for makers.</span>',
+ aboutText:"I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week. This website is my online workshop — a place to share what I'm making and what I'm learning along the way.",
+ gamesTitle:"Let's play with circuits & design",gamesIntro:"Mini games that make electronics and design trade-offs easier to understand.",
+ contactTitle:'Have an idea?<br><span class="gradient">Let\'s make it real.</span>',contactText:"Tell me what you want to make and we can talk about the design, price and next step.",footerLine:"Build • Design • Invent"
+},
+ar:{
+ tagline:"الحد الوحيد هو خيالك.",home:"الرئيسية",projects:"المشاريع",whatMake:"ماذا أصنع",about:"عنّي",contact:"تواصل",
+ makerTag:"صانع • إلكترونيات • تصميم ثلاثي الأبعاد",creativeTag:"تقنية إبداعية • نماذج أولية • طباعة",
+ heroTitle:'اصنع شيئًا<br><span class="gradient">رائعًا.</span>',
+ heroText:"أحوّل الأفكار إلى نماذج ثلاثية الأبعاد وتصاميم PCB ومشاريع إلكترونية تعمل فعليًا. مناسب للصنّاع والمخترعين ومحبي التجربة.",
+ explore:"استكشف المشاريع ↗",work:"اعمل معي",cheap:"أسعار بداية منخفضة",fastLearner:"متعلم سريع",visualLearner:"متعلم بصري",schoolFriendly:"مناسب للمدرسة والهواة",
+ projectsTitle:"المشاريع التي أبنيها",projectsIntro:"من فكرة بسيطة إلى نموذج أولي مكتمل — هنا تحدث التجارب.",
+ makeTitle:"فكرة ← تصميم ← نموذج أولي",makeIntro:"تقنية مفهومة ومفيدة وممتعة — بخيارات بسيطة للطلاب والهواة والمشاريع الحقيقية.",
+ service3d:"أرسل صورة أو رسمًا أو فكرة. أستطيع تحويلها إلى نموذج قابل للطباعة وتعديله وتجهيزه للاستخدام.",
+ servicepcb:"اللوحة بطبقة واحدة هي الأرخص. زيادة الطبقات وعدد القطع والتعقيد ترفع السعر.",
+ serviceElectronics:"ESP32 وArduino والحساسات والشاشات وRFID والـLEDs والمحركات والريليهات والنماذج الأولية.",
+ serviceRobotics:"أنظمة السيرفو والحساسات والمحركات والتحكم والروبوتات والمشاريع الحركية.",
+ printIntro:"أستطيع طباعة نموذجك فعليًا. أرسل صورة أو STL أو رسمًا أو فكرة وسأخبرك بما يمكن عمله.",
+ pickup:"الشحن قد يكون مكلفًا. الاستلام المحلي متاح بالاتفاق إذا كان بإمكانك الحضور واستلام الطباعة أو المشروع.",
+ aboutTitle:'صنعه صانع،<br><span class="gradient">للصنّاع.</span>',
+ aboutText:"أستمتع بصناعة نماذج ثلاثية الأبعاد بسيطة ومشاريع PCB وتجارب إلكترونية. أتعلم بصريًا وعن طريق التطبيق. أنا متعلم سريع ويمكنني تعلم كثير من المهارات الجديدة في أقل من أسبوع. هذا الموقع هو ورشتي الإلكترونية، أشارك فيه ما أصنعه وما أتعلمه.",
+ gamesTitle:"لِنلعب بالإلكترونيات والتصميم",gamesIntro:"ألعاب صغيرة تجعل فهم الإلكترونيات وموازنة الخيارات التصميمية أسهل.",
+ contactTitle:'لديك فكرة؟<br><span class="gradient">لنجعلها حقيقية.</span>',contactText:"أخبرني بما تريد صنعه ونتحدث عن التصميم والسعر والخطوة التالية.",footerLine:"اصنع • صمم • ابتكر"
+}};
+function applyLanguage(){
+  const t=translations[activeLang];
+  document.documentElement.dir=activeLang==="ar"?"rtl":"ltr";
+  document.querySelectorAll("[data-i18n]").forEach(el=>{const key=el.dataset.i18n;if(t[key]!=null)el.innerHTML=t[key]});
+  document.getElementById("languageSelect").value=activeLang;
+}
+document.getElementById("languageSelect").addEventListener("change",e=>{activeLang=e.target.value;localStorage.setItem("faristech_lang",activeLang);applyLanguage()});
+
+document.getElementById("modeBtn").addEventListener("click",()=>{
+  const panel=document.getElementById("adminPanel");panel.classList.add("open");panel.setAttribute("aria-hidden","false");fillAdmin();
+});
+document.getElementById("closeAdmin").addEventListener("click",()=>document.getElementById("adminPanel").classList.remove("open"));
+function fillAdmin(){
+  document.getElementById("editName").value=state.name;
+  document.getElementById("editTagline").value=state.tagline;
+  document.getElementById("editPhone").value=state.phone;
+  document.getElementById("editAbout").value=state.about;
+  document.getElementById("editPrice3d").value=state.prices.p3d;
+  document.getElementById("editPricePcb1").value=state.prices.p1;
+  document.getElementById("editPricePcb2").value=state.prices.p2;
+  document.getElementById("editPricePcb4").value=state.prices.p4;
+  document.getElementById("editPriceElectronics").value=state.prices.electronics;
+  document.getElementById("editPriceRobotics").value=state.prices.robotics;
+}
+function persist(){localStorage.setItem("faristech_state",JSON.stringify(state));applyProfile();renderProjects();}
+document.getElementById("saveProfile").addEventListener("click",()=>{
+  state.name=document.getElementById("editName").value.trim()||DEFAULTS.name;
+  state.tagline=document.getElementById("editTagline").value.trim()||DEFAULTS.tagline;
+  state.phone=document.getElementById("editPhone").value.trim()||DEFAULTS.phone;
+  state.about=document.getElementById("editAbout").value.trim()||DEFAULTS.about;
+  persist();alert("Profile saved on this browser.");
+});
+document.getElementById("savePrices").addEventListener("click",()=>{
+  state.prices={p3d:+document.getElementById("editPrice3d").value||0,p1:+document.getElementById("editPricePcb1").value||0,p2:+document.getElementById("editPricePcb2").value||0,p4:+document.getElementById("editPricePcb4").value||0,electronics:+document.getElementById("editPriceElectronics").value||0,robotics:+document.getElementById("editPriceRobotics").value||0};
+  persist();alert("Prices saved on this browser.");
+});
+document.getElementById("resetProfile").addEventListener("click",()=>{
+  state=JSON.parse(JSON.stringify(DEFAULTS));persist();fillAdmin();alert("Reset complete.");
+});
+document.getElementById("addProject").addEventListener("click",()=>{
+  const title=document.getElementById("newTitle").value.trim();const desc=document.getElementById("newDescription").value.trim();const cat=document.getElementById("newCategory").value;
+  if(!title||!desc){alert("Add a title and description.");return}
+  const meta={3d:["3D MODEL","▣","Ask to make a 3D model"],pcb:["PCB DESIGN","▤","Ask to design a PCB"],esp:["ESP32","⌁","Ask about this project"],arduino:["ARDUINO","A","Ask about this project"],electronics:["ELECTRONICS","⌘","Ask about electronics"],robotics:["ROBOTICS","◈","Ask about robotics"]}[cat];
+  state.projects.push({title,cat,tag:meta[0],icon:meta[1],desc,action:meta[2]});
+  persist();document.getElementById("newTitle").value="";document.getElementById("newDescription").value="";
+});
+
+const bat=document.getElementById("batterySlider"),res=document.getElementById("resistorSlider"),ledColor=document.getElementById("ledColor");
+function updateCircuit(){
+  const v=+bat.value,r=+res.value,i=(v/r)*1000;
+  document.getElementById("batteryValue").textContent=v+"V";
+  document.getElementById("resistorValue").textContent=r+"Ω";
+
+  const led=document.getElementById("ledPart"),svgLed=document.getElementById("svgLedGlow");
+  document.documentElement.style.setProperty("--ledColor",ledColor.value);
+  led.style.color=ledColor.value;led.style.borderColor=ledColor.value;
+  led.style.boxShadow=`0 0 ${Math.min(35,7+i)}px ${ledColor.value}`;
+  if(svgLed){svgLed.setAttribute("fill",ledColor.value);svgLed.setAttribute("stroke",ledColor.value);}
+
+  const status=document.getElementById("circuitStatus");
+  if(i>40){
+    status.innerHTML=`<div class="status-line status-bad">Status: LED burned 🔥</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>Too much current. Try a higher resistor or lower voltage.</div>`;
+    led.style.opacity=".28";led.style.filter="grayscale(1)";if(svgLed)svgLed.setAttribute("opacity",".28");
+  }else if(i>20){
+    status.innerHTML=`<div class="status-line status-warn">Status: Too much current ⚠️</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>The LED is being pushed too hard.</div>`;
+    led.style.opacity=".72";led.style.filter="none";if(svgLed)svgLed.setAttribute("opacity",".72");
+  }else if(i<5){
+    status.innerHTML=`<div class="status-line status-warn">Status: Very dim 💡</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>The resistor is too high for a bright LED.</div>`;
+    led.style.opacity=".35";led.style.filter="none";if(svgLed)svgLed.setAttribute("opacity",".35");
+  }else{
+    status.innerHTML=`<div class="status-line status-good">Status: Good ✅</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>LED is on — nice circuit!</div>`;
+    const brightness=Math.max(.65,Math.min(1,.45+i/25));
+    led.style.opacity=brightness;led.style.filter="none";if(svgLed)svgLed.setAttribute("opacity",brightness);
+  }
+}
+[bat,res,ledColor].forEach(x=>x.addEventListener("input",updateCircuit));updateCircuit();
+
+const tradeProfiles={
+  fast:{fast:90,cheap:45,good:60,text:"Fast build selected. It can be delivered sooner, but it may cost more and have fewer revisions."},
+  cheap:{fast:45,cheap:90,good:55,text:"Cheap build selected. It saves money, but it may take longer and use simpler materials or fewer revisions."},
+  good:{fast:55,cheap:40,good:95,text:"Good selected. Quality is the priority, so expect more time and a higher price."}
+};
+function updateTrade(choice){
+  const p=tradeProfiles[choice];
+  document.getElementById("meterFast").style.width=p.fast+"%";
+  document.getElementById("meterCheap").style.width=p.cheap+"%";
+  document.getElementById("meterGood").style.width=p.good+"%";
+  document.getElementById("meterFastText").textContent=p.fast+"%";
+  document.getElementById("meterCheapText").textContent=p.cheap+"%";
+  document.getElementById("meterGoodText").textContent=p.good+"%";
+  document.getElementById("tradeResult").innerHTML="<b>Result:</b> "+p.text;
+}
+document.querySelectorAll(".trade-option").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".trade-option").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    updateTrade(btn.dataset.choice);
+  });
+});
+updateTrade("fast");
+
+const sections=[...document.querySelectorAll("main section[id]")];
+const navLinks=[...document.querySelectorAll(".nav a[data-nav]")];
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(!e.isIntersecting)return;navLinks.forEach(n=>n.classList.remove("active"));document.querySelector(`.nav a[href="#${e.target.id}"]`)?.classList.add("active")});
+},{rootMargin:"-35% 0px -55% 0px"});
+sections.forEach(s=>io.observe(s));
+
+document.getElementById("menuBtn").addEventListener("click",()=>document.querySelector(".nav").classList.toggle("open"));
+
+applyProfile();renderProjects();applyLanguage();fillAdmin();document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
