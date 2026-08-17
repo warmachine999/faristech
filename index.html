@@ -78,6 +78,20 @@ background:radial-gradient(circle at 35% 25%,#402177,#121521 58%,#080a10);border
 }
 @media(max-width:460px){.controlGrid{grid-template-columns:1fr}.tradeChoice{grid-template-columns:1fr}.labStats{grid-template-columns:1fr}.projectMedia{height:100px}}
 </style>
+<style>
+@media(max-width:760px){
+  .header{padding:0 3%;gap:4px}
+  .controls{display:flex!important;gap:4px;flex-shrink:0}
+  .control{display:block!important;min-width:40px;height:36px;padding:6px 7px}
+  #theme{width:40px}#lang{width:48px}
+  .menu{display:block!important}
+  .tagline{display:none}
+}
+@media(max-width:430px){
+  .brand b{font-size:.78rem}
+  .control{font-size:.72rem}
+}
+</style>
 </head>
 <body>
 <header class="header wrap">
@@ -120,11 +134,15 @@ background:radial-gradient(circle at 35% 25%,#402177,#121521 58%,#080a10);border
 <section id="services" class="section">
   <div class="head"><div><div class="eyebrow">WHAT I MAKE</div><h2>Ideas → design → prototype</h2></div><p>Technology made understandable, useful and fun.</p></div>
   <div class="services">
-    <article class="service"><div style="font-size:2rem;color:var(--purple)">◇</div><h3>3D Design</h3><p>Send a picture, sketch or idea. I can make a printable model and adjust it for real life.</p><div class="price">From 10 SAR <small>/ simple model</small></div><button class="btn primary ask" data-service="3D model">Ask to make a 3D model</button></article>
-    <article class="service"><div style="font-size:2rem;color:var(--cyan)">▤</div><h3>PCB Design</h3><p>One-layer is the cheapest. More layers, more parts and more complexity increase the price.</p><div class="price">From 15 SAR <small>/ 1 layer</small></div><button class="btn primary ask" data-service="PCB design">Ask to design a PCB</button></article>
-    <article class="service"><div style="font-size:2rem;color:var(--pink)">⌘</div><h3>Electronics</h3><p>ESP32, Arduino, sensors, displays, RFID, LEDs, motors, relays and prototypes.</p><div class="price">From 20 SAR <small>/ simple build</small></div><button class="btn primary ask" data-service="electronics project">Ask about electronics</button></article>
-    <article class="service"><div style="font-size:2rem;color:var(--orange)">✦</div><h3>Robotics</h3><p>Servos, sensors, motors, control, simple robots and custom motion projects.</p><div class="price">From 50 SAR <small>/ simple build</small></div><button class="btn primary ask" data-service="robotics project">Ask about robotics</button></article>
-  </div>
+<article class="service"><div style="font-size:2rem;color:var(--purple)">◇</div><h3>3D Design</h3><p>Custom parts, cases, brackets, school projects and printable real-life objects.</p><div class="price">From 10 SAR <small>/ simple model</small></div><button class="btn primary ask" data-service="3D model">Ask to make a 3D model</button></article>
+<article class="service"><div style="font-size:2rem;color:var(--cyan)">▤</div><h3>PCB Design</h3><p>One-layer boards through more complex multi-layer PCB designs.</p><div class="price">From 15 SAR <small>/ 1 layer</small></div><button class="btn primary ask" data-service="PCB design">Ask to design a PCB</button></article>
+<article class="service"><div style="font-size:2rem;color:var(--pink)">⌘</div><h3>Electronics</h3><p>ESP32, Arduino, sensors, displays, RFID, LEDs, motors, relays and prototypes.</p><div class="price">From 20 SAR <small>/ simple build</small></div><button class="btn primary ask" data-service="electronics project">Ask about electronics</button></article>
+<article class="service"><div style="font-size:2rem;color:var(--orange)">✦</div><h3>Robotics</h3><p>Servos, motors, sensors, control systems and robot mechanisms.</p><div class="price">From 50 SAR <small>/ simple build</small></div><button class="btn primary ask" data-service="robotics project">Ask about robotics</button></article>
+<article class="service"><div style="font-size:2rem;color:var(--green)">◫</div><h3>B2B / Business Builds</h3><p>Prototypes, custom maker solutions, small-batch work and practical business ideas.</p><div class="price">Quote <small>/ project</small></div><button class="btn primary ask" data-service="B2B / business build">Start a B2B idea</button></article>
+<article class="service"><div style="font-size:2rem;color:var(--cyan)">⌘</div><h3>Website Making</h3><p>Responsive websites for portfolios, school projects and small businesses.</p><div class="price">From 75 SAR <small>/ simple website</small></div><button class="btn primary ask" data-service="website">Ask for a website</button></article>
+<article class="service"><div style="font-size:2rem;color:var(--purple)">⚙</div><h3>Dashboards & IoT</h3><p>Sensor dashboards, control panels, data displays and connected prototypes.</p><div class="price">From 40 SAR <small>/ simple dashboard</small></div><button class="btn primary ask" data-service="dashboard / IoT project">Ask about a dashboard</button></article>
+<article class="service"><div style="font-size:2rem;color:var(--orange)">✦</div><h3>Prototyping</h3><p>Plan, design, build, test and improve an idea into a working prototype.</p><div class="price">Quote <small>/ project</small></div><button class="btn primary ask" data-service="prototype">Build a prototype</button></article>
+</div>
   <div class="print"><h3>🖨️ 3D Printing — Bambu Lab A1</h3><p>I can print your model in real life. Send a picture, STL, sketch or idea. Pickup can be arranged locally; shipping costs extra.</p><button class="btn primary ask" data-service="3D printing">Ask for a 3D print on WhatsApp ↗</button></div>
 </section>
 
@@ -148,6 +166,7 @@ background:radial-gradient(circle at 35% 25%,#402177,#121521 58%,#080a10);border
         <div class="ctrl"><label>Cap rating <span id="capRatingOut">16 V</span></label><select id="capRating"><option>6.3</option><option>10</option><option selected>16</option><option>25</option><option>35</option></select></div>
         <div class="ctrl"><label>LED color</label><select id="ledColor"><option value="#2be7ff">Cyan</option><option value="#ff4fbd">Pink</option><option value="#ff4d5f">Red</option><option value="#65ff73">Green</option><option value="#ffd34e">Yellow</option><option value="#9a6bff">Purple</option></select></div>
         <div class="ctrl"><label>Mode <span>Interactive</span></label><select id="demoMode"><option value="normal">Normal circuit</option><option value="capacitor">Capacitor focus</option></select></div>
+        <div class="ctrl"><label>Electron speed <span id="speedOut">1.0×</span></label><input id="electronSpeed" type="range" min="0.2" max="4" step="0.1" value="1"></div>
       </div>
       <div class="canvasWrap"><canvas id="circuitCanvas" width="1100" height="570"></canvas></div>
       <div class="labActions"><button id="pauseBtn">⏸ Pause electrons</button><button id="resetBtn">↻ Reset</button></div>
@@ -203,8 +222,13 @@ $("lang").onchange=e=>{
   else{document.documentElement.dir="ltr";document.querySelector(".tagline").textContent="The only limitation is your imagination.";document.querySelector("html").lang="en"}
 };
 const sections=[...document.querySelectorAll("main section[id]")],navs=[...document.querySelectorAll(".nav a")];
-new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove("active"));document.querySelector(`.nav a[href="#${e.target.id}"]`)?.classList.add("active")}}),{rootMargin:"-35% 0px -55% 0px"}).observe;
-sections.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove("active"));document.querySelector(`.nav a[href="#${e.target.id}"]`)?.classList.add("active")}}),{rootMargin:"-35% 0px -55% 0px"}).observe(s);
+const activeObserver=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){
+    navs.forEach(n=>n.classList.remove("active"));
+    document.querySelector(`.nav a[href="#${e.target.id}"]`)?.classList.add("active");
+  }
+}),{rootMargin:"-35% 0px -55% 0px"});
+sections.forEach(s=>activeObserver.observe(s));
 
 const projectData=[
 ["3D Models","3D","◇","Custom 3D models, printable parts and real-life objects."],
@@ -223,7 +247,7 @@ document.querySelectorAll(".ask,.projectAsk").forEach(b=>b.onclick=()=>window.op
 $("waLink").href=wa("Hi FarisTech! I have an idea for a project.");
 
 const cv=$("circuitCanvas"),ctx=cv.getContext("2d");
-const voltage=$("voltage"),res=$("resistance"),vf=$("vf"),maxCurrent=$("maxCurrent"),capacitance=$("capacitance"),capRating=$("capRating"),ledColor=$("ledColor");
+const voltage=$("voltage"),res=$("resistance"),vf=$("vf"),maxCurrent=$("maxCurrent"),capacitance=$("capacitance"),capRating=$("capRating"),ledColor=$("ledColor"),electronSpeed=$("electronSpeed");
 const electrons=Array.from({length:42},(_,i)=>i/42);
 let running=true,capV=0,failed=false,last=performance.now();
 
@@ -237,7 +261,7 @@ function model(){
 function updateLabels(m){
   $("vOut").textContent=m.V.toFixed(1)+" V";$("rOut").textContent=m.R.toFixed(0)+" Ω";$("vfOut").textContent=m.Vf.toFixed(1)+" V";$("maxOut").textContent=m.Imax.toFixed(0)+" mA";
   $("capOut").textContent=(m.C*1e6).toFixed(0)+" µF";$("capRatingOut").textContent=m.rating+" V";$("capRatingInfo").textContent=m.rating;
-  $("iOut").textContent=m.current.toFixed(2);$("brightnessOut").textContent=m.brightness.toFixed(0);$("capVoltageOut").textContent=capV.toFixed(2);$("capInfoV").textContent=capV.toFixed(2);
+  $("iOut").textContent=m.current.toFixed(2);$("brightnessOut").textContent=m.brightness.toFixed(0);$("capVoltageOut").textContent=capV.toFixed(2);$("capInfoV").textContent=capV.toFixed(2);$("speedOut").textContent=(+electronSpeed.value).toFixed(1)+"×";
 }
 function path(u){
   u=((u%1)+1)%1;const x1=125,x2=975,y1=150,y2=430,top=x2-x1,side=y2-y1,per=2*(top+side);let d=u*per;
@@ -251,7 +275,7 @@ function tick(now){
     const target=m.V;
     const k=Math.min(1,dt/(m.tau+0.02));
     capV += (target-capV)*k;
-    const speed=Math.max(.0002,m.current/10000);
+    const speed=Math.max(.0002,m.current/10000)*Math.max(.05,+electronSpeed.value);
     for(let i=0;i<electrons.length;i++) electrons[i]=(electrons[i]+dt*speed)%1;
   }
 
@@ -314,7 +338,7 @@ function varOrange(){return getComputedStyle(document.documentElement).getProper
 function varRed(){return getComputedStyle(document.documentElement).getPropertyValue("--red")}
 function varCyan(){return getComputedStyle(document.documentElement).getPropertyValue("--cyan")}
 
-[voltage,resistance,vf,maxCurrent,capacitance,capRating,ledColor].forEach(x=>x.oninput=()=>{if(x===voltage && capV>+voltage.value)capV=+voltage.value});
+[voltage,resistance,vf,maxCurrent,capacitance,capRating,ledColor,electronSpeed].forEach(x=>x.oninput=()=>{if(x===voltage && capV>+voltage.value)capV=+voltage.value});
 $("pauseBtn").onclick=()=>{running=!running;$("pauseBtn").textContent=running?"⏸ Pause electrons":"▶ Start electrons"};
 $("resetBtn").onclick=()=>{voltage.value=9;resistance.value=1000;vf.value=2;maxCurrent.value=20;capacitance.value=100;capRating.value=16;ledColor.value="#2be7ff";capV=0;running=true;$("pauseBtn").textContent="⏸ Pause electrons"};
 
