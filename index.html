@@ -1,1089 +1,336 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#070811">
-<meta name="description" content="FarisTech — 3D design, PCB design, ESP32, Arduino, sensors, electronics, robotics and 3D printing.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FarisTech — Build • Design • Invent</title>
+<meta name="description" content="FarisTech — 3D design, PCB design, electronics, robotics and 3D printing.">
 <style>
 :root{
-  --bg:#070811;--bg2:#0c0e18;--panel:rgba(15,17,29,.82);--panel2:#111321;
-  --text:#f8f8ff;--muted:#a8aab9;--line:rgba(255,255,255,.11);
-  --purple:#9356ff;--purple2:#6b35ff;--cyan:#2be7ff;--pink:#ff4ebc;--orange:#ff9c2a;--green:#23ef9d;--red:#ff4d5f;
-  --shadow:0 28px 90px rgba(0,0,0,.40);--radius:18px
+  --bg:#06070c;--panel:#10121b;--panel2:#151827;--text:#f8f8ff;--muted:#a6a9b8;--line:rgba(255,255,255,.11);
+  --purple:#9357ff;--cyan:#2be7ff;--pink:#ff4fbd;--orange:#ff9c2c;--green:#22e59a;--red:#ff5261;--yellow:#ffd34e;
 }
-html[data-theme="light"]{
-  --bg:#f5f7fb;--bg2:#ffffff;--panel:rgba(255,255,255,.88);--panel2:#fff;
-  --text:#11131a;--muted:#626878;--line:rgba(20,24,35,.12);
-  --purple:#6b35ff;--purple2:#4e27d2;--cyan:#007f96;--pink:#c82277;--orange:#d97900;--green:#078c5d;--red:#d5263b;
-  --shadow:0 22px 65px rgba(20,30,50,.12)
-}
-html[data-theme="caramel"]{
-  --bg:#24160c;--bg2:#321f11;--panel:rgba(57,35,17,.88);--panel2:#412613;
-  --text:#fff8ee;--muted:#d5bfa7;--line:rgba(255,220,180,.14);
-  --purple:#ff8d29;--purple2:#da5d10;--cyan:#66e0ff;--pink:#ff77aa;--orange:#ffad31;--green:#72edb2;--red:#ff6b6b;
-  --shadow:0 28px 90px rgba(0,0,0,.48)
-}
+html[data-theme=light]{--bg:#f4f6fb;--panel:#fff;--panel2:#eef1f8;--text:#11131a;--muted:#656b79;--line:rgba(10,20,30,.12)}
+html[data-theme=caramel]{--bg:#24160d;--panel:#392312;--panel2:#452a15;--text:#fff8ed;--muted:#d2bda5;--line:rgba(255,225,190,.13);--purple:#ff8a26;--cyan:#7bddff}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  background:
-  radial-gradient(circle at 75% 5%,color-mix(in srgb,var(--purple) 17%,transparent),transparent 26%),
-  radial-gradient(circle at 8% 40%,color-mix(in srgb,var(--cyan) 7%,transparent),transparent 22%),
-  var(--bg);color:var(--text);line-height:1.55;overflow-x:hidden
-}
-body:before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
-  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:58px 58px;mask-image:linear-gradient(to bottom,#000,transparent 78%)
-}
-a{text-decoration:none;color:inherit}
-button,input,select{font:inherit}
-button{cursor:pointer}
-.container{max-width:1500px;margin:auto;padding-left:5%;padding-right:5%}
-.topbar{
-  position:sticky;top:0;z-index:100;min-height:74px;display:flex;align-items:center;justify-content:space-between;
-  gap:20px;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(18px);
-  border-bottom:1px solid var(--line)
-}
-.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:1px;min-width:max-content}
-.brand-icon{width:42px;height:42px;display:block;filter:drop-shadow(0 0 16px color-mix(in srgb,var(--purple) 40%,transparent))}
-.brand-name em{font-style:normal;color:var(--orange)}.brand-sub{display:block;font-size:.58rem;color:var(--muted);font-weight:700;letter-spacing:1px}
-.nav{display:flex;align-items:center;gap:24px;font-size:.9rem;font-weight:700}
-.nav a{color:var(--muted);padding:10px 0;position:relative}
-.nav a:hover,.nav a.active{color:var(--text)}
-.nav a.active:after{content:"";position:absolute;left:0;right:0;bottom:1px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--purple),var(--cyan))}
-.controls{display:flex;align-items:center;gap:8px}
-.control-btn,.control-select{
-  border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:11px;padding:9px 11px;
-  min-height:39px
-}
-.control-btn:hover,.control-select:hover{border-color:color-mix(in srgb,var(--purple) 55%,var(--line))}
-.control-select{outline:none}
-.menu{display:none;border:0;background:none;padding:7px}
-.menu span{display:block;width:25px;height:2px;background:var(--text);margin:5px;border-radius:5px}
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:
+radial-gradient(circle at 75% 5%,rgba(147,87,255,.18),transparent 26%),
+radial-gradient(circle at 8% 45%,rgba(43,231,255,.07),transparent 24%),var(--bg);color:var(--text);line-height:1.55}
+body:before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:
+linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+background-size:58px 58px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
+a{color:inherit;text-decoration:none}button,input,select{font:inherit}
+.wrap{width:min(1450px,90vw);margin:auto}
+.header{position:sticky;top:0;z-index:100;min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px;
+background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900}.logoMark{width:40px;height:40px;display:block}.brand b{letter-spacing:1px}.brand b em{color:var(--orange);font-style:normal}.tagline{display:block;color:var(--muted);font-size:.58rem;font-weight:700;letter-spacing:.7px}
+.nav{display:flex;gap:24px;align-items:center;font-size:.9rem;font-weight:700}.nav a{color:var(--muted);padding:10px 0;position:relative}.nav a:hover,.nav a.active{color:var(--text)}
+.nav a.active:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--cyan));border-radius:2px}
+.controls{display:flex;gap:7px;align-items:center}.control{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--panel);color:var(--text)}
+.menu{display:none;border:0;background:none}.menu span{display:block;width:24px;height:2px;background:var(--text);margin:5px}
 
-.hero{
-  min-height:calc(100vh - 74px);padding-top:70px;padding-bottom:80px;display:grid;grid-template-columns:1fr 1fr;
-  align-items:center;gap:30px
-}
-.eyebrow{font-size:.72rem;font-weight:900;letter-spacing:2px;color:var(--purple)}
-.pillline{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
-.pilltag{display:inline-flex;align-items:center;padding:7px 11px;border:1px solid var(--line);background:rgba(255,255,255,.035);border-radius:999px;font-size:.68rem;font-weight:800;color:var(--muted)}
-.pilltag.nft{color:#f1c65b;border-color:rgba(241,198,91,.35)}
-.pulse{width:8px;height:8px;border-radius:50%;background:var(--cyan);display:inline-block;box-shadow:0 0 14px var(--cyan);margin-right:8px}
-.hero h1{font-size:clamp(4rem,7.1vw,7.3rem);letter-spacing:-5px;line-height:.9;margin:13px 0 24px}
+.hero{min-height:calc(100vh - 74px);display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;padding:60px 0 85px}
+.eyebrow{font-size:.72rem;font-weight:900;letter-spacing:1.9px;color:var(--purple)}.hero h1{font-size:clamp(4rem,7vw,7.1rem);letter-spacing:-5px;line-height:.9;margin:14px 0 24px}
 .gradient{background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero-copy>p{max-width:740px;color:var(--muted);font-size:1.08rem}
-.actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 19px;border-radius:12px;
-  border:1px solid var(--line);background:rgba(255,255,255,.035);font-weight:900;transition:.2s transform,.2s box-shadow,.2s border-color
+.hero p{max-width:690px;color:var(--muted);font-size:1.07rem}.actions{display:flex;gap:11px;flex-wrap:wrap;margin:29px 0}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);border-radius:11px;padding:12px 18px;background:rgba(255,255,255,.03);font-weight:900;transition:.2s}
+.btn:hover{transform:translateY(-3px)}.primary{background:linear-gradient(135deg,#6b35ff,var(--purple));box-shadow:0 15px 40px rgba(110,53,255,.28)}
+.banners{display:flex;flex-wrap:wrap;gap:8px}.banner{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);font-size:.74rem}
+.atom{height:520px;position:relative;display:grid;place-items:center}.core{width:185px;height:185px;border-radius:50%;display:grid;place-items:center;position:relative;z-index:5;
+background:radial-gradient(circle at 35% 25%,#402177,#121521 58%,#080a10);border:1px solid rgba(147,87,255,.55);box-shadow:0 0 55px rgba(147,87,255,.35),inset 0 0 48px rgba(255,255,255,.06)}
+.core span{font-size:4.4rem;filter:drop-shadow(0 0 22px rgba(43,231,255,.72));animation:float 3.2s ease-in-out infinite}.orbit{position:absolute;border:1px solid rgba(255,255,255,.13);border-radius:50%}
+.o1{width:500px;height:240px;transform:rotate(-18deg);animation:spin1 80s linear infinite}.o2{width:500px;height:240px;transform:rotate(58deg);animation:spin2 100s linear infinite}.o3{width:420px;height:290px;transform:rotate(28deg);border-color:rgba(43,231,255,.28);animation:spin1 115s linear infinite}
+.orbLabel{position:absolute;padding:6px 9px;border:1px solid var(--line);background:var(--panel);border-radius:999px;font-size:.62rem;font-weight:900;box-shadow:0 10px 30px rgba(0,0,0,.24)}
+.l1{top:10%;left:14%;color:var(--cyan)}.l2{top:7%;right:12%;color:var(--orange)}.l3{top:31%;left:0;color:var(--purple)}.l4{top:30%;right:0;color:var(--green)}.l5{bottom:21%;left:5%;color:var(--pink)}.l6{bottom:16%;right:5%;color:var(--cyan)}.l7{bottom:5%;left:27%;color:var(--orange)}.l8{bottom:7%;right:24%;color:var(--purple)}.l9{top:17%;right:31%;color:var(--yellow)}.l10{bottom:29%;left:32%;color:#92b6ff}.l11{top:11%;left:44%;color:#ff7aca}.l12{top:48%;right:28%;color:#7af2bd}
+
+.section{padding:90px 0 20px}.head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:30px}.head h2{font-size:clamp(2.4rem,4.3vw,4rem);line-height:1;letter-spacing:-2.3px;margin:8px 0}.head p{max-width:520px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{padding:21px;border:1px solid var(--line);border-radius:17px;background:var(--panel);box-shadow:0 20px 70px rgba(0,0,0,.24);min-height:225px}.card .ic{font-size:1.9rem;margin-bottom:14px}.card h3{margin:0 0 6px}.card p{color:var(--muted);font-size:.83rem}.card .btn{margin-top:11px;font-size:.74rem}
+
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.service{padding:22px;border:1px solid var(--line);border-radius:17px;background:var(--panel);min-height:255px}.service .price{font-weight:900;margin-top:14px}.service small,.note{color:var(--muted);font-size:.7rem}.print{margin-top:16px;padding:24px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(120deg,rgba(147,87,255,.13),rgba(255,255,255,.02))}
+
+.about{display:grid;grid-template-columns:1fr 1fr;gap:45px;padding:40px;border:1px solid var(--line);border-radius:21px;background:linear-gradient(120deg,rgba(147,87,255,.12),rgba(255,255,255,.02))}
+.about h2{font-size:clamp(2.8rem,5vw,4.7rem);line-height:.97;letter-spacing:-3px}.about p{color:var(--muted)}.pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}.pill{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);font-size:.72rem;font-weight:800}
+
+.lab{margin-top:65px;padding-bottom:60px}.labHeader{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:20px}.labHeader h2{font-size:clamp(2.3rem,4.2vw,3.8rem);line-height:1;margin:7px 0}.labHeader p{color:var(--muted);max-width:520px}
+.labGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}.labCard{padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow)}
+.controlGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px}.ctrl{padding:11px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.025)}.ctrl label{display:flex;justify-content:space-between;font-size:.72rem;font-weight:800}.ctrl input,.ctrl select{width:100%;margin-top:8px;accent-color:var(--purple);background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:7px}
+.canvasWrap{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#0b0e15}.canvasWrap canvas{display:block;width:100%;height:auto}
+.labActions{display:flex;gap:8px;margin-top:10px}.labActions button{border:1px solid var(--line);border-radius:10px;padding:10px 13px;background:rgba(255,255,255,.04);color:var(--text);font-weight:900}
+.labStats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}.statBox{padding:11px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--line)}.statBox small{display:block;color:var(--muted);font-size:.68rem}.statBox b{display:block;margin-top:3px}
+.status{padding:15px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.025);margin-bottom:12px}.status h3{margin:0 0 6px;font-size:1rem}.status p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.7}.good{color:var(--green)}.warn{color:var(--orange)}.bad{color:var(--red)}
+.capVisual{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:13px}.capGauge{min-height:150px;border:1px solid var(--line);border-radius:13px;display:grid;place-items:center;background:rgba(255,255,255,.025);position:relative;overflow:hidden}.capBody{width:70px;height:105px;border-radius:9px;border:3px solid #dfe6ef;position:relative;background:linear-gradient(90deg,#202734,#56657b,#202734)}.capBody:before{content:"+";position:absolute;left:8px;top:4px;color:var(--red);font-weight:900;font-size:22px}.capBody:after{content:"";position:absolute;left:7px;right:7px;bottom:10px;height:50%;background:linear-gradient(to top,rgba(43,231,255,.85),rgba(43,231,255,.08));border-radius:5px}.flame{position:absolute;opacity:0;font-size:3rem;filter:drop-shadow(0 0 18px rgba(255,100,30,.7))}.fire .capBody{animation:shake .12s linear infinite}.fire .flame{opacity:1;animation:flame .33s ease-in-out infinite alternate}.capInfo{font-size:.78rem;color:var(--muted)}.capInfo b{color:var(--text)}
+.trade{margin-top:16px}.tradeChoice{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.tradeChoice button{padding:15px 9px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text)}.tradeChoice button.active.fast{border-color:var(--cyan);background:rgba(43,231,255,.08)}.tradeChoice button.active.cheap{border-color:var(--green);background:rgba(34,229,154,.08)}.tradeChoice button.active.good{border-color:var(--orange);background:rgba(255,156,44,.08)}
+.meters{margin-top:12px;display:grid;gap:8px}.meterRow{display:grid;grid-template-columns:48px 1fr 36px;gap:8px;align-items:center;font-size:.72rem}.meter{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.meter i{display:block;height:100%;width:50%;border-radius:99px;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:.3s}.meterRow:nth-child(2) .meter i{background:linear-gradient(90deg,var(--green),#70ffc2)}.meterRow:nth-child(3) .meter i{background:linear-gradient(90deg,var(--orange),#ffd86f)}
+.result{margin-top:11px;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:.79rem}.result b{color:var(--text)}
+
+.contact{margin:60px 0 65px;padding:35px;border:1px solid rgba(147,87,255,.35);border-radius:21px;background:radial-gradient(circle at 15% 15%,rgba(147,87,255,.2),transparent 30%),var(--panel)}
+.contactGrid{display:flex;justify-content:space-between;align-items:center;gap:20px}.contact h2{font-size:clamp(2.5rem,4.5vw,4rem);line-height:.98;letter-spacing:-2.4px}.contact p{color:var(--muted)}.wa{display:flex;align-items:center;gap:11px;min-width:350px;padding:15px 16px;border-radius:13px;border:1px solid rgba(34,229,154,.26);background:rgba(34,229,154,.055)}.waIcon{width:42px;height:42px;display:grid;place-items:center;border-radius:11px;background:#19b874;color:#05261b;font-weight:900}.wa small{display:block;color:var(--muted)}.wa strong{font-size:.9rem}.wa b{margin-left:auto}
+
+.modal{position:fixed;inset:0;z-index:200;display:none;place-items:center;padding:20px}.modal.open{display:grid}.backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(7px)}.modalCard{position:relative;z-index:2;width:min(590px,100%);padding:29px;border-radius:19px;background:var(--bg);border:1px solid rgba(147,87,255,.45);box-shadow:0 30px 120px rgba(0,0,0,.65)}.modalClose{position:absolute;right:13px;top:8px;border:0;background:none;color:var(--text);font-size:30px}.modalCard h2{font-size:2.1rem;line-height:1;margin:9px 0}.modalCard p{color:var(--muted)}
+
+@keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}@keyframes spin1{to{transform:rotate(-18deg) rotate(360deg)}}@keyframes spin2{to{transform:rotate(58deg) rotate(-360deg)}}@keyframes shake{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}@keyframes flame{from{transform:scale(.9) rotate(-3deg)}to{transform:scale(1.08) rotate(4deg)}}
+
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}.services{grid-template-columns:repeat(2,1fr)}.hero{grid-template-columns:1fr}.atom{order:-1;height:430px}.labGrid{grid-template-columns:1fr}}
+@media(max-width:760px){
+  .wrap{width:min(94vw,700px)}.header{min-height:68px}.menu{display:block}.nav{display:none;position:absolute;left:0;right:0;top:68px;padding:12px 6%;flex-direction:column;align-items:stretch;background:var(--bg);border-bottom:1px solid var(--line)}.nav.open{display:flex}.nav a{padding:11px}.control select{display:none}
+  .hero{text-align:center;padding-top:38px}.hero h1{font-size:clamp(3.2rem,16vw,5.1rem);letter-spacing:-3px}.actions{justify-content:center}.banners{justify-content:center}.atom{height:320px}.core{width:150px;height:150px}.core span{font-size:3.3rem}.o1{width:350px;height:165px}.o2{width:355px;height:160px}.o3{width:310px;height:205px}.orbLabel{font-size:.56rem;padding:5px 7px}.l1{top:6%;left:9%}.l2{top:5%;right:8%}.l3{top:30%;left:0}.l4{top:28%;right:0}.l5{bottom:18%;left:2%}.l6{bottom:14%;right:2%}.l7{bottom:2%;left:21%}.l8{bottom:3%;right:18%}.l9{top:18%;right:28%}.l10{bottom:26%;left:28%}.l11{top:9%;left:40%}.l12{top:45%;right:20%}
+  .head{display:block}.head p{margin-top:13px}.grid,.services{grid-template-columns:1fr}.about{grid-template-columns:1fr;padding:28px}.controlGrid{grid-template-columns:1fr 1fr}.labStats{grid-template-columns:1fr 1fr}.contactGrid{display:block}.wa{min-width:0;margin-top:18px}
 }
-.btn:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--purple) 55%,var(--line))}
-.btn.primary{background:linear-gradient(135deg,var(--purple2),var(--purple));box-shadow:0 16px 46px color-mix(in srgb,var(--purple) 28%,transparent)}
-.btn.whatsapp{background:linear-gradient(135deg,#0fb66b,#23ef9d);color:#001f14;border:0}
-.hero-badges{display:flex;flex-wrap:wrap;gap:9px;color:var(--muted);font-size:.75rem}
-.hero-badges span{padding:8px 11px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025)}
-
-.atom-wrap{height:570px;position:relative;display:grid;place-items:center}
-.atom-core{
-  width:185px;height:185px;border-radius:50%;position:relative;z-index:5;display:grid;place-items:center;
-  background:radial-gradient(circle at 34% 26%,#3e1f78,#111321 57%,#090a10);
-  border:1px solid color-mix(in srgb,var(--purple) 65%,transparent);
-  box-shadow:0 0 55px color-mix(in srgb,var(--purple) 40%,transparent),inset 0 0 45px rgba(255,255,255,.06)
-}
-.atom-core span{font-size:4.4rem;filter:drop-shadow(0 0 20px color-mix(in srgb,var(--cyan) 70%,transparent));animation:float 3.2s ease-in-out infinite}
-.orbit{
-  position:absolute;border:1px solid rgba(255,255,255,.13);border-radius:50%;pointer-events:none
-}
-.orbit.o1{width:500px;height:235px;transform:rotate(-18deg);animation:orbitSlow 95s linear infinite}
-.orbit.o2{width:500px;height:235px;transform:rotate(58deg);animation:orbitSlowReverse 120s linear infinite}
-.orbit.o3{width:420px;height:300px;transform:rotate(30deg);border-color:color-mix(in srgb,var(--cyan) 28%,transparent);animation:orbitSlow 135s linear infinite}
-.orbit-label{
-  position:absolute;padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);
-  font-size:.66rem;font-weight:900;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.22)
-}
-.atom-wrap .l1{top:16%;left:17%;color:var(--cyan)}.atom-wrap .l2{top:9%;right:16%;color:var(--orange)}
-.atom-wrap .l3{top:35%;left:2%;color:var(--purple)}.atom-wrap .l4{top:34%;right:2%;color:var(--green)}
-.atom-wrap .l5{bottom:24%;left:7%;color:var(--pink)}.atom-wrap .l6{bottom:17%;right:8%;color:var(--cyan)}
-.atom-wrap .l7{bottom:5%;left:26%;color:var(--orange)}.atom-wrap .l8{bottom:7%;right:28%;color:var(--purple)}
-.atom-wrap .l9{top:21%;right:34%;color:#f3d35a}.atom-wrap .l10{bottom:33%;left:32%;color:#8da7ff}
-.atom-wrap .l11{top:12%;left:43%;color:#ff76c8}.atom-wrap .l12{top:52%;right:28%;color:#79f3b8}
-.atom-spark{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 22px var(--cyan);opacity:.9}
-.s1{left:24%;top:31%}.s2{right:21%;top:22%;background:var(--orange);box-shadow:0 0 22px var(--orange)}.s3{right:30%;bottom:15%;background:var(--pink);box-shadow:0 0 22px var(--pink)}
-
-.section{padding-top:98px;padding-bottom:20px}
-.section-head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:34px}
-.section-head h2{font-size:clamp(2.4rem,4.6vw,4.15rem);line-height:1.02;letter-spacing:-2.5px;margin:8px 0 0}
-.section-head p{max-width:520px;color:var(--muted);margin:0}
-.category-strip{display:grid;grid-template-columns:repeat(8,1fr);gap:11px;margin-bottom:18px}
-.cat{
-  padding:16px 11px;border:1px solid var(--line);border-radius:14px;background:var(--panel);text-align:center;
-  box-shadow:0 14px 40px rgba(0,0,0,.18);transition:.2s
-}
-.cat:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--purple) 45%,var(--line))}
-.cat b{display:block;font-size:.85rem}.cat span{display:block;color:var(--muted);font-size:.64rem;margin-top:3px}
-
-.project-tools{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:18px 0}
-.search{flex:1;max-width:420px;padding:11px 13px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);outline:none}
-.filters{display:flex;gap:6px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:8px 11px;border-radius:999px}
-.filter.active{color:var(--text);border-color:color-mix(in srgb,var(--purple) 60%,var(--line));background:color-mix(in srgb,var(--purple) 13%,var(--panel))}
-
-.project-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
-.project-card{
-  min-height:275px;padding:20px;border:1px solid var(--line);border-radius:17px;background:var(--panel);
-  box-shadow:var(--shadow);display:flex;flex-direction:column;transition:.22s;position:relative;overflow:hidden
-}
-.project-card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--purple) 52%,var(--line))}
-.project-media{height:110px;border-radius:13px;margin-bottom:15px;display:grid;place-items:center;background:
-  radial-gradient(circle at 60% 45%,color-mix(in srgb,var(--purple) 36%,transparent),transparent 33%),linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.015));
-border:1px solid var(--line);overflow:hidden;position:relative}
-.project-media:before{content:"";position:absolute;inset:18px;border:1px dashed color-mix(in srgb,var(--cyan) 25%,transparent);border-radius:10px;transform:rotate(-7deg)}
-.project-media .bigicon{font-size:2.6rem;z-index:1}
-.project-card .tag{font-size:.63rem;font-weight:900;letter-spacing:1.2px;color:var(--purple)}
-.project-card h3{font-size:1.12rem;margin:7px 0}.project-card p{color:var(--muted);font-size:.82rem;margin:0 0 14px}
-.project-card .row{display:flex;gap:8px;margin-top:auto}.project-action{flex:1;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--text);font-weight:900;font-size:.78rem}
-.project-action.primary{background:linear-gradient(135deg,var(--purple2),var(--purple));border:0}
-.project-card .remove-project{position:absolute;right:8px;top:8px;display:none;width:27px;height:27px;border:1px solid var(--line);border-radius:50%;background:rgba(0,0,0,.45);color:#fff}
-.admin-mode .project-card .remove-project{display:block}
-
-.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
-.service-card{padding:22px;border:1px solid var(--line);border-radius:17px;background:var(--panel);min-height:290px;position:relative;overflow:hidden}
-.service-card:after{content:"";position:absolute;width:180px;height:180px;right:-90px;bottom:-90px;background:radial-gradient(circle,color-mix(in srgb,var(--purple) 18%,transparent),transparent 70%)}
-.service-icon{font-size:1.9rem;margin:18px 0 10px}.service-card h3{margin:0 0 7px;font-size:1.13rem}.service-card p{color:var(--muted);font-size:.82rem}
-.price{font-weight:900;font-size:1.05rem;margin-top:14px}.price small{color:var(--muted);font-weight:600}
-.notes{font-size:.7rem;color:var(--muted);margin-top:7px}
-
-.print-banner{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:20px}
-.print-card,.pickup-card{padding:26px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}
-.print-card h3,.pickup-card h3{font-size:1.45rem;margin:0 0 8px}.print-card p,.pickup-card p{color:var(--muted)}
-.print-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.print-list span{padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.035);border:1px solid var(--line);font-size:.75rem}
-.pickup-card{display:flex;flex-direction:column;justify-content:space-between}
-
-.about{
-  display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;padding:45px;border:1px solid var(--line);border-radius:21px;
-  background:linear-gradient(125deg,color-mix(in srgb,var(--purple) 12%,transparent),rgba(255,255,255,.02))
-}
-.about h2{font-size:clamp(2.7rem,5vw,4.8rem);line-height:.98;letter-spacing:-3px;margin:12px 0}
-.about p{color:var(--muted);font-size:1rem}.skill-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:19px}.skill{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);font-size:.72rem;font-weight:800}
-
-.games-intro{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
-.games-intro p{max-width:550px;color:var(--muted)}
-.game-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:15px}
-.game-card{padding:22px;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow)}
-.game-card h3{margin:0 0 6px;font-size:1.25rem}.game-card>p{margin:0 0 18px;color:var(--muted);font-size:.82rem}
-.controls-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.game-control{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
-.game-control label{display:flex;justify-content:space-between;gap:8px;font-size:.73rem;font-weight:800}.game-control span{color:var(--muted)}
-.game-control input[type=range]{width:100%;accent-color:var(--purple);margin-top:9px}
-.game-control select{width:100%;margin-top:7px;padding:8px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--text)}
-.circuit-stage{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;margin-top:13px}
-.circuit-board{min-height:170px;border:1px solid var(--line);border-radius:15px;background:
-  linear-gradient(90deg,transparent 49%,rgba(255,255,255,.06) 50%,transparent 51%),
-  radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--purple) 18%,transparent),transparent 50%);position:relative;overflow:hidden}
-.wire{height:5px;background:var(--cyan);position:absolute;border-radius:999px;box-shadow:0 0 13px color-mix(in srgb,var(--cyan) 55%,transparent)}
-.w1{width:105px;left:29px;top:46px}.w2{width:90px;left:125px;top:98px;transform:rotate(90deg)}.w3{width:105px;right:29px;top:46px}
-.part{position:absolute;display:grid;place-items:center;font-weight:900}.battery{left:17px;top:72px;width:42px;height:56px;border:2px solid var(--orange);border-radius:6px;color:var(--orange);background:rgba(255,156,42,.06)}
-.resistor{left:98px;top:31px;width:72px;height:26px;border:2px solid #d3a974;background:rgba(211,169,116,.08);transform:skew(-22deg);color:#d3a974}
-.led{right:17px;top:33px;width:50px;height:50px;border:2px solid var(--cyan);border-radius:50%;box-shadow:0 0 18px color-mix(in srgb,var(--cyan) 65%,transparent);color:var(--cyan);font-size:1.25rem}
-.circuit-status{padding:15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.025);min-height:170px}
-.status-good{color:var(--green)}.status-warn{color:var(--orange)}.status-bad{color:var(--red)}
-.status-line{font-weight:900;font-size:.95rem;margin-bottom:7px}.status-data{font-size:.78rem;color:var(--muted);line-height:1.8}
-
-.trade-wrap{display:grid;grid-template-columns:1fr 180px;gap:15px;align-items:center}
-.trade-controls{display:grid;gap:11px}.trade-control{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
-.trade-control label{display:flex;justify-content:space-between;font-weight:800;font-size:.77rem}.trade-control input{width:100%;accent-color:var(--purple);margin-top:8px}
-.triangle{width:170px;height:150px;position:relative;margin:auto;clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(135deg,var(--purple),var(--cyan));padding:3px}
-.triangle>div{height:100%;background:var(--bg2);clip-path:inherit;position:relative}
-.tri-label{position:absolute;font-size:.65rem;font-weight:900;z-index:3}.tri-good{top:10px;left:50%;transform:translateX(-50%)}.tri-cheap{bottom:5px;left:6px}.tri-fast{bottom:5px;right:6px}
-.tri-dot{position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 0 18px #fff;z-index:5;transform:translate(-50%,-50%)}
-.trade-result{margin-top:13px;padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:.82rem}
-.trade-result b{color:var(--text)}
-
-.contact{
-  margin-top:70px;margin-bottom:65px;padding:38px;border-radius:22px;border:1px solid color-mix(in srgb,var(--purple) 38%,var(--line));
-  background:radial-gradient(circle at 13% 15%,color-mix(in srgb,var(--purple) 20%,transparent),transparent 30%),var(--panel)
-}
-.contact h2{font-size:clamp(2.4rem,4.8vw,4.1rem);line-height:.98;letter-spacing:-2.4px;margin:8px 0}.contact p{color:var(--muted)}
-.contact-grid{display:flex;justify-content:space-between;gap:20px;align-items:center}.wa-card{min-width:360px;display:flex;align-items:center;gap:12px;padding:15px 17px;border:1px solid rgba(35,239,157,.25);border-radius:14px;background:rgba(35,239,157,.055)}
-.wa-icon{width:43px;height:43px;border-radius:12px;background:#17ba75;display:grid;place-items:center;color:#042f1d;font-weight:900}.wa-card small{display:block;color:var(--muted)}.wa-card strong{font-size:.95rem}.wa-card b{margin-left:auto}
-
-.footer{padding:26px 5%;display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem}
-.footer strong{color:var(--text)}.footer strong em{font-style:normal;color:var(--orange)}
-
-.modal{position:fixed;inset:0;z-index:150;display:none;align-items:center;justify-content:center;padding:20px}
-.modal.open{display:flex}.backdrop{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(8px)}
-.modal-card{position:relative;z-index:2;width:min(600px,100%);padding:30px;border:1px solid color-mix(in srgb,var(--purple) 52%,var(--line));border-radius:20px;background:var(--bg2);box-shadow:0 35px 120px rgba(0,0,0,.6)}
-.modal-close{position:absolute;right:14px;top:9px;background:none;border:0;color:var(--text);font-size:31px}.modal-card h2{font-size:2.2rem;line-height:1.02;margin:8px 0 11px}.modal-card p{color:var(--muted);margin-bottom:22px}
-.modal-tag{color:var(--purple);font-size:.68rem;font-weight:900;letter-spacing:1.6px}
-
-.admin-panel{
-  position:fixed;top:0;right:0;bottom:0;width:min(430px,94vw);z-index:180;transform:translateX(105%);
-  transition:.28s;background:var(--bg2);border-left:1px solid var(--line);box-shadow:-30px 0 100px rgba(0,0,0,.45);overflow:auto;padding:22px
-}
-.admin-panel.open{transform:translateX(0)}
-.admin-head{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:18px}.admin-head h2{margin:0;font-size:1.35rem}.close-admin{border:0;background:rgba(255,255,255,.05);color:var(--text);width:35px;height:35px;border-radius:9px}
-.admin-note{padding:11px 12px;border:1px solid rgba(255,157,42,.25);background:rgba(255,157,42,.06);border-radius:11px;color:var(--muted);font-size:.72rem;margin-bottom:15px}
-.admin-group{margin:16px 0}.admin-group h3{font-size:.85rem;color:var(--purple);letter-spacing:1px}.admin-field{display:grid;gap:5px;margin:10px 0}
-.admin-field label{font-size:.73rem;color:var(--muted);font-weight:800}.admin-field input,.admin-field textarea,.admin-field select{
-  width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);outline:none
-}.admin-field textarea{min-height:90px;resize:vertical}
-.admin-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.admin-actions .btn{font-size:.78rem}
-.admin-project-list{display:grid;gap:8px}.admin-project-item{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:9px 10px;border:1px solid var(--line);border-radius:10px;font-size:.75rem}.danger{color:#ff8c9a;border:1px solid rgba(255,77,95,.25)!important;background:rgba(255,77,95,.06)!important}
-
-.hidden{display:none!important}
-html[dir="rtl"] .hero,html[dir="rtl"] .project-tools,html[dir="rtl"] .contact-grid{direction:rtl}
-html[dir="rtl"] .controls,html[dir="rtl"] .nav{direction:rtl}
-html[dir="rtl"] .brand{text-align:right}
-html[dir="rtl"] .hero h1{letter-spacing:-2px}
-html[dir="rtl"] .orbit-label{direction:rtl}
-
-@media(max-width:1100px){
-  .category-strip{grid-template-columns:repeat(4,1fr)}.project-grid{grid-template-columns:repeat(2,1fr)}.service-grid{grid-template-columns:repeat(2,1fr)}
-  .hero{grid-template-columns:1fr}.atom-wrap{order:-1;height:430px}.game-grid{grid-template-columns:1fr}
-}
-@media(max-width:780px){
-  .container{padding-left:6%;padding-right:6%}.topbar{min-height:68px}.nav{display:none;position:absolute;left:0;right:0;top:68px;padding:14px 6%;flex-direction:column;align-items:stretch;gap:2px;background:color-mix(in srgb,var(--bg2) 96%,transparent);border-bottom:1px solid var(--line)}
-  .nav.open{display:flex}.nav a{padding:11px}.controls{margin-left:auto}.control-select{display:none}.menu{display:block}
-  .hero{padding-top:52px;text-align:center}.hero h1{font-size:clamp(3.3rem,15vw,5.2rem);letter-spacing:-3px}.actions{justify-content:center}.hero-badges{justify-content:center}
-  .atom-wrap{height:330px}.atom-core{width:150px;height:150px}.atom-core span{font-size:3.4rem}.orbit.o1{width:350px;height:170px}.orbit.o2{width:355px;height:170px}.orbit.o3{width:310px;height:205px}
-  .orbit-label{font-size:.57rem;padding:6px 8px}.atom-wrap .l1{top:8%;left:10%}.atom-wrap .l2{top:5%;right:8%}.atom-wrap .l3{top:32%;left:0}.atom-wrap .l4{top:30%;right:0}.atom-wrap .l5{bottom:18%;left:3%}.atom-wrap .l6{bottom:14%;right:2%}.atom-wrap .l7{bottom:2%;left:22%}.atom-wrap .l8{bottom:4%;right:18%}.atom-wrap .l9{top:19%;right:27%}.atom-wrap .l10{bottom:28%;left:28%}.atom-wrap .l11{top:10%;left:40%}.atom-wrap .l12{top:45%;right:21%}
-  .section{padding-top:78px}.section-head{display:block}.section-head p{margin-top:14px}.category-strip{grid-template-columns:repeat(2,1fr)}
-  .project-tools{display:block}.search{max-width:none;width:100%;margin-bottom:10px}.filters{justify-content:flex-start}
-  .project-grid{grid-template-columns:1fr}.service-grid{grid-template-columns:1fr}.print-banner{grid-template-columns:1fr}
-  .about{grid-template-columns:1fr;padding:28px;gap:25px}.games-intro{display:block}.controls-grid{grid-template-columns:1fr}.circuit-stage{grid-template-columns:1fr}.trade-wrap{grid-template-columns:1fr}.triangle{margin-top:6px}
-  .contact-grid{display:block}.wa-card{min-width:0;margin-top:20px}.footer{flex-direction:column;align-items:flex-start}
-}
-@media(max-width:420px){
-  .brand-sub{display:none}.category-strip{grid-template-columns:1fr 1fr}.hero h1{font-size:3.25rem}
-}
-@keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}@keyframes orbitSlow{to{transform:rotate(-18deg) rotate(360deg)}}@keyframes orbitSlowReverse{to{transform:rotate(58deg) rotate(-360deg)}}
-
-.trade-choice{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0}
-.trade-option{padding:15px 10px;border-radius:13px;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--text);text-align:center;transition:.2s}
-.trade-option b{display:block;font-size:.82rem}.trade-option span{display:block;color:var(--muted);font-size:.68rem;margin-top:3px}
-.trade-option:hover{transform:translateY(-2px)}
-.trade-option.active.fast{border-color:rgba(41,229,255,.65);background:rgba(41,229,255,.09)}
-.trade-option.active.cheap{border-color:rgba(35,239,157,.65);background:rgba(35,239,157,.08)}
-.trade-option.active.good{border-color:rgba(255,156,42,.65);background:rgba(255,156,42,.08)}
-.trade-meter{display:grid;gap:10px;margin-top:15px}
-.meter-row{display:grid;grid-template-columns:55px 1fr 38px;align-items:center;gap:9px;font-size:.73rem}
-.meter{height:9px;border-radius:999px;background:rgba(255,255,255,.07);overflow:hidden;border:1px solid var(--line)}
-.meter i{display:block;height:100%;width:50%;border-radius:999px;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .35s ease}
-.meter-row:nth-child(2) .meter i{background:linear-gradient(90deg,var(--green),#7affc8)}
-.meter-row:nth-child(3) .meter i{background:linear-gradient(90deg,var(--orange),#ffd36e)}
-@media(max-width:720px){.trade-choice{grid-template-columns:1fr}.meter-row{grid-template-columns:48px 1fr 35px}}
-
-
-/* ===== Electronics Lab ===== */
-.lab-section{padding-top:92px}
-.lab-shell{display:grid;grid-template-columns:1.4fr .8fr;gap:16px}
-.lab-canvas-card,.lab-controls-card{padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--panel);box-shadow:var(--shadow)}
-#labCanvas{display:block;width:100%;height:auto;border-radius:14px;border:1px solid var(--line);background:#0a0d13}
-.lab-caption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:10px;color:var(--muted);font-size:.72rem}
-.lab-controls{display:grid;gap:11px}
-.lab-control{padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
-.lab-control label{display:flex;justify-content:space-between;gap:8px;font-size:.74rem;font-weight:800;margin-bottom:7px}
-.lab-control input[type=range],.lab-control select{width:100%}
-.lab-control input[type=range]{accent-color:var(--purple)}
-.lab-control select{padding:8px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--text)}
-.lab-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.lab-stat{padding:11px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.025)}
-.lab-stat small{display:block;color:var(--muted);font-size:.68rem}.lab-stat b{font-size:.95rem}
-.lab-status{margin-top:12px;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.025);font-size:.78rem}
-.lab-status.good{border-color:rgba(35,239,157,.25)}.lab-status.warn{border-color:rgba(255,156,42,.3)}.lab-status.bad{border-color:rgba(255,77,95,.35)}
-.lab-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
-.lab-actions .btn{font-size:.76rem}
-.cap-label{color:#ffb3c7}
-@media(max-width:1000px){.lab-shell{grid-template-columns:1fr}}
-@media(max-width:720px){.lab-section{padding-top:72px}.lab-stats{grid-template-columns:1fr 1fr}}
-
+@media(max-width:460px){.controlGrid{grid-template-columns:1fr}.tradeChoice{grid-template-columns:1fr}.labStats{grid-template-columns:1fr}.projectMedia{height:100px}}
 </style>
 </head>
-
 <body>
-<header class="topbar container">
+<header class="header wrap">
   <a href="#home" class="brand">
-    <svg class="brand-icon" viewBox="0 0 64 64" aria-hidden="true">
-      <circle cx="32" cy="32" r="8" fill="currentColor"/>
-      <ellipse cx="32" cy="32" rx="28" ry="10" fill="none" stroke="currentColor" stroke-width="3"/>
-      <ellipse cx="32" cy="32" rx="10" ry="28" fill="none" stroke="var(--cyan)" stroke-width="3" transform="rotate(32 32 32)"/>
-      <path d="M39 10 L28 29 H35 L25 54 L43 31 H35 Z" fill="var(--orange)"/>
-    </svg>
-    <span class="brand-name">FARIS<em>TECH</em><small class="brand-sub" data-i18n="tagline">The only limitation is your imagination.</small></span>
+    <svg class="logoMark" viewBox="0 0 64 64"><circle cx="32" cy="32" r="8" fill="var(--text)"/><ellipse cx="32" cy="32" rx="28" ry="10" fill="none" stroke="var(--text)" stroke-width="3"/><ellipse cx="32" cy="32" rx="10" ry="28" fill="none" stroke="var(--cyan)" stroke-width="3" transform="rotate(32 32 32)"/><path d="M39 10 28 29h7L25 54l18-23h-8Z" fill="var(--orange)"/></svg>
+    <b>FARIS<em>TECH</em><small class="tagline">The only limitation is your imagination.</small></b>
   </a>
-
   <nav class="nav">
-    <a href="#home" class="active" data-nav="home" data-i18n="home">Home</a>
-    <a href="#projects" data-nav="projects" data-i18n="projects">Projects</a>
-    <a href="#services" data-nav="services" data-i18n="whatMake">What I Make</a>
-    <a href="#about" data-nav="about" data-i18n="about">About</a>
-    <a href="#contact" data-nav="contact" data-i18n="contact">Contact</a>
+    <a href="#home" class="active">Home</a><a href="#projects">Projects</a><a href="#services">What I Make</a><a href="#about">About</a><a href="#lab">Play & Learn</a><a href="#contact">Contact</a>
   </nav>
-
   <div class="controls">
-    <select id="themeSelect" class="control-select" aria-label="Theme">
-      <option value="dark">🌙 Dark</option>
-      <option value="light">☀️ Light</option>
-      <option value="caramel">🍮 Caramel</option>
-    </select>
-    <select id="languageSelect" class="control-select" aria-label="Language">
-      <option value="en">EN</option>
-      <option value="ar">عربي</option>
-    </select>
-    <button class="control-btn" id="modeBtn" type="button">👤</button>
-    <button class="menu" id="menuBtn" type="button" aria-label="Menu"><span></span><span></span><span></span></button>
+    <select id="theme" class="control"><option value="dark">🌙</option><option value="light">☀️</option><option value="caramel">🍮</option></select>
+    <select id="lang" class="control"><option value="en">EN</option><option value="ar">عربي</option></select>
+    <button id="menuBtn" class="menu"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<main class="container">
-
+<main class="wrap">
 <section id="home" class="hero">
-  <div class="hero-copy">
-    <div class="pillline">
-      <span class="pilltag"><span class="pulse"></span><span data-i18n="makerTag">MAKER • ELECTRONICS • 3D DESIGNING</span></span>
-      <span class="pilltag nft">✦ NFT / DIGITAL</span>
-    </div>
-    <div class="eyebrow" data-i18n="creativeTag">CREATIVE TECH • PROTOTYPES • PRINTING</div>
-    <h1 data-i18n="heroTitle">Build something<br><span class="gradient">awesome.</span></h1>
-    <p data-i18n="heroText">I turn ideas into 3D models, PCB designs, electronics and real working projects. Designed for makers, inventors and curious people.</p>
-    <div class="actions">
-      <a class="btn primary" href="#projects" data-i18n="explore">Explore Projects ↗</a>
-      <a class="btn outline" href="#contact" data-i18n="work">Work With Me</a>
-    </div>
-    <div class="hero-badges">
-      <span>💸 <span data-i18n="cheap">Cheap starting prices</span></span>
-      <span>⚡ <span data-i18n="fastLearner">Fast learner</span></span>
-      <span>👁️ <span data-i18n="visualLearner">Visual learner</span></span>
-      <span>🎓 <span data-i18n="schoolFriendly">School & maker friendly</span></span>
-    </div>
+  <div>
+    <div class="eyebrow">MAKER • ELECTRONICS • 3D DESIGNING</div>
+    <h1>Build something<br><span class="gradient">awesome.</span></h1>
+    <p>I turn ideas into 3D models, PCB designs, electronics and real working projects. Designed for makers, inventors and curious people.</p>
+    <div class="actions"><a class="btn primary" href="#projects">Explore Projects ↗</a><a class="btn" href="#contact">Work With Me</a></div>
+    <div class="banners"><span class="banner">💸 Cheap starting prices</span><span class="banner">⚡ Fast learner</span><span class="banner">👁️ Visual learner</span><span class="banner">🎓 School friendly</span></div>
   </div>
-
-  <div class="atom-wrap">
-    <div class="grid" aria-hidden="true"></div>
-    <div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div>
-    <div class="atom-core"><span>⚡</span></div>
-    <span class="orbit-label l1">3D</span><span class="orbit-label l2">PCB</span>
-    <span class="orbit-label l3">ESP32</span><span class="orbit-label l4">Arduino</span>
-    <span class="orbit-label l5">Sensors</span><span class="orbit-label l6">Motors</span>
-    <span class="orbit-label l7">Displays</span><span class="orbit-label l8">RFID</span>
-    <span class="orbit-label l9">LEDs</span><span class="orbit-label l10">Servos</span>
-    <span class="orbit-label l11">IoT</span><span class="orbit-label l12">Robotics</span>
-    <span class="atom-spark s1"></span><span class="atom-spark s2"></span><span class="atom-spark s3"></span>
+  <div class="atom">
+    <div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div><div class="core"><span>⚡</span></div>
+    <span class="orbLabel l1">3D</span><span class="orbLabel l2">PCB</span><span class="orbLabel l3">ESP32</span><span class="orbLabel l4">Arduino</span>
+    <span class="orbLabel l5">Sensors</span><span class="orbLabel l6">Motors</span><span class="orbLabel l7">Displays</span><span class="orbLabel l8">RFID</span>
+    <span class="orbLabel l9">LEDs</span><span class="orbLabel l10">Servos</span><span class="orbLabel l11">IoT</span><span class="orbLabel l12">Robotics</span>
   </div>
 </section>
 
 <section id="projects" class="section">
-  <div class="section-head">
-    <div><div class="eyebrow">⚡ PROJECT LAB</div><h2 data-i18n="projectsTitle">Projects I'm building</h2></div>
-    <p data-i18n="projectsIntro">From a simple idea to a finished prototype — this is where the experiments happen.</p>
-  </div>
-
-  <div class="category-strip">
-    <div class="cat"><b>3D Models</b><span>Tinkercad • Shapr3D</span></div>
-    <div class="cat"><b>PCB Design</b><span>EasyEDA • KiCad</span></div>
-    <div class="cat"><b>ESP32</b><span>ESP32 • IoT</span></div>
-    <div class="cat"><b>Arduino</b><span>UNO • Nano</span></div>
-    <div class="cat"><b>Sensors</b><span>Distance • Temp</span></div>
-    <div class="cat"><b>Motors</b><span>DC • Stepper • Servo</span></div>
-    <div class="cat"><b>Displays</b><span>LCD • OLED • TFT</span></div>
-    <div class="cat"><b>Robotics</b><span>Motion • Control</span></div>
-  </div>
-
-  <div class="project-tools">
-    <input id="projectSearch" class="search" type="search" placeholder="Search projects...">
-    <div class="filters" id="filters">
-      <button class="filter active" data-filter="all">All</button>
-      <button class="filter" data-filter="3d">3D</button>
-      <button class="filter" data-filter="pcb">PCB</button>
-      <button class="filter" data-filter="esp">ESP</button>
-      <button class="filter" data-filter="arduino">Arduino</button>
-      <button class="filter" data-filter="electronics">Electronics</button>
-      <button class="filter" data-filter="robotics">Robotics</button>
-    </div>
-  </div>
-
-  <div id="projectGrid" class="project-grid"></div>
+  <div class="head"><div><div class="eyebrow">⚡ PROJECT LAB</div><h2>Projects I'm building</h2></div><p>From a simple idea to a finished prototype — this is where the experiments happen.</p></div>
+  <div class="grid" id="projectsGrid"></div>
 </section>
 
 <section id="services" class="section">
-  <div class="section-head">
-    <div><div class="eyebrow">WHAT I MAKE</div><h2 data-i18n="makeTitle">Ideas → design → prototype</h2></div>
-    <p data-i18n="makeIntro">Technology made understandable, useful and fun — with simple options for students, makers and real projects.</p>
+  <div class="head"><div><div class="eyebrow">WHAT I MAKE</div><h2>Ideas → design → prototype</h2></div><p>Technology made understandable, useful and fun.</p></div>
+  <div class="services">
+    <article class="service"><div style="font-size:2rem;color:var(--purple)">◇</div><h3>3D Design</h3><p>Send a picture, sketch or idea. I can make a printable model and adjust it for real life.</p><div class="price">From 10 SAR <small>/ simple model</small></div><button class="btn primary ask" data-service="3D model">Ask to make a 3D model</button></article>
+    <article class="service"><div style="font-size:2rem;color:var(--cyan)">▤</div><h3>PCB Design</h3><p>One-layer is the cheapest. More layers, more parts and more complexity increase the price.</p><div class="price">From 15 SAR <small>/ 1 layer</small></div><button class="btn primary ask" data-service="PCB design">Ask to design a PCB</button></article>
+    <article class="service"><div style="font-size:2rem;color:var(--pink)">⌘</div><h3>Electronics</h3><p>ESP32, Arduino, sensors, displays, RFID, LEDs, motors, relays and prototypes.</p><div class="price">From 20 SAR <small>/ simple build</small></div><button class="btn primary ask" data-service="electronics project">Ask about electronics</button></article>
+    <article class="service"><div style="font-size:2rem;color:var(--orange)">✦</div><h3>Robotics</h3><p>Servos, sensors, motors, control, simple robots and custom motion projects.</p><div class="price">From 50 SAR <small>/ simple build</small></div><button class="btn primary ask" data-service="robotics project">Ask about robotics</button></article>
   </div>
-
-  <div class="service-grid">
-    <article class="service-card">
-      <div class="service-icon" style="color:var(--purple)">◇</div><h3>3D Design</h3>
-      <p data-i18n="service3d">Send me a picture, sketch or idea. I can make a printable model, adjust it, and prepare it for real life.</p>
-      <div class="price">From <span id="price3d">10</span> SAR <small>/ simple model</small></div>
-      <div class="notes">Complexity, size and revisions can change the final price.</div>
-      <button class="btn primary ask-service" data-service="3D model" style="margin-top:13px">Ask to make a 3D model</button>
-    </article>
-
-    <article class="service-card">
-      <div class="service-icon" style="color:var(--cyan)">▤</div><h3>PCB Design</h3>
-      <p data-i18n="servicepcb">Simple one-layer boards are the cheapest. More layers, more parts and more complexity increase the design price.</p>
-      <div class="price">From <span id="pricePcb1">15</span> SAR <small>/ 1 layer</small></div>
-      <div class="notes"><span id="pricePcb2">2-layer from 25 SAR</span> • <span id="pricePcb4">4-layer from 45 SAR</span></div>
-      <button class="btn primary ask-service" data-service="PCB design" style="margin-top:13px">Ask to design a PCB</button>
-    </article>
-
-    <article class="service-card">
-      <div class="service-icon" style="color:var(--pink)">⌘</div><h3>Electronics Builds</h3>
-      <p data-i18n="serviceElectronics">ESP32, Arduino, sensors, displays, RFID, LEDs, motors, relays and hands-on prototypes.</p>
-      <div class="price">From <span id="priceElectronics">20</span> SAR <small>/ simple build</small></div>
-      <div class="notes">Parts and special modules are quoted separately.</div>
-      <button class="btn primary ask-service" data-service="electronics project" style="margin-top:13px">Ask about electronics</button>
-    </article>
-
-    <article class="service-card">
-      <div class="service-icon" style="color:var(--orange)">✦</div><h3>Robotics</h3>
-      <p data-i18n="serviceRobotics">Servo systems, sensors, motors, control, simple robots and custom motion projects.</p>
-      <div class="price">From <span id="priceRobotics">50</span> SAR <small>/ simple build</small></div>
-      <div class="notes">Complexity and components affect the final quote.</div>
-      <button class="btn primary ask-service" data-service="robotics project" style="margin-top:13px">Ask about robotics</button>
-    </article>
-  </div>
-
-  <div class="print-banner">
-    <article class="print-card">
-      <h3>🖨️ 3D Printing — Bambu Lab A1</h3>
-      <p data-i18n="printIntro">I can print your model in real life. Send me a picture, STL, sketch or idea and I can tell you what is possible.</p>
-      <div class="print-list">
-        <span>✅ Small parts</span><span>✅ Keychains</span><span>✅ School projects</span><span>✅ Functional parts</span>
-      </div>
-      <button class="btn whatsapp ask-service" data-service="3D printing">Ask for a 3D print on WhatsApp ↗</button>
-    </article>
-    <article class="pickup-card">
-      <div>
-        <h3>📦 Pickup or Shipping</h3>
-        <p data-i18n="pickup">Shipping can be expensive. Local pickup is available by arrangement if you can come and collect the finished print or project.</p>
-      </div>
-      <div class="notes">Final price depends on material, print time, size, quantity and delivery.</div>
-    </article>
-  </div>
+  <div class="print"><h3>🖨️ 3D Printing — Bambu Lab A1</h3><p>I can print your model in real life. Send a picture, STL, sketch or idea. Pickup can be arranged locally; shipping costs extra.</p><button class="btn primary ask" data-service="3D printing">Ask for a 3D print on WhatsApp ↗</button></div>
 </section>
 
 <section id="about" class="section">
-  <div class="about">
-    <div><div class="eyebrow">ABOUT FARIS</div><h2 data-i18n="aboutTitle">Made by a maker,<br><span class="gradient">for makers.</span></h2></div>
-    <div>
-      <p id="aboutText" data-i18n="aboutText">I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week. This website is my online workshop — a place to share what I'm making and what I'm learning along the way.</p>
-      <div class="skill-pills">
-        <span class="skill">Tinkercad</span><span class="skill">Shapr3D</span><span class="skill">ESP32</span><span class="skill">Arduino</span><span class="skill">Robotics</span><span class="skill">Fast Learner</span><span class="skill">Visual Learner</span>
-      </div>
-    </div>
-  </div>
+  <div class="about"><div><div class="eyebrow">ABOUT FARIS</div><h2>Made by a maker,<br><span class="gradient">for makers.</span></h2></div>
+  <div><p>I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week.</p><div class="pills"><span class="pill">Tinkercad</span><span class="pill">Shapr3D</span><span class="pill">ESP32</span><span class="pill">Arduino</span><span class="pill">Robotics</span><span class="pill">Fast Learner</span></div></div></div>
 </section>
 
-
-<section class="section lab-section" id="electronicsLab">
-  <div class="section-head">
-    <div><div class="eyebrow">⚡ ELECTRONICS LAB</div><h2>Build & test a real-style circuit</h2></div>
-    <p>Interactive educational simulator based on the circuit model from your uploaded HTML. The battery, resistor and LED affect the calculated current and brightness.</p>
-  </div>
-
-  <div class="lab-shell">
-    <div class="lab-canvas-card">
-      <canvas id="labCanvas" width="900" height="520" aria-label="Interactive battery resistor LED and capacitor circuit"></canvas>
-      <div class="lab-caption">
-        <span>🔵 Moving electrons • 💡 LED brightness • 🔥 simulated failure</span>
-        <span>Educational approximation — not a SPICE model</span>
-      </div>
-    </div>
-
-    <div class="lab-controls-card">
-      <div class="lab-controls">
-        <div class="lab-control">
-          <label>Battery <span><b id="labVOut">9.0</b> V</span></label>
-          <input id="labVoltage" type="range" min="0" max="24" step="0.1" value="9">
-        </div>
-        <div class="lab-control">
-          <label>Resistor <span><b id="labROut">1000</b> Ω</span></label>
-          <input id="labResistance" type="range" min="10" max="5000" step="10" value="1000">
-        </div>
-        <div class="lab-control">
-          <label>LED forward voltage <span><b id="labVfOut">2.0</b> V</span></label>
-          <input id="labVf" type="range" min="1.5" max="3.5" step="0.1" value="2">
-        </div>
-        <div class="lab-control">
-          <label>LED max current <span><b id="labMaxOut">20</b> mA</span></label>
-          <input id="labMaxCurrent" type="range" min="5" max="50" step="1" value="20">
-        </div>
-        <div class="lab-control">
-          <label>Capacitor voltage rating <span><b id="labCapRatingOut">10</b> V</span></label>
-          <select id="labCapRating">
-            <option value="6.3">6.3 V</option>
-            <option value="10" selected>10 V</option>
-            <option value="16">16 V</option>
-            <option value="25">25 V</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="lab-stats">
-        <div class="lab-stat"><small>Current</small><b><span id="labCurrentOut">7.00</span> mA</b></div>
-        <div class="lab-stat"><small>LED brightness</small><b><span id="labBrightnessOut">35</span>%</b></div>
-        <div class="lab-stat"><small>Capacitor voltage</small><b><span id="labCapVoltageOut">0.00</span> V</b></div>
-        <div class="lab-stat"><small>Capacitor</small><b id="labCapState">Charging</b></div>
-      </div>
-
-      <div id="labStatus" class="lab-status good">
-        <b>✅ Circuit operating normally.</b><br>
-        Adjust the battery, resistor and capacitor rating to explore what changes.
-      </div>
-
-      <div class="lab-actions">
-        <button class="btn primary" id="labPause">⏸ Pause electrons</button>
-        <button class="btn outline" id="labReset">↻ Reset simulator</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="games-intro">
-    <div><div class="eyebrow">🎮 PLAY & LEARN</div><h2 data-i18n="gamesTitle">Let's play with circuits & design</h2></div>
-    <p data-i18n="gamesIntro">Mini games that make electronics and design trade-offs easier to understand.</p>
-  </div>
-
-  <div class="game-grid">
-    <article class="game-card">
+<section id="lab" class="lab section">
+  <div class="labHeader"><div><div class="eyebrow">🎮 PLAY & LEARN</div><h2>Build & test a real-style circuit</h2></div><p>This is the original circuit game rebuilt as the main simulator — visible, interactive, and integrated into the website.</p></div>
+  <div class="labGrid">
+    <article class="labCard">
       <h3>1. Play with Circuits ⚡</h3>
-      <p>Change the battery, resistor and LED color. Keep the current safe!</p>
-      <div class="controls-grid">
-        <div class="game-control"><label>Battery <span id="batteryValue">5V</span></label><input id="batterySlider" type="range" min="1" max="12" value="5"></div>
-        <div class="game-control"><label>Resistor <span id="resistorValue">330Ω</span></label><input id="resistorSlider" type="range" min="10" max="1000" value="330"></div>
-        <div class="game-control"><label>LED color</label><select id="ledColor"><option value="#2be7ff">Cyan</option><option value="#ff4ebc">Pink</option><option value="#ff5252">Red</option><option value="#65ff73">Green</option><option value="#ffd75a">Yellow</option><option value="#b77cff">Purple</option></select></div>
+      <p style="color:var(--muted)">Change the battery, resistor, LED, capacitor and capacitor rating. Watch the electrons, current, LED brightness and capacitor charge change.</p>
+      <div class="controlGrid">
+        <div class="ctrl"><label>Battery <span id="vOut">9.0 V</span></label><input id="voltage" type="range" min="0" max="24" step=".1" value="9"></div>
+        <div class="ctrl"><label>Resistor <span id="rOut">1000 Ω</span></label><input id="resistance" type="range" min="10" max="5000" step="10" value="1000"></div>
+        <div class="ctrl"><label>LED Vf <span id="vfOut">2.0 V</span></label><input id="vf" type="range" min="1.5" max="3.5" step=".1" value="2"></div>
+        <div class="ctrl"><label>LED max <span id="maxOut">20 mA</span></label><input id="maxCurrent" type="range" min="5" max="50" step="1" value="20"></div>
+        <div class="ctrl"><label>Capacitance <span id="capOut">100 µF</span></label><input id="capacitance" type="range" min="10" max="1000" step="10" value="100"></div>
+        <div class="ctrl"><label>Cap rating <span id="capRatingOut">16 V</span></label><select id="capRating"><option>6.3</option><option>10</option><option selected>16</option><option>25</option><option>35</option></select></div>
+        <div class="ctrl"><label>LED color</label><select id="ledColor"><option value="#2be7ff">Cyan</option><option value="#ff4fbd">Pink</option><option value="#ff4d5f">Red</option><option value="#65ff73">Green</option><option value="#ffd34e">Yellow</option><option value="#9a6bff">Purple</option></select></div>
+        <div class="ctrl"><label>Mode <span>Interactive</span></label><select id="demoMode"><option value="normal">Normal circuit</option><option value="capacitor">Capacitor focus</option></select></div>
       </div>
-      <div class="circuit-stage">
-        <div class="circuit-board" id="circuitBoard" aria-label="Interactive LED circuit">
-          <svg viewBox="0 0 520 210" width="100%" height="100%" aria-hidden="true">
-            <path d="M70 105 H145" stroke="var(--cyan)" stroke-width="6" stroke-linecap="round"/>
-            <path d="M215 105 H305" stroke="var(--cyan)" stroke-width="6" stroke-linecap="round"/>
-            <path d="M375 105 H450" stroke="var(--cyan)" stroke-width="6" stroke-linecap="round"/>
-            <path d="M450 105 V165 H70 V105" fill="none" stroke="var(--cyan)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
-            <rect x="38" y="72" width="42" height="66" rx="6" fill="rgba(255,156,42,.08)" stroke="var(--orange)" stroke-width="3"/>
-            <line x1="58" y1="87" x2="58" y2="105" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/>
-            <line x1="50" y1="105" x2="66" y2="105" stroke="var(--orange)" stroke-width="4" stroke-linecap="round"/>
-            <text x="51" y="126" fill="var(--orange)" font-size="22" font-weight="800">+</text>
-            <polygon points="145,92 165,80 185,92 205,80 225,92 205,104 185,92 165,104" fill="none" stroke="#d7b47e" stroke-width="5"/>
-            <rect x="295" y="78" width="78" height="54" rx="27" fill="rgba(255,255,255,.04)" stroke="var(--ledColor, var(--cyan))" stroke-width="4"/>
-            <circle id="svgLedGlow" cx="334" cy="105" r="14" fill="var(--ledColor, var(--cyan))"/>
-            <text x="334" y="157" text-anchor="middle" fill="var(--muted)" font-size="14" font-weight="700">LED</text>
-            <text x="105" y="64" fill="var(--muted)" font-size="13" font-weight="700">BATTERY</text>
-            <text x="168" y="64" fill="var(--muted)" font-size="13" font-weight="700">RESISTOR</text>
-          </svg>
-        </div>
-        <div id="circuitStatus" class="circuit-status">
-          <div class="status-line status-good">Status: Good ✅</div>
-          <div class="status-data">Voltage: 5V<br>Current: 15.2 mA<br>LED is on!</div>
-        </div>
+      <div class="canvasWrap"><canvas id="circuitCanvas" width="1100" height="570"></canvas></div>
+      <div class="labActions"><button id="pauseBtn">⏸ Pause electrons</button><button id="resetBtn">↻ Reset</button></div>
+      <div class="labStats">
+        <div class="statBox"><small>Current</small><b><span id="iOut">7.00</span> mA</b></div>
+        <div class="statBox"><small>LED brightness</small><b><span id="brightnessOut">35</span>%</b></div>
+        <div class="statBox"><small>Capacitor voltage</small><b><span id="capVoltageOut">0.00</span> V</b></div>
       </div>
-    <article class="game-card">
-      <h3>2. Fast • Cheap • Good ⚖️</h3>
-      <p>Pick <b>one main priority</b>. You can still get the other two, but pushing one too hard creates a trade-off.</p>
-      <div class="trade-choice" id="tradeChoice">
-        <button class="trade-option fast active" data-choice="fast" type="button"><b>⚡ FAST</b><span>Finish sooner</span></button>
-        <button class="trade-option cheap" data-choice="cheap" type="button"><b>💰 CHEAP</b><span>Spend less</span></button>
-        <button class="trade-option good" data-choice="good" type="button"><b>⭐ GOOD</b><span>Best quality</span></button>
-      </div>
-      <div class="trade-meter">
-        <div class="meter-row"><span>Fast</span><div class="meter"><i id="meterFast"></i></div><b id="meterFastText">90%</b></div>
-        <div class="meter-row"><span>Cheap</span><div class="meter"><i id="meterCheap"></i></div><b id="meterCheapText">45%</b></div>
-        <div class="meter-row"><span>Good</span><div class="meter"><i id="meterGood"></i></div><b id="meterGoodText">60%</b></div>
-      </div>
-      <div id="tradeResult" class="trade-result"><b>Result:</b> Fast build selected. It can be delivered sooner, but it may cost more and have fewer revisions.</div>
     </article>
+
+    <aside class="labCard">
+      <div id="circuitStatus" class="status"><h3 class="good">Status: Good ✅</h3><p>Safe current. LED is on and electrons are moving.</p></div>
+      <div id="capStatus" class="status"><h3 class="good">Capacitor: Charging</h3><p>Polarized capacitor connected with a positive terminal toward the positive side of the circuit.</p></div>
+
+      <div id="capVisual" class="capVisual">
+        <div class="capGauge"><div class="capBody"></div><div class="flame">🔥</div></div>
+        <div class="capInfo"><p><b>Polarized capacitor</b></p><p>Rating: <b><span id="capRatingInfo">16</span> V</b></p><p>Voltage: <b><span id="capInfoV">0.00</span> V</b></p><p>Overvoltage triggers a simulated failure effect.</p></div>
+      </div>
+
+      <div class="trade">
+        <h3>2. Fast • Cheap • Good ⚖️</h3>
+        <p style="color:var(--muted);font-size:.82rem">Choose one main priority. The other two become harder to maximize.</p>
+        <div class="tradeChoice">
+          <button class="tradeBtn active fast" data-choice="fast"><b>⚡ FAST</b><small>Finish sooner</small></button>
+          <button class="tradeBtn cheap" data-choice="cheap"><b>💰 CHEAP</b><small>Spend less</small></button>
+          <button class="tradeBtn good" data-choice="good"><b>⭐ GOOD</b><small>Best quality</small></button>
+        </div>
+        <div class="meters">
+          <div class="meterRow"><span>Fast</span><div class="meter"><i id="mFast"></i></div><b id="mFastText">90%</b></div>
+          <div class="meterRow"><span>Cheap</span><div class="meter"><i id="mCheap"></i></div><b id="mCheapText">45%</b></div>
+          <div class="meterRow"><span>Good</span><div class="meter"><i id="mGood"></i></div><b id="mGoodText">60%</b></div>
+        </div>
+        <div id="tradeResult" class="result"><b>Result:</b> Fast build selected. It can be delivered sooner, but may cost more.</div>
+      </div>
+    </aside>
   </div>
 </section>
 
-<section id="contact" class="contact">
-  <div class="contact-grid">
-    <div><div class="eyebrow">LET'S BUILD</div><h2 data-i18n="contactTitle">Have an idea?<br><span class="gradient">Let's make it real.</span></h2><p data-i18n="contactText">Tell me what you want to make and we can talk about the design, price and next step.</p></div>
-    <a id="whatsappLink" class="wa-card" target="_blank" rel="noopener">
-      <span class="wa-icon">✆</span><span><small>WhatsApp</small><strong id="phoneDisplay">050-934-7473</strong></span><b>↗</b>
-    </a>
-  </div>
-</section>
-
+<section id="contact" class="contact"><div class="contactGrid"><div><div class="eyebrow">LET'S BUILD</div><h2>Have an idea?<br><span class="gradient">Let's make it real.</span></h2><p>Tell me what you want to make and we can talk about the design, price and next step.</p></div>
+<a class="wa" id="waLink" target="_blank" rel="noopener"><span class="waIcon">✆</span><span><small>WhatsApp</small><strong>050-934-7473</strong></span><b>↗</b></a></div></section>
 </main>
 
-<footer class="footer container">
-  <strong>FARIS<em>TECH</em></strong>
-  <span data-i18n="footerLine">Build • Design • Invent</span>
-  <span>© <span id="year"></span> FarisTech</span>
-</footer>
-
-<div id="projectModal" class="modal" aria-hidden="true">
-  <div class="backdrop" data-close="modal"></div>
-  <div class="modal-card" role="dialog" aria-modal="true">
-    <button class="modal-close" type="button" data-close="modal">×</button>
-    <div class="modal-tag" id="modalTag">PROJECT</div><h2 id="modalTitle">Project</h2><p id="modalText"></p>
-    <a id="modalAction" class="btn primary" target="_blank" rel="noopener">Ask on WhatsApp ↗</a>
-  </div>
-</div>
-
-<aside id="adminPanel" class="admin-panel" aria-hidden="true">
-  <div class="admin-head"><h2>Creator Mode</h2><button class="close-admin" id="closeAdmin" type="button">×</button></div>
-  <div class="admin-note">This editor is a front-end prototype. Changes are saved in this browser with localStorage. To make edits public for everyone, connect this site to a database/CMS later.</div>
-
-  <div class="admin-group"><h3>PROFILE</h3>
-    <div class="admin-field"><label>Name</label><input id="editName" type="text" value="FarisTech"></div>
-    <div class="admin-field"><label>Tagline</label><input id="editTagline" type="text" value="The only limitation is your imagination."></div>
-    <div class="admin-field"><label>WhatsApp number</label><input id="editPhone" type="text" value="050-934-7473"></div>
-    <div class="admin-field"><label>About text</label><textarea id="editAbout"></textarea></div>
-    <div class="admin-actions"><button class="btn primary" id="saveProfile">Save profile</button><button class="btn danger" id="resetProfile">Reset</button></div>
-  </div>
-
-  <div class="admin-group"><h3>STARTING PRICES (SAR)</h3>
-    <div class="admin-field"><label>3D model</label><input id="editPrice3d" type="number" min="0"></div>
-    <div class="admin-field"><label>PCB 1-layer</label><input id="editPricePcb1" type="number" min="0"></div>
-    <div class="admin-field"><label>PCB 2-layer</label><input id="editPricePcb2" type="number" min="0"></div>
-    <div class="admin-field"><label>PCB 4-layer</label><input id="editPricePcb4" type="number" min="0"></div>
-    <div class="admin-field"><label>Electronics build</label><input id="editPriceElectronics" type="number" min="0"></div>
-    <div class="admin-field"><label>Robotics build</label><input id="editPriceRobotics" type="number" min="0"></div>
-    <button class="btn primary" id="savePrices">Save prices</button>
-  </div>
-
-  <div class="admin-group"><h3>ADD A PROJECT</h3>
-    <div class="admin-field"><label>Title</label><input id="newTitle" type="text" placeholder="My new project"></div>
-    <div class="admin-field"><label>Category</label><select id="newCategory"><option value="3d">3D</option><option value="pcb">PCB</option><option value="esp">ESP32</option><option value="arduino">Arduino</option><option value="electronics">Electronics</option><option value="robotics">Robotics</option></select></div>
-    <div class="admin-field"><label>Description</label><textarea id="newDescription" placeholder="What did you build?"></textarea></div>
-    <button class="btn primary" id="addProject">Add project</button>
-    <div class="admin-project-list" id="adminProjectList"></div>
-  </div>
-</aside>
+<footer class="wrap" style="padding:24px 0 35px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem"><b style="color:var(--text)">FARIS<em style="font-style:normal;color:var(--orange)">TECH</em></b><span>Build • Design • Invent</span><span>© <span id="year"></span></span></footer>
 
 <script>
-const DEFAULTS={
-  name:"FarisTech",
-  tagline:"The only limitation is your imagination.",
-  phone:"050-934-7473",
-  about:"I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week. This website is my online workshop — a place to share what I'm making and what I'm learning along the way.",
-  prices:{p3d:10,p1:15,p2:25,p4:45,electronics:20,robotics:50},
-  projects:[
-    {title:"Custom 3D Models",cat:"3d",tag:"3D MODEL",icon:"▣",desc:"Practical parts, creative models and printable designs made for real-life objects.",action:"Ask to make a 3D model"},
-    {title:"PCB & Circuit Builds",cat:"pcb",tag:"PCB DESIGN",icon:"▤",desc:"Small boards, sensors, controllers and custom electronics for prototypes.",action:"Ask to design a PCB"},
-    {title:"ESP32 Sensor Node",cat:"esp",tag:"ESP32",icon:"⌁",desc:"ESP32, sensors, wireless dashboards and IoT-style experiments.",action:"Ask about this project"},
-    {title:"Arduino Controller",cat:"arduino",tag:"ARDUINO",icon:"A",desc:"Arduino microcontrollers, buttons, LEDs, motors and control projects.",action:"Ask about this project"},
-    {title:"Electronics Projects",cat:"electronics",tag:"ELECTRONICS",icon:"⌘",desc:"Displays, RFID, LEDs, motors, relays and hands-on experiments.",action:"Ask about electronics"},
-    {title:"Robotics & Motion",cat:"robotics",tag:"ROBOTICS",icon:"◈",desc:"Servos, sensors and motors combined into moving machines.",action:"Ask about robotics"}
-  ]
+const $=id=>document.getElementById(id);
+document.documentElement.dataset.theme=localStorage.getItem("ft-theme")||"dark";
+$("theme").value=document.documentElement.dataset.theme;
+$("theme").onchange=e=>{document.documentElement.dataset.theme=e.target.value;localStorage.setItem("ft-theme",e.target.value)};
+$("menuBtn").onclick=()=>document.querySelector(".nav").classList.toggle("open");
+$("lang").onchange=e=>{
+  if(e.target.value==="ar"){document.documentElement.dir="rtl";document.querySelector(".tagline").textContent="الحد الوحيد هو خيالك.";document.querySelector("html").lang="ar"}
+  else{document.documentElement.dir="ltr";document.querySelector(".tagline").textContent="The only limitation is your imagination.";document.querySelector("html").lang="en"}
 };
-let state=JSON.parse(localStorage.getItem("faristech_state")||"null")||DEFAULTS;
-let activeLang=localStorage.getItem("faristech_lang")||"en";
-let theme=localStorage.getItem("faristech_theme")||"dark";
-document.documentElement.dataset.theme=theme;
+const sections=[...document.querySelectorAll("main section[id]")],navs=[...document.querySelectorAll(".nav a")];
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove("active"));document.querySelector(`.nav a[href="#${e.target.id}"]`)?.classList.add("active")}}),{rootMargin:"-35% 0px -55% 0px"}).observe;
+sections.forEach(s=>new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){navs.forEach(n=>n.classList.remove("active"));document.querySelector(`.nav a[href="#${e.target.id}"]`)?.classList.add("active")}}),{rootMargin:"-35% 0px -55% 0px"}).observe(s);
 
-function waMessage(text){
-  const phone=(state.phone||"").replace(/\D/g,"");
-  const intl=phone.startsWith("966")?phone:("966"+phone.replace(/^0/,""));
-  return `https://wa.me/${intl}?text=${encodeURIComponent(text)}`;
+const projectData=[
+["3D Models","3D","◇","Custom 3D models, printable parts and real-life objects."],
+["PCB Design","PCB","▤","Simple boards to more complex multi-layer PCB designs."],
+["ESP32","ESP","⌁","Sensors, dashboards, IoT and microcontroller experiments."],
+["Arduino","Arduino","A","Arduino controllers, LEDs, motors and school projects."],
+["Sensors","Electronics","⌁","Distance, temperature, motion and other sensor builds."],
+["Robotics","Robotics","◈","Servos, motors, sensors and simple robots."],
+["Displays","Electronics","▣","LCD, OLED, TFT and user-interface experiments."],
+["RFID","Electronics","◎","RFID reader/writer experiments and access ideas."]
+];
+$("projectsGrid").innerHTML=projectData.map((p,i)=>`<article class="card"><div class="ic gradient">${p[2]}</div><h3>${p[0]}</h3><p>${p[3]}</p><button class="btn primary projectAsk" data-name="${p[0]}">Ask about ${p[0]}</button></article>`).join("");
+
+function wa(text){return "https://wa.me/966509347473?text="+encodeURIComponent(text)}
+document.querySelectorAll(".ask,.projectAsk").forEach(b=>b.onclick=()=>window.open(wa(`Hi FarisTech! I want to ask about ${b.dataset.service||b.dataset.name||"a project"}. My idea is: `),"_blank"));
+$("waLink").href=wa("Hi FarisTech! I have an idea for a project.");
+
+const cv=$("circuitCanvas"),ctx=cv.getContext("2d");
+const voltage=$("voltage"),res=$("resistance"),vf=$("vf"),maxCurrent=$("maxCurrent"),capacitance=$("capacitance"),capRating=$("capRating"),ledColor=$("ledColor");
+const electrons=Array.from({length:42},(_,i)=>i/42);
+let running=true,capV=0,failed=false,last=performance.now();
+
+function model(){
+  const V=+voltage.value,R=+res.value,Vf=+vf.value,Imax=+maxCurrent.value;
+  const ideal=Math.max(0,(V-Vf)/R*1000),current=Math.min(idealmA=ideal,Imax),brightness=V<=Vf?0:Math.min(100,current/Imax*100);
+  const C=+capacitance.value/1e6;
+  const tau=Math.max(.03,R*C);
+  return {V,R,Vf,Imax,ideal,current,brightness,C,tau,rating:+capRating.value};
 }
-function applyProfile(){
-  document.querySelectorAll(".brand-name").forEach(x=>{x.childNodes[0].textContent=(state.name||"FarisTech").replace(/TECH$/,"");});
-  document.querySelectorAll(".brand-sub").forEach(x=>x.textContent=state.tagline);
-  document.getElementById("aboutText").textContent=state.about;
-  document.getElementById("phoneDisplay").textContent=state.phone;
-  document.getElementById("whatsappLink").href=waMessage("Hi FarisTech! I have a project idea and would like to discuss it.");
-  document.getElementById("price3d").textContent=state.prices.p3d;
-  document.getElementById("pricePcb1").textContent=state.prices.p1;
-  document.getElementById("pricePcb2").textContent=`2-layer from ${state.prices.p2} SAR`;
-  document.getElementById("pricePcb4").textContent=`4-layer from ${state.prices.p4} SAR`;
-  document.getElementById("priceElectronics").textContent=state.prices.electronics;
-  document.getElementById("priceRobotics").textContent=state.prices.robotics;
+function updateLabels(m){
+  $("vOut").textContent=m.V.toFixed(1)+" V";$("rOut").textContent=m.R.toFixed(0)+" Ω";$("vfOut").textContent=m.Vf.toFixed(1)+" V";$("maxOut").textContent=m.Imax.toFixed(0)+" mA";
+  $("capOut").textContent=(m.C*1e6).toFixed(0)+" µF";$("capRatingOut").textContent=m.rating+" V";$("capRatingInfo").textContent=m.rating;
+  $("iOut").textContent=m.current.toFixed(2);$("brightnessOut").textContent=m.brightness.toFixed(0);$("capVoltageOut").textContent=capV.toFixed(2);$("capInfoV").textContent=capV.toFixed(2);
 }
-function renderProjects(){
-  const grid=document.getElementById("projectGrid");
-  const adminList=document.getElementById("adminProjectList");
-  const q=document.getElementById("projectSearch").value.trim().toLowerCase();
-  const filter=document.querySelector(".filter.active")?.dataset.filter||"all";
-  grid.innerHTML="";
-  adminList.innerHTML="";
-  state.projects
-    .map((p,i)=>({...p,index:i}))
-    .filter(p=>(filter==="all"||p.cat===filter)&&(!q||(p.title+" "+p.desc+" "+p.tag).toLowerCase().includes(q)))
-    .forEach((p)=>{
-      const card=document.createElement("article");
-      card.className="project-card";
-      card.dataset.cat=p.cat;
-      card.innerHTML=`
-        <button class="remove-project" title="Delete project">×</button>
-        <div class="project-media"><span class="bigicon">${p.icon||"✦"}</span></div>
-        <div class="tag">${p.tag}</div>
-        <h3>${escapeHtml(p.title)}</h3>
-        <p>${escapeHtml(p.desc)}</p>
-        <div class="row">
-          <button class="project-action primary project-view" type="button">${escapeHtml(p.action||"Ask about this project")}</button>
-        </div>`;
-      card.querySelector(".project-view").addEventListener("click",()=>openProject(p));
-      card.querySelector(".remove-project").addEventListener("click",()=>deleteProject(p.index));
-      grid.appendChild(card);
-    });
-  if(!grid.children.length){
-    grid.innerHTML='<div class="project-card" style="grid-column:1/-1"><h3>No projects found</h3><p>Try another search or switch the filter.</p></div>';
-  }
-  state.projects.forEach((p,i)=>{
-    const item=document.createElement("div");
-    item.className="admin-project-item";
-    item.innerHTML=`<span>${escapeHtml(p.title)}</span><button class="control-btn danger" type="button">Remove</button>`;
-    item.querySelector("button").addEventListener("click",()=>deleteProject(i));
-    adminList.appendChild(item);
-  });
+function path(u){
+  u=((u%1)+1)%1;const x1=125,x2=975,y1=150,y2=430,top=x2-x1,side=y2-y1,per=2*(top+side);let d=u*per;
+  if(d<top)return{x:x1+d,y:y2};d-=top;if(d<side)return{x:x2,y:y2-d};d-=side;if(d<top)return{x:x2-d,y:y1};d-=top;return{x:x1,y:y1+d};
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
-function deleteProject(i){
-  if(!confirm("Remove this project?")) return;
-  state.projects.splice(i,1);persist();renderProjects();
-}
-function openProject(p){
-  document.getElementById("modalTag").textContent=p.tag;
-  document.getElementById("modalTitle").textContent=p.title;
-  document.getElementById("modalText").textContent=p.desc+" Final price depends on the project. Contact me on WhatsApp to discuss what you need.";
-  const action=document.getElementById("modalAction");
-  action.textContent=p.action||"Ask on WhatsApp ↗";
-  action.href=waMessage(`Hi FarisTech! I want to ask about "${p.title}". My idea/details are: `);
-  const m=document.getElementById("projectModal");m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
-}
-function closeModal(){
-  const m=document.getElementById("projectModal");m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.style.overflow="";
-}
-document.querySelectorAll("[data-close=modal]").forEach(x=>x.addEventListener("click",closeModal));
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal();document.getElementById("adminPanel").classList.remove("open")}});
+function drawComponentLabel(x,y,t,color){ctx.fillStyle=color;ctx.font="700 16px Inter,Arial";ctx.textAlign="center";ctx.fillText(t,x,y)}
+function tick(now){
+  const dt=Math.min(.05,(now-last)/1000);last=now;const m=model();
 
-document.querySelectorAll(".ask-service").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    const service=btn.dataset.service;
-    window.open(waMessage(`Hi FarisTech! I want to ask about ${service}. My idea/details are: `),"_blank");
-  });
-});
-
-document.getElementById("projectSearch").addEventListener("input",renderProjects);
-document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{
-  document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));btn.classList.add("active");renderProjects();
-}));
-
-document.getElementById("themeSelect").value=theme;
-document.getElementById("themeSelect").addEventListener("change",e=>{
-  theme=e.target.value;document.documentElement.dataset.theme=theme;localStorage.setItem("faristech_theme",theme);
-});
-document.getElementById("languageSelect").value=activeLang;
-
-const translations={
-en:{
- tagline:"The only limitation is your imagination.",home:"Home",projects:"Projects",whatMake:"What I Make",about:"About",contact:"Contact",
- makerTag:"MAKER • ELECTRONICS • 3D DESIGNING",creativeTag:"CREATIVE TECH • PROTOTYPES • PRINTING",
- heroTitle:'Build something<br><span class="gradient">awesome.</span>',
- heroText:"I turn ideas into 3D models, PCB designs, electronics and real working projects. Designed for makers, inventors and curious people.",
- explore:"Explore Projects ↗",work:"Work With Me",cheap:"Cheap starting prices",fastLearner:"Fast learner",visualLearner:"Visual learner",schoolFriendly:"School & maker friendly",
- projectsTitle:"Projects I'm building",projectsIntro:"From a simple idea to a finished prototype — this is where the experiments happen.",
- makeTitle:"Ideas → design → prototype",makeIntro:"Technology made understandable, useful and fun — with simple options for students, makers and real projects.",
- service3d:"Send me a picture, sketch or idea. I can make a printable model, adjust it, and prepare it for real life.",
- servicepcb:"Simple one-layer boards are the cheapest. More layers, more parts and more complexity increase the design price.",
- serviceElectronics:"ESP32, Arduino, sensors, displays, RFID, LEDs, motors, relays and hands-on prototypes.",
- serviceRobotics:"Servo systems, sensors, motors, control, simple robots and custom motion projects.",
- printIntro:"I can print your model in real life. Send me a picture, STL, sketch or idea and I can tell you what is possible.",
- pickup:"Shipping can be expensive. Local pickup is available by arrangement if you can come and collect the finished print or project.",
- aboutTitle:'Made by a maker,<br><span class="gradient">for makers.</span>',
- aboutText:"I enjoy building simple 3D models, PCB projects and electronic experiments. I learn visually and by doing. I'm a fast learner, and I can learn many new skills in under a week. This website is my online workshop — a place to share what I'm making and what I'm learning along the way.",
- gamesTitle:"Let's play with circuits & design",gamesIntro:"Mini games that make electronics and design trade-offs easier to understand.",
- contactTitle:'Have an idea?<br><span class="gradient">Let\'s make it real.</span>',contactText:"Tell me what you want to make and we can talk about the design, price and next step.",footerLine:"Build • Design • Invent"
-},
-ar:{
- tagline:"الحد الوحيد هو خيالك.",home:"الرئيسية",projects:"المشاريع",whatMake:"ماذا أصنع",about:"عنّي",contact:"تواصل",
- makerTag:"صانع • إلكترونيات • تصميم ثلاثي الأبعاد",creativeTag:"تقنية إبداعية • نماذج أولية • طباعة",
- heroTitle:'اصنع شيئًا<br><span class="gradient">رائعًا.</span>',
- heroText:"أحوّل الأفكار إلى نماذج ثلاثية الأبعاد وتصاميم PCB ومشاريع إلكترونية تعمل فعليًا. مناسب للصنّاع والمخترعين ومحبي التجربة.",
- explore:"استكشف المشاريع ↗",work:"اعمل معي",cheap:"أسعار بداية منخفضة",fastLearner:"متعلم سريع",visualLearner:"متعلم بصري",schoolFriendly:"مناسب للمدرسة والهواة",
- projectsTitle:"المشاريع التي أبنيها",projectsIntro:"من فكرة بسيطة إلى نموذج أولي مكتمل — هنا تحدث التجارب.",
- makeTitle:"فكرة ← تصميم ← نموذج أولي",makeIntro:"تقنية مفهومة ومفيدة وممتعة — بخيارات بسيطة للطلاب والهواة والمشاريع الحقيقية.",
- service3d:"أرسل صورة أو رسمًا أو فكرة. أستطيع تحويلها إلى نموذج قابل للطباعة وتعديله وتجهيزه للاستخدام.",
- servicepcb:"اللوحة بطبقة واحدة هي الأرخص. زيادة الطبقات وعدد القطع والتعقيد ترفع السعر.",
- serviceElectronics:"ESP32 وArduino والحساسات والشاشات وRFID والـLEDs والمحركات والريليهات والنماذج الأولية.",
- serviceRobotics:"أنظمة السيرفو والحساسات والمحركات والتحكم والروبوتات والمشاريع الحركية.",
- printIntro:"أستطيع طباعة نموذجك فعليًا. أرسل صورة أو STL أو رسمًا أو فكرة وسأخبرك بما يمكن عمله.",
- pickup:"الشحن قد يكون مكلفًا. الاستلام المحلي متاح بالاتفاق إذا كان بإمكانك الحضور واستلام الطباعة أو المشروع.",
- aboutTitle:'صنعه صانع،<br><span class="gradient">للصنّاع.</span>',
- aboutText:"أستمتع بصناعة نماذج ثلاثية الأبعاد بسيطة ومشاريع PCB وتجارب إلكترونية. أتعلم بصريًا وعن طريق التطبيق. أنا متعلم سريع ويمكنني تعلم كثير من المهارات الجديدة في أقل من أسبوع. هذا الموقع هو ورشتي الإلكترونية، أشارك فيه ما أصنعه وما أتعلمه.",
- gamesTitle:"لِنلعب بالإلكترونيات والتصميم",gamesIntro:"ألعاب صغيرة تجعل فهم الإلكترونيات وموازنة الخيارات التصميمية أسهل.",
- contactTitle:'لديك فكرة؟<br><span class="gradient">لنجعلها حقيقية.</span>',contactText:"أخبرني بما تريد صنعه ونتحدث عن التصميم والسعر والخطوة التالية.",footerLine:"اصنع • صمم • ابتكر"
-}};
-function applyLanguage(){
-  const t=translations[activeLang];
-  document.documentElement.dir=activeLang==="ar"?"rtl":"ltr";
-  document.querySelectorAll("[data-i18n]").forEach(el=>{const key=el.dataset.i18n;if(t[key]!=null)el.innerHTML=t[key]});
-  document.getElementById("languageSelect").value=activeLang;
-}
-document.getElementById("languageSelect").addEventListener("change",e=>{activeLang=e.target.value;localStorage.setItem("faristech_lang",activeLang);applyLanguage()});
-
-document.getElementById("modeBtn").addEventListener("click",()=>{
-  const panel=document.getElementById("adminPanel");panel.classList.add("open");panel.setAttribute("aria-hidden","false");fillAdmin();
-});
-document.getElementById("closeAdmin").addEventListener("click",()=>document.getElementById("adminPanel").classList.remove("open"));
-function fillAdmin(){
-  document.getElementById("editName").value=state.name;
-  document.getElementById("editTagline").value=state.tagline;
-  document.getElementById("editPhone").value=state.phone;
-  document.getElementById("editAbout").value=state.about;
-  document.getElementById("editPrice3d").value=state.prices.p3d;
-  document.getElementById("editPricePcb1").value=state.prices.p1;
-  document.getElementById("editPricePcb2").value=state.prices.p2;
-  document.getElementById("editPricePcb4").value=state.prices.p4;
-  document.getElementById("editPriceElectronics").value=state.prices.electronics;
-  document.getElementById("editPriceRobotics").value=state.prices.robotics;
-}
-function persist(){localStorage.setItem("faristech_state",JSON.stringify(state));applyProfile();renderProjects();}
-document.getElementById("saveProfile").addEventListener("click",()=>{
-  state.name=document.getElementById("editName").value.trim()||DEFAULTS.name;
-  state.tagline=document.getElementById("editTagline").value.trim()||DEFAULTS.tagline;
-  state.phone=document.getElementById("editPhone").value.trim()||DEFAULTS.phone;
-  state.about=document.getElementById("editAbout").value.trim()||DEFAULTS.about;
-  persist();alert("Profile saved on this browser.");
-});
-document.getElementById("savePrices").addEventListener("click",()=>{
-  state.prices={p3d:+document.getElementById("editPrice3d").value||0,p1:+document.getElementById("editPricePcb1").value||0,p2:+document.getElementById("editPricePcb2").value||0,p4:+document.getElementById("editPricePcb4").value||0,electronics:+document.getElementById("editPriceElectronics").value||0,robotics:+document.getElementById("editPriceRobotics").value||0};
-  persist();alert("Prices saved on this browser.");
-});
-document.getElementById("resetProfile").addEventListener("click",()=>{
-  state=JSON.parse(JSON.stringify(DEFAULTS));persist();fillAdmin();alert("Reset complete.");
-});
-document.getElementById("addProject").addEventListener("click",()=>{
-  const title=document.getElementById("newTitle").value.trim();const desc=document.getElementById("newDescription").value.trim();const cat=document.getElementById("newCategory").value;
-  if(!title||!desc){alert("Add a title and description.");return}
-  const meta={"3d":["3D MODEL","▣","Ask to make a 3D model"],pcb:["PCB DESIGN","▤","Ask to design a PCB"],esp:["ESP32","⌁","Ask about this project"],arduino:["ARDUINO","A","Ask about this project"],electronics:["ELECTRONICS","⌘","Ask about electronics"],robotics:["ROBOTICS","◈","Ask about robotics"]}[cat];
-  state.projects.push({title,cat,tag:meta[0],icon:meta[1],desc,action:meta[2]});
-  persist();document.getElementById("newTitle").value="";document.getElementById("newDescription").value="";
-});
-
-const bat=document.getElementById("batterySlider"),res=document.getElementById("resistorSlider"),ledColor=document.getElementById("ledColor");
-function updateCircuit(){
-  const v=+bat.value,r=+res.value,i=(v/r)*1000;
-  document.getElementById("batteryValue").textContent=v+"V";
-  document.getElementById("resistorValue").textContent=r+"Ω";
-
-  const led=document.getElementById("ledPart"),svgLed=document.getElementById("svgLedGlow");
-  document.documentElement.style.setProperty("--ledColor",ledColor.value);
-  led.style.color=ledColor.value;led.style.borderColor=ledColor.value;
-  led.style.boxShadow=`0 0 ${Math.min(35,7+i)}px ${ledColor.value}`;
-  if(svgLed){svgLed.setAttribute("fill",ledColor.value);svgLed.setAttribute("stroke",ledColor.value);}
-
-  const status=document.getElementById("circuitStatus");
-  if(i>40){
-    status.innerHTML=`<div class="status-line status-bad">Status: LED burned 🔥</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>Too much current. Try a higher resistor or lower voltage.</div>`;
-    led.style.opacity=".28";led.style.filter="grayscale(1)";if(svgLed)svgLed.setAttribute("opacity",".28");
-  }else if(i>20){
-    status.innerHTML=`<div class="status-line status-warn">Status: Too much current ⚠️</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>The LED is being pushed too hard.</div>`;
-    led.style.opacity=".72";led.style.filter="none";if(svgLed)svgLed.setAttribute("opacity",".72");
-  }else if(i<5){
-    status.innerHTML=`<div class="status-line status-warn">Status: Very dim 💡</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>The resistor is too high for a bright LED.</div>`;
-    led.style.opacity=".35";led.style.filter="none";if(svgLed)svgLed.setAttribute("opacity",".35");
-  }else{
-    status.innerHTML=`<div class="status-line status-good">Status: Good ✅</div><div class="status-data">Voltage: ${v}V<br>Current: ${i.toFixed(1)} mA<br>LED is on — nice circuit!</div>`;
-    const brightness=Math.max(.65,Math.min(1,.45+i/25));
-    led.style.opacity=brightness;led.style.filter="none";if(svgLed)svgLed.setAttribute("opacity",brightness);
-  }
-}
-[bat,res,ledColor].forEach(x=>x.addEventListener("input",updateCircuit));updateCircuit();
-
-const tradeProfiles={
-  fast:{fast:90,cheap:45,good:60,text:"Fast build selected. It can be delivered sooner, but it may cost more and have fewer revisions."},
-  cheap:{fast:45,cheap:90,good:55,text:"Cheap build selected. It saves money, but it may take longer and use simpler materials or fewer revisions."},
-  good:{fast:55,cheap:40,good:95,text:"Good selected. Quality is the priority, so expect more time and a higher price."}
-};
-function updateTrade(choice){
-  const p=tradeProfiles[choice];
-  document.getElementById("meterFast").style.width=p.fast+"%";
-  document.getElementById("meterCheap").style.width=p.cheap+"%";
-  document.getElementById("meterGood").style.width=p.good+"%";
-  document.getElementById("meterFastText").textContent=p.fast+"%";
-  document.getElementById("meterCheapText").textContent=p.cheap+"%";
-  document.getElementById("meterGoodText").textContent=p.good+"%";
-  document.getElementById("tradeResult").innerHTML="<b>Result:</b> "+p.text;
-}
-document.querySelectorAll(".trade-option").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    document.querySelectorAll(".trade-option").forEach(x=>x.classList.remove("active"));
-    btn.classList.add("active");
-    updateTrade(btn.dataset.choice);
-  });
-});
-updateTrade("fast");
-
-
-/* ===== Electronics Lab simulator ===== */
-const labCanvas=document.getElementById("labCanvas");
-const labCtx=labCanvas.getContext("2d");
-const labVoltage=document.getElementById("labVoltage");
-const labResistance=document.getElementById("labResistance");
-const labVf=document.getElementById("labVf");
-const labMaxCurrent=document.getElementById("labMaxCurrent");
-const labCapRating=document.getElementById("labCapRating");
-const labVOut=document.getElementById("labVOut"),labROut=document.getElementById("labROut");
-const labVfOut=document.getElementById("labVfOut"),labMaxOut=document.getElementById("labMaxOut");
-const labCapRatingOut=document.getElementById("labCapRatingOut");
-const labCurrentOut=document.getElementById("labCurrentOut"),labBrightnessOut=document.getElementById("labBrightnessOut");
-const labCapVoltageOut=document.getElementById("labCapVoltageOut"),labCapState=document.getElementById("labCapState");
-const labStatus=document.getElementById("labStatus"),labPause=document.getElementById("labPause"),labReset=document.getElementById("labReset");
-
-let labRunning=true;
-let labCapVoltage=0;
-let labFailure=0;
-let labParticles=[];
-const labElectrons=Array.from({length:32},(_,i)=>i/32);
-
-function labCircuit(){
-  const V=+labVoltage.value,R=+labResistance.value,Vf=+labVf.value,Imax=+labMaxCurrent.value,capRating=+labCapRating.value;
-  const idealmA=Math.max(0,(V-Vf)/R*1000);
-  const current=Math.min(idealmA,Imax);
-  const brightness=V<=Vf?0:Math.min(100,(current/Imax)*100);
-  return {V,R,Vf,Imax,capRating,idealmA,current,brightness,overloaded:idealmA>Imax};
-}
-function labUpdateUI(){
-  const c=labCircuit();
-  labVOut.textContent=c.V.toFixed(1);labROut.textContent=c.R.toFixed(0);labVfOut.textContent=c.Vf.toFixed(1);labMaxOut.textContent=c.Imax.toFixed(0);
-  labCapRatingOut.textContent=c.capRating.toFixed(c.capRating%1?1:0);
-  labCurrentOut.textContent=c.current.toFixed(2);labBrightnessOut.textContent=c.brightness.toFixed(0);labCapVoltageOut.textContent=labCapVoltage.toFixed(2);
-
-  if(labFailure>0){
-    labCapState.textContent="FAILED";
-    labStatus.className="lab-status bad";
-    labStatus.innerHTML="<b>🔥 Capacitor failure simulated.</b><br>The battery voltage exceeded the selected polarized capacitor rating. This is a visual educational effect.";
-  }else if(c.V>c.capRating){
-    labCapState.textContent="OVER RATING";
-    labStatus.className="lab-status warn";
-    labStatus.innerHTML="<b>⚠ Capacitor overvoltage.</b><br>The capacitor is being stressed. Lower the battery or choose a higher voltage rating.";
-  }else if(c.overloaded){
-    labCapState.textContent="Charging";
-    labStatus.className="lab-status warn";
-    labStatus.innerHTML="<b>⚠ Current too high.</b><br>The resistor is too small for the selected LED limit. Increase resistance or reduce the battery voltage.";
-  }else if(c.V<=c.Vf){
-    labCapState.textContent="Charging";
-    labStatus.className="lab-status good";
-    labStatus.innerHTML="<b>◌ LED is off.</b><br>There is not enough voltage to overcome the LED forward voltage.";
-  }else{
-    labCapState.textContent="Charging";
-    labStatus.className="lab-status good";
-    labStatus.innerHTML="<b>✅ Circuit operating normally.</b><br>Electrons are moving and the LED brightness follows calculated current.";
-  }
-}
-[labVoltage,labResistance,labVf,labMaxCurrent,labCapRating].forEach(x=>x.addEventListener("input",()=>{ if(+labVoltage.value<=+labCapRating.value) labFailure=0; labUpdateUI(); }));
-
-labPause.addEventListener("click",()=>{labRunning=!labRunning;labPause.textContent=labRunning?"⏸ Pause electrons":"▶ Start electrons";});
-labReset.addEventListener("click",()=>{
-  labVoltage.value=9;labResistance.value=1000;labVf.value=2;labMaxCurrent.value=20;labCapRating.value=10;
-  labCapVoltage=0;labFailure=0;labElectrons.forEach((_,i)=>labElectrons[i]=i/labElectrons.length);
-  labUpdateUI();
-});
-
-function labPathPoint(u){
-  u=((u%1)+1)%1;
-  const xL=95,xR=805,yT=120,yB=400;
-  const topLen=xR-xL,side=yB-yT;let d=u*(2*topLen+2*side);
-  if(d<topLen)return{x:xL+d,y:yB};
-  d-=topLen;if(d<side)return{x:xR,y:yB-d};
-  d-=side;if(d<topLen)return{x:xR-d,y:yT};
-  d-=topLen;return{x:xL,y:yT+d};
-}
-function labFire(x,y){
-  labCtx.save();
-  for(let i=0;i<10;i++){
-    const px=x+(Math.random()-.5)*34,py=y+(Math.random()-.5)*28;
-    labCtx.fillStyle=["#ff4d5f","#ff9c2a","#ffd75a"][i%3];
-    labCtx.globalAlpha=.65+.35*Math.random();
-    labCtx.beginPath();labCtx.arc(px,py,3+Math.random()*8,0,Math.PI*2);labCtx.fill();
-  }
-  labCtx.restore();
-}
-function drawLab(){
-  const c=labCircuit();
-
-  // simplified capacitor charge model: approaches battery voltage gradually
-  if(labRunning && labFailure===0){
-    const dt=0.016;
-    labCapVoltage += (c.V-labCapVoltage) * Math.min(1,dt*0.85);
-    if(c.V>c.capRating) {
-      // failure after the simulated capacitor is driven above its rating
-      if(labCapVoltage > c.capRating*0.92) labFailure=Math.min(1,labFailure+dt*0.35);
-    }
-  }
-  if(labFailure>0) labFailure=Math.min(1,labFailure+0.004);
-
-  if(labRunning && labFailure===0){
-    const speed=Math.max(0,c.current/10);
-    const dt=.00032*speed;
-    for(let i=0;i<labElectrons.length;i++)labElectrons[i]=(labElectrons[i]+dt)%1;
+  if(running){
+    const target=m.V;
+    const k=Math.min(1,dt/(m.tau+0.02));
+    capV += (target-capV)*k;
+    const speed=Math.max(.0002,m.current/10000);
+    for(let i=0;i<electrons.length;i++) electrons[i]=(electrons[i]+dt*speed)%1;
   }
 
-  labCtx.clearRect(0,0,labCanvas.width,labCanvas.height);
-  const w=labCanvas.width,h=labCanvas.height;
+  const reverse=false; // educational model uses a fixed polarized orientation
+  failed=capV>m.rating || m.V>m.rating+1;
 
-  // board
-  labCtx.fillStyle="#0b0f17";labCtx.fillRect(0,0,w,h);
-  labCtx.strokeStyle="#1c2432";labCtx.lineWidth=1;
-  for(let x=0;x<w;x+=36){labCtx.beginPath();labCtx.moveTo(x,0);labCtx.lineTo(x,h);labCtx.stroke();}
-  for(let y=0;y<h;y+=36){labCtx.beginPath();labCtx.moveTo(0,y);labCtx.lineTo(w,y);labCtx.stroke();}
+  ctx.clearRect(0,0,cv.width,cv.height);
+  ctx.fillStyle="#0b0e15";ctx.fillRect(0,0,cv.width,cv.height);
 
-  // wires
-  labCtx.lineWidth=8;labCtx.lineCap="round";labCtx.strokeStyle="#7f8999";
-  labCtx.beginPath();labCtx.moveTo(95,120);labCtx.lineTo(805,120);labCtx.lineTo(805,400);labCtx.lineTo(95,400);labCtx.closePath();labCtx.stroke();
+  // Wires
+  ctx.strokeStyle="#798495";ctx.lineWidth=8;ctx.lineCap="round";ctx.beginPath();
+  ctx.moveTo(125,150);ctx.lineTo(975,150);ctx.lineTo(975,430);ctx.lineTo(125,430);ctx.lineTo(125,150);ctx.stroke();
 
-  // resistor
-  labCtx.strokeStyle="#f0c36a";labCtx.lineWidth=7;labCtx.beginPath();
-  labCtx.moveTo(330,120);labCtx.lineTo(360,120);labCtx.lineTo(375,102);labCtx.lineTo(405,138);labCtx.lineTo(435,102);labCtx.lineTo(465,138);labCtx.lineTo(495,102);labCtx.lineTo(510,120);labCtx.lineTo(540,120);labCtx.stroke();
-  labCtx.fillStyle="#f0c36a";labCtx.textAlign="center";labCtx.font="bold 18px Arial";labCtx.fillText("RESISTOR",435,84);labCtx.font="15px Arial";labCtx.fillText(c.R+" Ω",435,165);
+  // Battery
+  ctx.strokeStyle="#f2f4f8";ctx.lineWidth=8;ctx.beginPath();ctx.moveTo(85,250);ctx.lineTo(165,250);ctx.moveTo(100,305);ctx.lineTo(150,305);ctx.stroke();
+  drawComponentLabel(125,218,"BATTERY",varOrange());drawComponentLabel(125,340,m.V.toFixed(1)+" V", "#f4f6fb");
+  ctx.fillStyle=varOrange();ctx.font="bold 28px Arial";ctx.fillText("+",88,247);ctx.fillStyle="#f4f6fb";ctx.fillText("−",92,312);
 
-  // battery
-  labCtx.strokeStyle="#e8edf5";labCtx.lineWidth=7;labCtx.beginPath();labCtx.moveTo(55,218);labCtx.lineTo(125,218);labCtx.moveTo(70,270);labCtx.lineTo(110,270);labCtx.stroke();
-  labCtx.fillStyle="#fff";labCtx.font="bold 24px Arial";labCtx.fillText("+",42,212);labCtx.fillText("−",42,282);labCtx.font="bold 16px Arial";labCtx.fillText("BATTERY",86,318);labCtx.font="14px Arial";labCtx.fillText(c.V.toFixed(1)+" V",86,340);
+  // Resistor
+  ctx.strokeStyle="#edc06d";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(380,150);ctx.lineTo(415,150);ctx.lineTo(430,130);ctx.lineTo(458,170);ctx.lineTo(486,130);ctx.lineTo(514,170);ctx.lineTo(542,130);ctx.lineTo(557,150);ctx.lineTo(592,150);ctx.stroke();
+  drawComponentLabel(486,114,"RESISTOR", "#edc06d");drawComponentLabel(486,194,m.R.toFixed(0)+" Ω", "#edc06d");
 
   // LED
-  const ledColor=getComputedStyle(document.documentElement).getPropertyValue("--ledColor")||"#2be7ff";
-  const glow=c.brightness;
-  labCtx.beginPath();labCtx.arc(805,260,26,0,Math.PI*2);labCtx.fillStyle=glow>0?ledColor:"#303642";labCtx.shadowBlur=glow>0?12+glow*.38:0;labCtx.shadowColor=ledColor;labCtx.fill();labCtx.shadowBlur=0;
-  labCtx.strokeStyle="#f2f4f8";labCtx.lineWidth=3;labCtx.stroke();
-  labCtx.fillStyle=ledColor;labCtx.font="bold 16px Arial";labCtx.fillText("LED",805,310);labCtx.font="14px Arial";labCtx.fillText(c.brightness.toFixed(0)+"%",805,332);
+  const glow=Math.max(0,m.brightness);ctx.beginPath();ctx.arc(975,290,29,0,Math.PI*2);ctx.fillStyle=glow?"#ffd34e":"#303642";ctx.shadowBlur=glow?12+glow*.35:0;ctx.shadowColor=ledColor.value;ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle="#fff";ctx.lineWidth=3;ctx.stroke();
+  ctx.strokeStyle="#fff";ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(952,263);ctx.lineTo(998,317);ctx.moveTo(952,317);ctx.lineTo(998,263);ctx.stroke();
+  drawComponentLabel(975,355,"LED",ledColor.value);drawComponentLabel(975,378,m.brightness.toFixed(0)+"%",ledColor.value);
 
-  // polarized capacitor on lower branch
-  const capX=585,capY=400;
-  labCtx.strokeStyle="#a2c7ff";labCtx.lineWidth=4;
-  labCtx.beginPath();labCtx.moveTo(565,390);labCtx.lineTo(565,420);labCtx.moveTo(585,390);labCtx.lineTo(585,420);labCtx.stroke();
-  labCtx.fillStyle="#9bbcff";labCtx.font="bold 17px Arial";labCtx.fillText("C",595,410);labCtx.font="bold 18px Arial";labCtx.fillText("+",552,385);
-  labCtx.fillStyle=labFailure?"#ff5c68":"#8fb4ff";labCtx.font="14px Arial";labCtx.fillText(labCapVoltage.toFixed(1)+" V / "+c.capRating+" V",590,444);
+  // Capacitor symbol on lower wire branch
+  ctx.strokeStyle="#e8edf5";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(515,430);ctx.lineTo(515,395);ctx.moveTo(555,430);ctx.lineTo(555,395);ctx.stroke();
+  ctx.strokeStyle="#7f8ba0";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(494,390);ctx.lineTo(576,390);ctx.moveTo(494,415);ctx.lineTo(576,415);ctx.stroke();
+  ctx.fillStyle=varRed();ctx.font="bold 24px Arial";ctx.fillText("+",480,393);ctx.fillStyle="#d6dbe4";ctx.fillText("−",480,420);
+  drawComponentLabel(535,470,"POLARIZED CAP", "#dfe7f1");drawComponentLabel(535,493,capV.toFixed(2)+" V / "+m.rating+" V", failed?varRed():varCyan());
 
-  // electrons
-  for(let i=0;i<labElectrons.length;i++){
-    const p=labPathPoint(labElectrons[i]);
-    labCtx.beginPath();labCtx.arc(p.x,p.y,6,0,Math.PI*2);labCtx.fillStyle="#72d6ff";labCtx.shadowBlur=12;labCtx.shadowColor="#72d6ff";labCtx.fill();labCtx.shadowBlur=0;
+  // electron particles
+  for(const e of electrons){const p=path(e);ctx.beginPath();ctx.arc(p.x,p.y,6,0,Math.PI*2);ctx.fillStyle="#71d8ff";ctx.shadowBlur=13;ctx.shadowColor="#71d8ff";ctx.fill();ctx.shadowBlur=0}
+
+  // labels
+  ctx.fillStyle="#8fd3ff";ctx.font="700 15px Inter,Arial";ctx.textAlign="left";ctx.fillText("Electron flow →",140,525);
+
+  // status panels
+  const circuitStatus=$("circuitStatus"),capStatus=$("capStatus"),capVisual=$("capVisual");
+  if(m.V<=m.Vf){
+    circuitStatus.innerHTML=`<h3 class="warn">Status: LED OFF</h3><p>Not enough voltage to forward-bias the LED.</p>`;
+  }else if(m.ideal>m.Imax){
+    circuitStatus.innerHTML=`<h3 class="warn">Status: Current Limited ⚠️</h3><p>The selected resistor is too small for the requested current. The model limits the LED current.</p>`;
+  }else{
+    circuitStatus.innerHTML=`<h3 class="good">Status: Good ✅</h3><p>Current ${m.current.toFixed(2)} mA. LED brightness follows current.</p>`;
   }
-  labCtx.fillStyle="#8fd3ff";labCtx.font="15px Arial";labCtx.textAlign="left";labCtx.fillText("Electron flow →",110,438);
-
-  // visual failure effect (2D only)
-  if(labFailure>0){
-    labFire(585,400);
-    labCtx.fillStyle="rgba(255,50,80,.12)";labCtx.fillRect(0,0,w,h);
-    labCtx.fillStyle="#ff6674";labCtx.font="bold 23px Arial";labCtx.textAlign="center";labCtx.fillText("⚠ SIMULATED CAPACITOR FAILURE",450,55);
+  if(failed){
+    capStatus.innerHTML=`<h3 class="bad">Capacitor failure 🔥</h3><p>Voltage is above the selected capacitor rating. This is a simulated educational failure effect.</p>`;
+    capVisual.classList.add("fire");
+  }else{
+    capStatus.innerHTML=`<h3 class="good">Capacitor: Charging</h3><p>Polarized capacitor voltage is ${capV.toFixed(2)} V. Rating is ${m.rating} V.</p>`;
+    capVisual.classList.remove("fire");
   }
-  labUpdateUI();
-  requestAnimationFrame(drawLab);
+  updateLabels(m);
+  requestAnimationFrame(tick);
 }
-labUpdateUI();
-drawLab();
+function varOrange(){return getComputedStyle(document.documentElement).getPropertyValue("--orange")}
+function varRed(){return getComputedStyle(document.documentElement).getPropertyValue("--red")}
+function varCyan(){return getComputedStyle(document.documentElement).getPropertyValue("--cyan")}
 
-const sections=[...document.querySelectorAll("main section[id]")];
-const navLinks=[...document.querySelectorAll(".nav a[data-nav]")];
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(!e.isIntersecting)return;navLinks.forEach(n=>n.classList.remove("active"));document.querySelector(`.nav a[href="#${e.target.id}"]`)?.classList.add("active")});
-},{rootMargin:"-35% 0px -55% 0px"});
-sections.forEach(s=>io.observe(s));
+[voltage,resistance,vf,maxCurrent,capacitance,capRating,ledColor].forEach(x=>x.oninput=()=>{if(x===voltage && capV>+voltage.value)capV=+voltage.value});
+$("pauseBtn").onclick=()=>{running=!running;$("pauseBtn").textContent=running?"⏸ Pause electrons":"▶ Start electrons"};
+$("resetBtn").onclick=()=>{voltage.value=9;resistance.value=1000;vf.value=2;maxCurrent.value=20;capacitance.value=100;capRating.value=16;ledColor.value="#2be7ff";capV=0;running=true;$("pauseBtn").textContent="⏸ Pause electrons"};
 
-document.getElementById("menuBtn").addEventListener("click",()=>document.querySelector(".nav").classList.toggle("open"));
-
-applyProfile();renderProjects();applyLanguage();fillAdmin();document.getElementById("year").textContent=new Date().getFullYear();
+const tradeProfiles={
+ fast:[90,45,60,"Fast build selected. It can be delivered sooner, but may cost more and have fewer revisions."],
+ cheap:[45,90,55,"Cheap build selected. It saves money, but may take longer and use simpler materials or fewer revisions."],
+ good:[55,40,95,"Good selected. Quality is the priority, so expect more time and a higher price."]
+};
+function setTrade(c){
+  const p=tradeProfiles[c];document.querySelectorAll(".tradeBtn").forEach(b=>b.classList.remove("active"));document.querySelector(`.tradeBtn.${c}`).classList.add("active");
+  ["Fast","Cheap","Good"].forEach((n,i)=>{$("m"+n).style.width=p[i]+"%";$("m"+n+"Text").textContent=p[i]+"%"});
+  $("tradeResult").innerHTML="<b>Result:</b> "+p[3];
+}
+document.querySelectorAll(".tradeBtn").forEach(b=>b.onclick=()=>setTrade(b.dataset.choice));setTrade("fast");
+$("year").textContent=new Date().getFullYear();
+requestAnimationFrame(tick);
 </script>
 </body>
 </html>
