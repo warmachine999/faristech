@@ -265,6 +265,18 @@ function renderProjects(){$('projectsGrid').innerHTML=content.projects.slice(0,4
 function renderServices(){$('servicesGrid').innerHTML=content.services.map(s=>{const x=s[lang]||s.en;return `<article class="service"><div class="ic gradient">${s.icon||'✦'}</div><h3>${escapeHtml(x.name)}</h3><p>${escapeHtml(x.desc)}</p><div class="price">${escapeHtml(x.price)}</div><button class="btn primary ask" data-service-key="${escapeAttr(s.key||'service')}" data-service="${escapeAttr(x.name)}">${escapeHtml(x.button)}</button></article>`}).join('')}
 function escapeHtml(s=''){return String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}function escapeAttr(s=''){return escapeHtml(s).replace(/'/g,'&#39;')}
 function wa(text){return 'https://wa.me/966509347473?text='+encodeURIComponent(text)}
+function priorityContext(){
+ const names=lang==='ar'?{fast:'السرعة',cheap:'التكلفة المناسبة',good:'الجودة العالية'}:{fast:'Fast',cheap:'Cheap',good:'Good'};
+ const pair=tradePair.length===2?tradePair:['fast','cheap'];
+ return lang==='ar'?'أولوياتي: '+names[pair[0]]+' و'+names[pair[1]]+'.':'My priorities: '+pair.map(k=>names[k]||k).join(' + ')+'.';
+}
+function casualArabic(text=''){
+ return String(text).replace(/^مرحباً FarisTech X!/,'هلا فارس،').replace(/أريد/g,'أبغى').replace(/لدي/g,'عندي').replace(/شاهدت/g,'شفت').replace(/سأرسل/g,'أرسل لك').replace(/هذه/g,'هذي');
+}
+function withPriorityContext(message){
+ const text=lang==='ar'?casualArabic(message):String(message||'');
+ return text.trim()+'\n\n'+priorityContext();
+}
 const DISCORD_USERNAME='imthebest0373_47116';
 const DISCORD_URL='https://discord.com/channels/@me'; // Opens Discord; add the username shown on the card.
 function setupAskButtons(){
@@ -289,11 +301,12 @@ function setupAskButtons(){
   {en:'Hi FarisTech X! I saw your Displays projects. I need help with this display/interface: ',ar:'مرحباً FarisTech X! شاهدت مشاريع الشاشات وأحتاج مساعدة في الشاشة أو الواجهة التالية: '},
   {en:'Hi FarisTech X! I saw your RFID projects. I want to ask about this RFID idea: ',ar:'مرحباً FarisTech X! شاهدت مشاريع RFID وأريد السؤال عن الفكرة التالية: '}
  ];
- document.querySelectorAll('.ask').forEach(b=>b.onclick=()=>{const key=b.dataset.serviceKey||'printing',m=serviceMessages[key]||serviceMessages.printing;window.open(wa(m[lang]||m.en),'_blank')});
- document.querySelectorAll('.projectAsk').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.projectIndex||0),m=projectMessages[i]||projectMessages[0];window.open(wa(m[lang]||m.en),'_blank')});
+ document.querySelectorAll('.ask').forEach(b=>b.onclick=()=>{const key=b.dataset.serviceKey||'printing',m=serviceMessages[key]||serviceMessages.printing;window.open(wa(withPriorityContext(m[lang]||m.en)),'_blank')});
+ document.querySelectorAll('.projectAsk').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.projectIndex||0),m=projectMessages[i]||projectMessages[0];window.open(wa(withPriorityContext(m[lang]||m.en)),'_blank')});
  const orbitMessages={"3D": "Hi FarisTech X! I want to ask about 3D design/modeling. I can send a photo, dimensions, or sketch here: ", "PCB": "Hi FarisTech X! I want to ask about PCB design. Here are the circuit requirements/components: ", "ESP32": "Hi FarisTech X! I want to ask about an ESP32 project. What I want it to do is: ", "Arduino": "Hi FarisTech X! I want to ask about an Arduino project. What I want it to do is: ", "Sensors": "Hi FarisTech X! I want to ask about sensors. The sensor/project I need is: ", "Motors": "Hi FarisTech X! I want to ask about motors or motor control. My project is: ", "Displays": "Hi FarisTech X! I want to ask about a display/interface. The display/project I need is: ", "RFID": "Hi FarisTech X! I want to ask about RFID/NFC. My idea is: ", "LEDs": "Hi FarisTech X! I want to ask about LEDs/lighting/electronics. My idea is: ", "Servos": "Hi FarisTech X! I want to ask about servos and motion control. My project is: ", "IoT": "Hi FarisTech X! I want to ask about an IoT/connected project. My idea is: ", "Robotics": "Hi FarisTech X! I want to ask about robotics. The robot/mechanism I have in mind is: "};
- document.querySelectorAll('.orbAsk').forEach(b=>b.onclick=()=>window.open(wa(orbitMessages[b.dataset.topic]||('Hi FarisTech X! I want to ask about '+b.dataset.topic+': ')),'_blank'));
- const priorityText=tradePair.map(k=>t(k)).join(lang==='ar'?' و ':' + '); $('waLink').href=wa((lang==='ar'?'هلا فارس، عندي طلب عام وأبغى أناقشه معاك. التفاصيل: ':'Hi Faris, I have a general request to discuss. Details: ') + (lang==='ar'?'أولوياتي: ':'My priorities: ') + priorityText + '. ');
+ const orbitArabicMessages={"3D":"هلا فارس، أبغى أسألك عن تصميم 3D. أقدر أرسل لك صورة أو مقاسات أو رسم هنا: ","PCB":"هلا فارس، أبغى أستفسر عن تصميم PCB. هذي متطلبات الدائرة والمكونات: ","ESP32":"هلا فارس، أبغى أسوي مشروع بـ ESP32. الفكرة أو الوظيفة المطلوبة هي: ","Arduino":"هلا فارس، عندي فكرة أو سؤال عن Arduino: ","Sensors":"هلا فارس، أحتاج حساس للمشروع. الشي اللي أبغى أقيسه هو: ","Motors":"هلا فارس، أبغى مساعدة بالمحركات أو التحكم فيها. مشروعي هو: ","Displays":"هلا فارس، أبغى أسألك عن شاشة أو واجهة لمشروعي: ","RFID":"هلا فارس، أبغى أسوي مشروع RFID. هذي فكرتي: ","LEDs":"هلا فارس، أبغى أستخدم LED أو إضاءة في مشروعي. الفكرة هي: ","Servos":"هلا فارس، أبغى أستخدم سيرفو وأتحكم بالحركة. مشروعي هو: ","IoT":"هلا فارس، أبغى أسوي مشروع IoT أو جهاز متصل. الفكرة هي: ","Robotics":"هلا فارس، أبغى أستفسر عن الروبوتات. فكرة الروبوت أو الآلية هي: "};
+document.querySelectorAll('.orbAsk').forEach(b=>b.onclick=()=>{const topic=b.dataset.topic;const message=lang==='ar'?(orbitArabicMessages[topic]||'هلا فارس، أبغى أستفسر عن '+topic+': '):(orbitMessages[topic]||'Hi FarisTech X! I want to ask about '+topic+': ');window.open(wa(withPriorityContext(message)),'_blank')});
+ $('waLink').href=wa(withPriorityContext(lang==='ar'?'هلا فارس، عندي طلب عام وأبغى أناقشه معاك. هذي التفاصيل: ':'Hi Faris, I have a general request to discuss. Here are the details: '));
  const d=$('discordLink');if(d){d.href=DISCORD_URL;d.target='_blank';d.rel='noopener';d.classList.remove('disabled');d.removeAttribute('aria-disabled');$('discordText').textContent='@'+DISCORD_USERNAME;d.title=lang==='ar'?('افتح Discord ثم أضف @'+DISCORD_USERNAME):('Open Discord, then add @'+DISCORD_USERNAME)}
 }
 const themes=['dark','light','caramel','tech'];function themeLabel(th){return th==='dark'?t('themeDark'):th==='light'?t('themeLight'):th==='caramel'?t('themeCaramel'):t('themeTech')}function themeIcon(th){return th==='dark'?'🌙':th==='light'?'☀️':th==='caramel'?'🍮':'◈'}function updateThemeButton(){const th=document.documentElement.dataset.theme;$('themeIcon').textContent=themeIcon(th);$('themeText').textContent=themeLabel(th)}document.documentElement.dataset.theme=localStorage.getItem('ft-theme')||'dark';$('themeBtn').onclick=()=>{const cur=document.documentElement.dataset.theme;const next=themes[(themes.indexOf(cur)+1)%themes.length];document.documentElement.dataset.theme=next;localStorage.setItem('ft-theme',next);updateThemeButton()};$('langBtn').onclick=()=>{lang=lang==='en'?'ar':'en';localStorage.setItem('ft-lang',lang);applyLanguage()};$('menuBtn').onclick=()=>document.querySelector('.nav').classList.toggle('open');document.querySelectorAll('.nav a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav').classList.remove('open')));
@@ -414,13 +427,16 @@ function updateStatus(m){$('iOut').textContent=m.current.toFixed(2);$('brightnes
  else{$('capStatus').innerHTML=`<h3>${t('capEmpty')}</h3><p>${t('capEmptyText')}</p>`}}
 function tick(now){const dt=Math.min(.05,(now-last)/1000);last=now;let m=model();updatePhysics(dt,m);m=model();updateCircuitLabels();updateStatus(m);drawCircuit(m);requestAnimationFrame(tick)}
 [voltage,capacitance,capRating,capPolarity].forEach(x=>x.oninput=()=>updateCircuitLabels());variableResistance.oninput=()=>{resistance.value=variableResistance.value;updateCircuitLabels()};$('fixedResistorMode').onclick=()=>{resistorMode='fixed';renderResistorChoices();updateCircuitLabels()};$('variableResistorMode').onclick=()=>{resistorMode='variable';variableResistance.value=resistance.value;renderResistorChoices();updateCircuitLabels()};$('switchBtn').onclick=()=>{if(!batteryFailed){switchOn=!switchOn;$('switchBtn').classList.toggle('on',switchOn);updateCircuitLabels()}};$('pauseBtn').onclick=()=>{animating=!animating;$('pauseBtn').textContent=animating?t('pauseElectrons'):t('resumeElectrons')};$('resetBtn').onclick=()=>{voltage.value=9;resistance.value=330;capacitance.value=2200;capRating.value=16;capPolarity.value='correct';ledKey='red';resistorMode='fixed';variableResistance.value=330;switchOn=true;animating=true;capV=0;electronDrift=0;chargeAnimPhase=0;flowElectrons.forEach((e,i)=>e.u=i/flowElectrons.length);ledFailed=capFailed=batteryFailed=false;ledStress=batteryStress=capStress=0;$('switchBtn').classList.add('on');renderLedChoices();renderResistorChoices();updateCircuitLabels();$('pauseBtn').textContent=t('pauseElectrons')};
-let tradePair=['fast','cheap'];
+const TRADE_PAIR_KEYS=['fast,cheap','fast,good','cheap,good'];
+function loadTradePair(){try{const saved=localStorage.getItem('ft-priority-pair');return TRADE_PAIR_KEYS.includes(saved)?saved.split(','):['fast','cheap']}catch{return ['fast','cheap']}}
+let tradePair=loadTradePair();
 function tradeMessage(){
  const names=tradePair.map(k=>t(k));
  if(lang==='ar')return 'اختياراتك: '+names.join(' + ')+'. تقدر تغيّر الزوج في أي وقت. راح تنضاف الأولويات لرسالة الواتساب قبل ما ترسلها.';
  return 'Selected: '+names.join(' + ')+'. You can switch pairs any time. These priorities will be included in your WhatsApp draft for you to review before sending.';
 }
 function updateTrade(){
+ try{localStorage.setItem('ft-priority-pair',tradePair.join(','))}catch{}
  document.querySelectorAll('.tradePair').forEach(b=>b.classList.toggle('active',b.dataset.pair.split(',').join('|')===tradePair.join('|')));
  $('tradeResult').innerHTML='<b>'+t('result')+'</b> '+tradeMessage();
 }
