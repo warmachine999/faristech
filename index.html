@@ -85,6 +85,27 @@ html[data-theme=matcha] .primary{background:linear-gradient(135deg,#a5cf83,#83c9
 @media(max-width:460px){.identityBadge{font-size:.68rem;padding:6px 8px}.brandWrap{gap:6px}.controlGrid{grid-template-columns:1fr}.labStats{grid-template-columns:1fr}.meterRow{grid-template-columns:58px 1fr 42px 40px}.brand b{font-size:.78rem}.canvasWrap{margin-inline:-10px}}
 [dir=rtl] .hero h1,[dir=rtl] .head h2,[dir=rtl] .about h2,[dir=rtl] .contact h2{letter-spacing:0}[dir=rtl] .nav,[dir=rtl] .controls{direction:rtl}
 #contactText{white-space:pre-line}
+
+/* Faris profile overlay — Route 2 */
+.brandName{ text-decoration:none!important; text-shadow:none!important; filter:none!important; }
+.brandName:hover,.brandName:focus{ text-shadow:none!important; filter:none!important; }
+.farisProfile{position:fixed;inset:0;z-index:5000;display:none;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.76);backdrop-filter:blur(13px)}
+.farisProfile.isOpen{display:flex}
+.farisProfileCard{position:relative;width:min(760px,100%);max-height:min(88vh,900px);overflow:auto;border:1px solid var(--line);border-radius:26px;padding:clamp(24px,5vw,48px);background:color-mix(in srgb,var(--panel) 94%,transparent);box-shadow:0 24px 90px rgba(0,0,0,.38);text-align:center}
+.farisProfileClose{position:absolute;right:16px;top:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text);font-size:1.25rem;padding:5px 12px;cursor:pointer}
+.farisProfile h2{font-size:clamp(2rem,6vw,3.6rem);margin:8px 0 6px;letter-spacing:-1.5px}
+.farisProfile .profileRole{color:var(--cyan);font-weight:800;font-size:1.1rem;margin:0 0 8px}
+.farisProfile .profileAge{color:var(--muted);margin:0 0 22px}
+.vennDiagram{position:relative;width:min(390px,88vw);height:290px;margin:12px auto 22px}
+.vennCircle{position:absolute;width:190px;height:190px;border-radius:50%;border:2px solid var(--cyan);background:color-mix(in srgb,var(--cyan) 13%,transparent);display:flex;align-items:flex-start;justify-content:center;padding-top:28px;font-weight:850;font-size:.88rem}
+.vennElectrical{top:0;left:50%;transform:translateX(-50%);border-color:#43c7ff;background:rgba(67,199,255,.14)}
+.vennMechanical{bottom:0;left:calc(50% - 160px);border-color:#f4a65a;background:rgba(244,166,90,.14);padding-top:125px}
+.vennSoftware{bottom:0;right:calc(50% - 160px);border-color:#72d69a;background:rgba(114,214,154,.14);padding-top:125px}
+.vennCenter{position:absolute;z-index:2;left:50%;top:53%;transform:translate(-50%,-50%);font-size:.76rem;font-weight:950;line-height:1.2;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 12px;white-space:nowrap}
+.farisProfile .profileBuilt{font-size:1.08rem;font-weight:850;margin:14px 0 0}
+.farisProfile .profileSub{color:var(--muted);margin:7px 0 0}
+@media(max-width:480px){.farisProfile{padding:10px}.farisProfileCard{padding:48px 14px 24px;border-radius:19px}.vennDiagram{transform:scale(.86);transform-origin:top center;margin-bottom:-16px}.farisProfile h2{font-size:2.1rem}}
+
 </style>
 
 <style id="responsiveHeaderFix">
@@ -223,11 +244,28 @@ body{overflow-x:hidden}
 <header class="header wrap">
 <div class="brandWrap">
 <a href="#home" class="brandLogo" aria-label="FarisTech X home"><svg class="logoMark" viewBox="0 0 64 64"><circle cx="32" cy="32" r="8" fill="var(--text)"/><ellipse cx="32" cy="32" rx="28" ry="10" fill="none" stroke="var(--text)" stroke-width="3"/><ellipse cx="32" cy="32" rx="10" ry="28" fill="none" stroke="var(--cyan)" stroke-width="3" transform="rotate(32 32 32)"/><path d="M39 10 28 29h7L25 54l18-23h-8Z" fill="var(--orange)"/></svg></a>
-<div class="brandCopy"><div class="brandLine"><a href="#home" class="brandName"><b>FARIS<em>TECH</em><span class="brandX"> X</span></b></a><span class="identityBadge">Faris Ahmed • Official</span></div><small class="tagline" data-i18n="tagline"></small></div>
+<div class="brandCopy"><div class="brandLine"><a href="#faris-profile" class="brandName" id="farisProfileOpen" aria-haspopup="dialog" aria-controls="farisProfile"><b>FARIS<em>TECH</em><span class="brandX"> X</span></b></a><span class="identityBadge">Faris Ahmed • Official</span></div><small class="tagline" data-i18n="tagline"></small></div>
 </div>
 <nav class="nav"><a href="#home" data-i18n="navHome"></a><a href="projects.html" data-i18n="navProjects"></a><a href="#services" data-i18n="navServices"></a><a href="#about" data-i18n="navAbout"></a><a href="#lab" data-i18n="navLab"></a><a href="#contact" data-i18n="navContact"></a></nav>
 <div class="controls"><button id="themeBtn" class="controlBtn"><span id="themeIcon">🌙</span> <span id="themeText" class="themeText">Dark</span></button><button id="langBtn" class="controlBtn">العربية</button><button id="accountBtn" class="controlBtn accountBtn" aria-label="Private friends chat" title="Private friends chat">👤</button><button id="menuBtn" class="menu" aria-label="Menu"><span></span><span></span><span></span></button></div>
 </header>
+<section class="farisProfile" id="farisProfile" role="dialog" aria-modal="true" aria-labelledby="farisProfileName" aria-hidden="true">
+ <div class="farisProfileCard">
+  <button class="farisProfileClose" id="farisProfileClose" type="button" aria-label="Close profile">×</button>
+  <p class="eyebrow">MEET THE CREATOR</p>
+  <h2 id="farisProfileName">Faris Ahmad</h2>
+  <p class="profileRole">Mechatronics Engineer</p>
+  <p class="profileAge">Age 16</p>
+  <div class="vennDiagram" role="img" aria-label="Venn diagram connecting electrical, mechanical and software engineering">
+   <div class="vennCircle vennElectrical">Electrical Engineer</div>
+   <div class="vennCircle vennMechanical">Mechanical Engineer</div>
+   <div class="vennCircle vennSoftware">Software Engineer</div>
+   <div class="vennCenter">Mechatronics<br>Engineer</div>
+  </div>
+  <p class="profileBuilt">I built this website. Check it out!</p>
+  <p class="profileSub">Welcome to FarisTech X.</p>
+ </div>
+</section>
 <main class="wrap">
 <section id="home" class="hero"><div><div class="eyebrow" data-i18n="heroEyebrow"></div><h1><span id="heroTitleA"></span><br><span class="gradient" id="heroTitleB"></span></h1><p id="heroText"></p><p class="note" style="margin-top:-12px">Official website of <strong>Faris Ahmed</strong> • Inventor • Fast Learner • Taif, Saudi Arabia • Age 16</p><div class="actions"><a class="btn primary" href="projects.html" data-i18n="explore"></a><a class="btn" href="#contact" data-i18n="workWithMe"></a></div><div class="banners"><span class="banner" data-i18n="banner1"></span><span class="banner" data-i18n="banner2"></span><span class="banner" data-i18n="banner3"></span><span class="banner" data-i18n="banner4"></span></div></div><div class="atom"><div class="orbit o1"></div><div class="orbit o2"></div><div class="orbit o3"></div><div class="core"><span>⚡</span></div><button class="orbLabel l1 orbAsk" type="button" data-topic="3D">3D</button><button class="orbLabel l2 orbAsk" type="button" data-topic="PCB">PCB</button><button class="orbLabel l3 orbAsk" type="button" data-topic="ESP32">ESP32</button><button class="orbLabel l4 orbAsk" type="button" data-topic="Arduino">Arduino</button><button class="orbLabel l5 orbAsk" type="button" data-topic="Sensors">Sensors</button><button class="orbLabel l6 orbAsk" type="button" data-topic="Motors">Motors</button><button class="orbLabel l7 orbAsk" type="button" data-topic="Displays">Displays</button><button class="orbLabel l8 orbAsk" type="button" data-topic="RFID">RFID</button><button class="orbLabel l9 orbAsk" type="button" data-topic="LEDs">LEDs</button><button class="orbLabel l10 orbAsk" type="button" data-topic="Servos">Servos</button><button class="orbLabel l11 orbAsk" type="button" data-topic="IoT">IoT</button><button class="orbLabel l12 orbAsk" type="button" data-topic="Robotics">Robotics</button></div></section>
 <section id="projects" class="section"><div class="head"><div><div class="eyebrow" data-i18n="projectEyebrow"></div><h2 data-i18n="projectTitle"></h2></div><p data-i18n="projectLead"></p></div><div class="grid" id="projectsGrid"></div><div style="display:flex;justify-content:center;margin-top:22px"><a class="btn primary" href="projects.html">Browse All Projects ↗</a></div></section>
@@ -501,5 +539,8 @@ const sections=[...document.querySelectorAll('main section[id]')],navs=[...docum
 </script>
 <script id="mobile-header-autohide-v3">
 (()=>{const h=document.querySelector('.header');if(!h)return;let lastY=window.scrollY||0,ticking=false;function update(){const y=window.scrollY||0;if(window.innerWidth<=520){if(y>lastY&&y>90)h.classList.add('mobileHeaderHidden');else if(y<lastY-2||y<30)h.classList.remove('mobileHeaderHidden')}else h.classList.remove('mobileHeaderHidden');lastY=y;ticking=false}addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(update);ticking=true}},{passive:true});addEventListener('resize',()=>{if(innerWidth>520)h.classList.remove('mobileHeaderHidden')});})();
+</script>
+<script id="faris-profile-interaction">
+(()=>{const panel=document.getElementById('farisProfile'),open=document.getElementById('farisProfileOpen'),close=document.getElementById('farisProfileClose');if(!panel||!open||!close)return;let previous=null;function show(e){if(e)e.preventDefault();previous=document.activeElement;panel.classList.add('isOpen');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';close.focus()}function hide(){panel.classList.remove('isOpen');panel.setAttribute('aria-hidden','true');document.body.style.overflow='';if(previous&&previous.focus)previous.focus()}open.addEventListener('click',show);close.addEventListener('click',hide);panel.addEventListener('click',e=>{if(e.target===panel)hide()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('isOpen'))hide()})})();
 </script>
 </body></html>
