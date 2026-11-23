@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101114">
+<meta name="description" content="A private virtual outfit studio. Preview clothing and accessories on your own photo.">
+<title>FitLab — Virtual Outfit Studio</title>
+<style>
+:root{--bg:#101114;--panel:#191b20;--line:#2d3038;--text:#f4f3ef;--muted:#989da8;--soft:#c8cbd1;--lime:#c8f36b;--radius:22px;--shadow:0 24px 70px rgba(0,0,0,.28)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 12% 0%,rgba(200,243,107,.08),transparent 32%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--lime);outline-offset:3px}.shell{max-width:1480px;margin:auto;padding:0 28px 50px}.topbar{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07)}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}.brand-mark{width:35px;height:35px;border-radius:12px;background:var(--lime);display:grid;place-items:center;color:#171a12;font-weight:950;font-size:19px;transform:rotate(-7deg)}.brand-copy{font-weight:850;letter-spacing:.08em;font-size:13px}.brand-copy small{display:block;color:var(--muted);font-weight:550;letter-spacing:.14em;font-size:9px;margin-top:1px}.top-actions{display:flex;align-items:center;gap:12px}.pill{border:1px solid var(--line);padding:8px 12px;border-radius:999px;color:var(--soft);font-size:11px;letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:7px}.dot{width:7px;height:7px;border-radius:50%;background:#777}.dot.live{background:var(--lime);box-shadow:0 0 12px #c8f36b80}.top-link{color:var(--muted);font-size:12px;text-decoration:none}.intro{padding:38px 0 28px;display:flex;justify-content:space-between;align-items:end;gap:24px}.eyebrow{color:var(--lime);font-size:10px;font-weight:800;letter-spacing:.22em;text-transform:uppercase}.intro h1{font-size:clamp(30px,4vw,50px);line-height:1.04;letter-spacing:-.055em;margin:10px 0;max-width:680px}.intro h1 span{color:var(--lime)}.intro p{color:var(--muted);margin:0;max-width:570px;font-size:14px}.stepper{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.step{font-size:10px;color:var(--muted);border:1px solid var(--line);padding:7px 10px;border-radius:999px}.step b{color:var(--text);margin-right:5px}.workspace{display:grid;grid-template-columns:minmax(0,1.24fr) minmax(350px,.76fr);gap:18px;align-items:start}.panel{background:linear-gradient(145deg,rgba(255,255,255,.025),transparent 40%),var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.preview-panel{padding:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:11px;color:var(--muted);margin-top:3px}.segmented{display:flex;gap:3px;background:#111216;border:1px solid var(--line);padding:3px;border-radius:10px}.segmented button{border:0;border-radius:7px;padding:6px 10px;background:transparent;color:var(--muted);font-size:10px}.segmented button.active{background:#30343c;color:var(--text)}.stage{position:relative;min-height:565px;border-radius:17px;overflow:hidden;background:radial-gradient(ellipse at 50% 35%,#333941 0%,#22252b 48%,#191b20 100%);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.055)}.stage:before,.stage:after{content:"";position:absolute;pointer-events:none}.stage:before{inset:0;background:linear-gradient(90deg,transparent 49.8%,rgba(255,255,255,.035) 50%,transparent 50.2%),linear-gradient(transparent 49.8%,rgba(255,255,255,.035) 50%,transparent 50.2%);background-size:58px 58px;mask-image:linear-gradient(to bottom,transparent,black 22%,black 78%,transparent)}.stage:after{width:68%;height:75%;border:1px dashed rgba(255,255,255,.09);border-radius:46%;transform:translateY(8%)}.empty-state{position:relative;z-index:2;text-align:center;max-width:330px;padding:28px}.upload-symbol{width:66px;height:66px;display:grid;place-items:center;margin:0 auto 18px;border:1px solid rgba(200,243,107,.35);border-radius:22px;background:rgba(200,243,107,.08);color:var(--lime);font-size:27px}.empty-state h2{font-size:20px;letter-spacing:-.03em;margin:0 0 8px}.empty-state p{font-size:12px;color:var(--muted);margin:0 0 19px}.primary,.secondary,.subtle{border:0;border-radius:12px;font-weight:800;transition:transform .18s,filter .18s}.primary{background:var(--lime);color:#15180e;padding:12px 17px;box-shadow:0 8px 26px rgba(200,243,107,.14)}.primary:hover{filter:brightness(1.06);transform:translateY(-1px)}.primary:disabled{opacity:.38;cursor:not-allowed;transform:none;filter:none}.secondary{background:#30343c;color:var(--text);border:1px solid #414650;padding:10px 13px}.photo{position:absolute;z-index:2;max-height:100%;max-width:100%;width:auto;height:auto;object-fit:contain;display:none;filter:drop-shadow(0 18px 30px #0006)}.result-tag{position:absolute;z-index:4;top:14px;left:14px;border:1px solid rgba(200,243,107,.3);background:rgba(17,19,22,.75);backdrop-filter:blur(12px);color:var(--lime);font-size:9px;letter-spacing:.14em;padding:7px 10px;border-radius:999px;display:none}.stage-footer{position:absolute;z-index:4;bottom:13px;left:13px;right:13px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}.stage-footer span{font-size:10px;color:#d6d9de;background:#16181dcc;border:1px solid #ffffff18;padding:6px 9px;border-radius:8px;backdrop-filter:blur(8px)}.mini-upload-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.mini-upload{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#14161a;border-radius:13px;padding:10px;min-width:0}.thumb{width:42px;height:48px;border-radius:9px;background:#282c33;display:grid;place-items:center;color:var(--muted);overflow:hidden;flex-shrink:0;font-size:17px}.thumb img{width:100%;height:100%;object-fit:cover}.mini-copy{min-width:0;flex:1}.mini-copy strong{display:block;font-size:11px}.mini-copy small{display:block;color:var(--muted);font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mini-upload button{border:1px solid #3a3f48;background:#252931;color:var(--soft);border-radius:8px;padding:7px 9px;font-size:10px}.side-panel{padding:19px}.side-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}.side-title h2{font-size:17px;letter-spacing:-.025em;margin:0}.free-label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--lime);border:1px solid #586a35;border-radius:999px;padding:5px 8px}.side-desc{color:var(--muted);font-size:11px;margin:0 0 19px}.field-label{display:block;color:#d8dbe1;font-size:11px;font-weight:750;margin-bottom:9px}.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:18px}.category{border:1px solid var(--line);background:#15171b;color:var(--soft);border-radius:11px;padding:10px 5px 9px;min-height:68px;font-size:10px;display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center}.category .emoji{font-size:18px;line-height:1}.category.active{border-color:#9cbe53;background:rgba(200,243,107,.09);color:var(--lime)}.upload-drop{border:1px dashed #515762;border-radius:14px;padding:14px;background:#15171b;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.2s}.upload-drop:hover,.upload-drop.drag{border-color:var(--lime);background:#1e2418}.drop-icon{width:38px;height:38px;border-radius:11px;background:#282d33;display:grid;place-items:center;color:var(--lime);font-size:17px;flex-shrink:0}.drop-copy{min-width:0;flex:1}.drop-copy strong{display:block;font-size:11px}.drop-copy small{display:block;color:var(--muted);font-size:10px;margin-top:2px}.drop-action{color:var(--lime);font-size:10px;font-weight:800}.selected-garment{display:none;margin-top:8px;align-items:center;gap:8px;color:var(--lime);font-size:10px}.selected-garment img{width:27px;height:27px;object-fit:cover;border-radius:7px}.divider{height:1px;background:var(--line);margin:18px 0}.select-wrap{position:relative}.select-wrap select{width:100%;appearance:none;border:1px solid var(--line);border-radius:11px;background:#15171b;color:var(--text);padding:11px 36px 11px 12px;font-size:11px}.select-wrap:after{content:"⌄";position:absolute;right:13px;top:6px;color:var(--muted);pointer-events:none;font-size:17px}.helper{color:var(--muted);font-size:10px;margin:7px 0 0}.consent{display:flex;gap:9px;align-items:flex-start;margin:17px 0 13px;color:var(--muted);font-size:10px;line-height:1.5}.consent input{margin:2px 0 0;accent-color:var(--lime);flex-shrink:0}.generate{width:100%;display:flex;align-items:center;justify-content:center;gap:9px;padding:14px}.status{display:none;margin-top:11px;border:1px solid var(--line);border-radius:11px;padding:10px 12px;color:var(--soft);font-size:10px;background:#15171b}.status.show{display:block}.progress{height:4px;background:#343941;border-radius:99px;margin-top:9px;overflow:hidden}.progress i{display:block;width:0;height:100%;background:var(--lime);transition:width .3s}.privacy-note{display:flex;gap:9px;color:var(--muted);font-size:10px;margin-top:14px;line-height:1.5}.privacy-note b{color:var(--soft)}.privacy-icon{color:var(--lime)}.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.info-panel{padding:17px 19px}.info-panel h3{font-size:12px;margin:0 0 7px}.info-panel p{font-size:10px;color:var(--muted);margin:0;line-height:1.65}.info-panel a{color:var(--lime);text-decoration:none}.setup{margin-top:18px;padding:17px 19px}.setup summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:800}.setup summary::-webkit-details-marker{display:none}.setup summary:after{content:"＋";color:var(--lime);font-size:17px}.setup[open] summary:after{content:"−"}.setup-content{padding-top:16px}.setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.setup-grid label{display:block;color:var(--soft);font-size:10px;font-weight:700}.setup-grid input{margin-top:6px;width:100%;border:1px solid var(--line);background:#111317;border-radius:10px;color:var(--text);padding:10px;font-size:11px}.setup-actions{display:flex;align-items:center;gap:10px;margin-top:12px}.setup-help{font-size:10px;color:var(--muted);line-height:1.6;margin:12px 0 0}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,18px);opacity:0;pointer-events:none;background:#e8f7c8;color:#1a2111;padding:11px 16px;border-radius:12px;font-size:11px;font-weight:800;box-shadow:var(--shadow);transition:.25s;z-index:20}.toast.show{opacity:1;transform:translate(-50%,0)}.hidden{display:none!important}.footer{display:flex;justify-content:space-between;gap:16px;padding:24px 2px 0;color:#777d88;font-size:10px}
+@media(max-width:980px){.workspace{grid-template-columns:1fr}.stage{min-height:520px}.intro{align-items:flex-start;flex-direction:column}.stepper{justify-content:flex-start}}@media(max-width:620px){.shell{padding:0 13px 30px}.topbar{height:68px}.top-link{display:none}.pill{font-size:9px;padding:7px 9px}.intro{padding:28px 2px 20px}.intro h1{font-size:34px}.stepper{gap:5px}.step{font-size:9px;padding:6px 8px}.preview-panel,.side-panel{padding:13px;border-radius:17px}.stage{min-height:420px}.mini-upload-row{gap:7px}.mini-upload{padding:8px;gap:7px}.mini-upload button{padding:6px}.category-grid{grid-template-columns:repeat(4,1fr)}.category{min-height:62px;font-size:9px}.bottom-grid{grid-template-columns:1fr;gap:10px}.setup-grid{grid-template-columns:1fr}.footer{flex-direction:column}.panel-head{align-items:flex-start;flex-direction:column}.stage:after{width:85%}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="topbar">
+<a class="brand" href="#" aria-label="FitLab home"><span class="brand-mark">F</span><span class="brand-copy">FITLAB<small>VIRTUAL OUTFIT STUDIO</small></span></a>
+<div class="top-actions"><span class="pill"><i class="dot" id="connectionDot"></i><span id="connectionLabel">AI NOT CONNECTED</span></span><a class="top-link" href="https://github.com/warmachine999/faristech/tree/main/virtual-tryon" target="_blank" rel="noreferrer">PROJECT FILES ↗</a></div>
+</header>
+<section class="intro"><div><div class="eyebrow">YOUR PERSONAL FIT CHECKER</div><h1>Try the look.<br><span>Before you buy.</span></h1><p>Upload your photo, add a clothing item, and preview the outfit with AI. Build a look one piece at a time.</p></div><div class="stepper"><span class="step"><b>01</b> Your photo</span><span class="step"><b>02</b> Choose a piece</span><span class="step"><b>03</b> AI preview</span></div></section>
+<main class="workspace">
+<section class="panel preview-panel">
+<div class="panel-head"><div><div class="panel-title">YOUR FIT PREVIEW</div><div class="panel-sub">Your photo stays in this browser until you choose to generate.</div></div><div class="segmented"><button class="active" id="showOriginal" type="button">YOUR PHOTO</button><button id="showResult" type="button" disabled>AI RESULT</button></div></div>
+<div class="stage" id="stage">
+<div class="empty-state" id="emptyState"><div class="upload-symbol">↑</div><h2>Start with a full-body photo</h2><p>Choose a clear photo with your outfit visible. A simple background helps the AI understand the fit.</p><button class="primary" id="uploadPersonBtn" type="button">Upload your photo ↗</button></div>
+<img class="photo" id="personPreview" alt="Your uploaded photo preview"><img class="photo" id="resultPreview" alt="AI virtual outfit result"><div class="result-tag" id="resultTag">AI GENERATED PREVIEW</div><div class="stage-footer"><span id="stageLabel">PHOTO PREVIEW</span><span>PRIVATE SESSION</span></div>
+</div>
+<div class="mini-upload-row">
+<div class="mini-upload"><div class="thumb" id="personThumb">♙</div><div class="mini-copy"><strong>Your photo</strong><small id="personFileName">No photo selected</small></div><button id="changePersonBtn" type="button">Upload</button></div>
+<div class="mini-upload"><div class="thumb" id="garmentThumb">＋</div><div class="mini-copy"><strong>Clothing item</strong><small id="garmentFileName">No item selected</small></div><button id="changeGarmentBtn" type="button">Upload</button></div>
+</div>
+</section>
+<aside class="panel side-panel">
+<div class="side-title"><h2>Build your look</h2><span class="free-label">STUDIO</span></div><p class="side-desc">Pick what you want to try, then upload a clear photo of that item.</p>
+<label class="field-label">1. WHAT ARE YOU TRYING ON?</label>
+<div class="category-grid" id="categoryGrid">
+<button class="category active" type="button" data-category="T-shirt or top"><span class="emoji">👕</span>Top</button><button class="category" type="button" data-category="Pants or trousers"><span class="emoji">👖</span>Pants</button><button class="category" type="button" data-category="One-piece outfit"><span class="emoji">👗</span>One-piece</button><button class="category" type="button" data-category="Jacket or outerwear"><span class="emoji">🧥</span>Jacket</button><button class="category" type="button" data-category="Hat or cap"><span class="emoji">🧢</span>Hat / cap</button><button class="category" type="button" data-category="Shoes"><span class="emoji">👟</span>Shoes</button><button class="category" type="button" data-category="Bag"><span class="emoji">🎒</span>Bag</button><button class="category" type="button" data-category="Accessory or jewelry"><span class="emoji">🕶️</span>Accessory</button>
+</div>
+<label class="field-label" for="garmentFile">2. UPLOAD THE ITEM PHOTO</label>
+<label class="upload-drop" id="garmentDrop" for="garmentFile"><span class="drop-icon">＋</span><span class="drop-copy"><strong id="garmentDropTitle">Add a clothing photo</strong><small id="garmentDropSub">Flat-lay, hanger, or clean product photo</small></span><span class="drop-action">BROWSE</span></label>
+<div class="selected-garment" id="selectedGarment"><img id="selectedGarmentImg" alt=""><span id="selectedGarmentText">Item selected</span></div>
+<div class="divider"></div><label class="field-label" for="fitSelect">3. FIT PREFERENCE</label><div class="select-wrap"><select id="fitSelect"><option value="natural fit">Natural fit</option><option value="relaxed fit">Relaxed fit</option><option value="oversized fit">Oversized fit</option><option value="slim fit">Slim fit</option></select></div><p class="helper">The result is an AI visual preview, not a guaranteed size or fit measurement.</p>
+<label class="consent"><input id="consentBox" type="checkbox"><span>I understand that generating a result sends my photo and the item photo to FASHN AI through the connected server. I have permission to use both images.</span></label>
+<button class="primary generate" id="generateBtn" type="button" disabled><span>✦</span> Generate AI try-on <span>→</span></button>
+<div class="status" id="statusBox" role="status" aria-live="polite"><span id="statusText">Preparing your preview…</span><div class="progress"><i id="progressBar"></i></div></div>
+<div class="privacy-note"><span class="privacy-icon">◈</span><span><b>Your photo is not saved by this website.</b> It is only sent to the AI provider when you press Generate. Read the privacy note below before using it.</span></div>
+</aside>
+</main>
+<section class="bottom-grid">
+<div class="panel info-panel"><h3>📷 Get a better result</h3><p>Use a sharp full-body image, stand naturally, keep your outfit visible, and avoid strong shadows. For hats and accessories, a clear photo of your head and upper body can work better.</p></div>
+<div class="panel info-panel"><h3>🔒 Photo privacy</h3><p>This page previews uploads locally and does not store them. AI generation sends both images to FASHN. FASHN says base64 input copies are used for processing and deleted when the request finishes, with a one-day cleanup backstop. Request records are retained. <a href="https://docs.fashn.ai/api-overview/data-retention-privacy" target="_blank" rel="noreferrer">Read FASHN's data policy ↗</a></p></div>
+</section>
+<details class="panel setup" id="connectionSetup">
+<summary>AI connection settings <span id="setupState" style="color:var(--muted);font-weight:500;font-size:10px">Worker setup required</span></summary>
+<div class="setup-content"><div class="setup-grid">
+<label>Cloudflare Worker URL<input id="workerUrl" type="url" placeholder="https://your-worker.workers.dev" autocomplete="url"></label>
+<label>Private access code<input id="accessCode" type="password" placeholder="Your private app code" autocomplete="current-password"></label>
+</div><div class="setup-actions"><button class="secondary" id="saveConnectionBtn" type="button">Save & test connection</button><span class="helper" id="connectionMessage">The AI key stays on the Worker, not in this website.</span></div>
+<p class="setup-help">To activate AI, deploy the included Worker code and add FASHN_API_KEY and APP_ACCESS_CODE as Worker secrets. Never paste your FASHN key here or into GitHub. AI generations use paid credits; ask a parent or guardian before setting up a paid account or sending a personal photo to an external AI service. Setup steps are in the project README.</p></div>
+</details>
+<footer class="footer"><span>FITLAB · A FARISTECH EXPERIMENT</span><span>Designed for outfit planning · Not a sizing or fit guarantee</span></footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<input class="hidden" type="file" id="personFile" accept="image/jpeg,image/png,image/webp"><input class="hidden" type="file" id="garmentFile" accept="image/jpeg,image/png,image/webp">
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const state={person:null,garment:null,personUrl:null,garmentUrl:null,resultUrl:null,category:"T-shirt or top",workerUrl:localStorage.getItem("fitlab_worker_url")||"",accessCode:sessionStorage.getItem("fitlab_access_code")||"",mode:"original",busy:false};
+const MAX_FILE_BYTES=20*1024*1024;
+$("workerUrl").value=state.workerUrl;$("accessCode").value=state.accessCode;
+function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2700)}
+function setStatus(message,progress,show){$("statusText").textContent=message;$("progressBar").style.width=progress+"%";$("statusBox").classList.toggle("show",!!show)}
+function setConnection(ok,message){$("connectionDot").classList.toggle("live",!!ok);$("connectionLabel").textContent=ok?"AI CONNECTED":"AI NOT CONNECTED";$("setupState").textContent=ok?"Connected":"Worker setup required";$("connectionMessage").textContent=message||""}
+function updateGenerate(){const ready=!!(state.person&&state.garment&&state.workerUrl&&state.accessCode&&$("consentBox").checked&&!state.busy);$("generateBtn").disabled=!ready}
+function setMode(mode){state.mode=mode;const showingResult=mode==="result"&&!!state.resultUrl;$("personPreview").style.display=state.personUrl&&!showingResult?"block":"none";$("resultPreview").style.display=showingResult?"block":"none";$("emptyState").style.display=state.personUrl?"none":"block";$("resultTag").style.display=showingResult?"block":"none";$("stageLabel").textContent=showingResult?"AI RESULT":"PHOTO PREVIEW";$("showOriginal").classList.toggle("active",!showingResult);$("showResult").classList.toggle("active",showingResult);$("showResult").disabled=!state.resultUrl}
+function setImagePreview(target,url){target.src=url;target.style.display="block"}
+async function compressImage(file){
+ if(!file.type.match(/^image\/(jpeg|png|webp)$/))throw new Error("Please use a JPG, PNG, or WebP image.");
+ if(file.size>MAX_FILE_BYTES)throw new Error("Choose an image smaller than 20 MB.");
+ let bitmap;try{bitmap=await createImageBitmap(file)}catch(e){throw new Error("This image could not be opened. Try another photo.")}
+ const maxSide=1800,scale=Math.min(1,maxSide/Math.max(bitmap.width,bitmap.height));
+ const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
+ const ctx=canvas.getContext("2d",{alpha:false});ctx.fillStyle="#fff";ctx.fillRect(0,0,canvas.width,canvas.height);ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();
+ return canvas.toDataURL("image/jpeg",0.84);
+}
+async function loadFile(kind,file){
+ if(!file)return;
+ try{
+  const data=await compressImage(file),url=URL.createObjectURL(file);
+  if(kind==="person"){
+   if(state.personUrl)URL.revokeObjectURL(state.personUrl);state.person={data,name:file.name};state.personUrl=url;setImagePreview($("personPreview"),url);
+   $("personFileName").textContent=file.name;$("personThumb").innerHTML="";const thumb=document.createElement("img");thumb.src=url;thumb.alt="";$("personThumb").appendChild(thumb);setMode("original");
+  }else{
+   if(state.garmentUrl)URL.revokeObjectURL(state.garmentUrl);state.garment={data,name:file.name};state.garmentUrl=url;
+   $("garmentFileName").textContent=file.name;$("garmentThumb").innerHTML="";const thumb=document.createElement("img");thumb.src=url;thumb.alt="";$("garmentThumb").appendChild(thumb);
+   $("selectedGarmentImg").src=url;$("selectedGarmentText").textContent=file.name;$("selectedGarment").style.display="flex";$("garmentDropTitle").textContent="Item photo added";$("garmentDropSub").textContent=file.name;
+  }
+  updateGenerate();toast(kind==="person"?"Your photo is ready":"Clothing item added");
+ }catch(err){toast(err.message||"Could not load that image.")}
+}
+$("uploadPersonBtn").addEventListener("click",()=>$("personFile").click());$("changePersonBtn").addEventListener("click",()=>$("personFile").click());$("changeGarmentBtn").addEventListener("click",()=>$("garmentFile").click());
+$("personFile").addEventListener("change",e=>loadFile("person",e.target.files[0]));$("garmentFile").addEventListener("change",e=>loadFile("garment",e.target.files[0]));
+$("categoryGrid").addEventListener("click",e=>{const btn=e.target.closest("[data-category]");if(!btn)return;document.querySelectorAll(".category").forEach(x=>x.classList.toggle("active",x===btn));state.category=btn.dataset.category});
+$("showOriginal").addEventListener("click",()=>setMode("original"));$("showResult").addEventListener("click",()=>{if(state.resultUrl)setMode("result")});$("consentBox").addEventListener("change",updateGenerate);
+const drop=$("garmentDrop");["dragenter","dragover"].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.add("drag")}));["dragleave","drop"].forEach(type=>drop.addEventListener(type,e=>{e.preventDefault();drop.classList.remove("drag")}));drop.addEventListener("drop",e=>{const file=e.dataTransfer.files&&e.dataTransfer.files[0];if(file)loadFile("garment",file)});
+function api(path){return state.workerUrl.replace(/\/+$/,"")+path}
+async function requestJson(url,options){const response=await fetch(url,options);let body={};try{body=await response.json()}catch(e){}if(!response.ok)throw new Error(body.message||body.error||"The AI service returned an error ("+response.status+").");return body}
+async function testConnection(){
+ const url=$("workerUrl").value.trim().replace(/\/+$/,""),code=$("accessCode").value.trim();
+ if(!url||!/^https:\/\/.+/.test(url)){setConnection(false,"Enter your HTTPS Worker URL.");return false}
+ if(!code){setConnection(false,"Enter your private access code.");return false}
+ $("saveConnectionBtn").disabled=true;$("saveConnectionBtn").textContent="Testing…";
+ try{
+  const response=await fetch(url+"/api/health",{headers:{"x-app-access-code":code}});const body=await response.json();
+  if(!response.ok||!body.ok)throw new Error(body.message||"Worker is not ready.");
+  state.workerUrl=url;state.accessCode=code;localStorage.setItem("fitlab_worker_url",url);sessionStorage.setItem("fitlab_access_code",code);
+  setConnection(true,"Connection successful. Your FASHN key remains on the Worker.");$("connectionSetup").open=false;updateGenerate();toast("AI connection is ready");return true;
+ }catch(err){setConnection(false,err.message||"Could not reach the Worker.");toast("Connection test failed");return false}
+ finally{$("saveConnectionBtn").disabled=false;$("saveConnectionBtn").textContent="Save & test connection"}
+}
+$("saveConnectionBtn").addEventListener("click",testConnection);
+function imageFromOutput(value){if(typeof value!=="string"||!value)throw new Error("The AI response did not contain an image.");if(value.startsWith("data:image/")||value.startsWith("https://"))return value;return "data:image/jpeg;base64,"+value}
+async function generate(){
+ if(!state.person||!state.garment){toast("Upload your photo and one clothing item first.");return}
+ if(!$("consentBox").checked){toast("Confirm photo sharing before generating.");return}
+ if(!state.workerUrl||!state.accessCode){$("connectionSetup").open=true;toast("Connect the AI service first.");return}
+ state.busy=true;updateGenerate();$("generateBtn").innerHTML="<span>◌</span> Starting AI…";setStatus("Sending your selected images securely…",12,true);
+ try{
+  const started=await requestJson(api("/api/tryon"),{method:"POST",headers:{"Content-Type":"application/json","x-app-access-code":state.accessCode},body:JSON.stringify({modelImage:state.person.data,garmentImage:state.garment.data,category:state.category,fit:$("fitSelect").value})});
+  if(!started.id)throw new Error("The AI provider did not return a prediction ID.");
+  let done=false;
+  for(let attempt=0;attempt<80;attempt++){
+   await new Promise(resolve=>setTimeout(resolve,2500));
+   const status=await requestJson(api("/api/status?id="+encodeURIComponent(started.id)),{headers:{"x-app-access-code":state.accessCode}});
+   if(status.status==="completed"){
+    const output=Array.isArray(status.output)?status.output[0]:status.output;state.resultUrl=imageFromOutput(output);setImagePreview($("resultPreview"),state.resultUrl);setMode("result");done=true;setStatus("Your try-on is ready.",100,true);$("showResult").disabled=false;addDownloadButton();toast("AI outfit preview created");break;
+   }
+   if(status.status==="failed")throw new Error(status.error?.message||"The try-on could not be generated. Try a clearer photo.");
+   const pct=Math.min(90,18+attempt*1.1),label=status.status==="in_queue"?"Your image is in the AI queue…":status.status==="processing"?"AI is fitting the item to your photo…":"Preparing your AI preview…";setStatus(label,pct,true);
+  }
+  if(!done)throw new Error("This generation took too long. Try once more.");
+ }catch(err){setStatus(err.message||"Generation failed.",0,true);toast("Try-on failed")}
+ finally{state.busy=false;$("generateBtn").innerHTML="<span>✦</span> Generate AI try-on <span>→</span>";updateGenerate()}
+}
+function addDownloadButton(){
+ let btn=$("downloadResult");if(!btn){btn=document.createElement("button");btn.id="downloadResult";btn.type="button";btn.className="secondary";btn.textContent="↓ Save result";btn.style.marginTop="10px";btn.style.width="100%";$("statusBox").after(btn);btn.addEventListener("click",()=>{if(!state.resultUrl)return;const a=document.createElement("a");a.href=state.resultUrl;a.download="fitlab-try-on.jpg";a.rel="noopener";document.body.appendChild(a);a.click();a.remove()})}btn.classList.remove("hidden");
+}
+$("generateBtn").addEventListener("click",generate);setConnection(false,"Connect the Worker to enable real AI generations.");setMode("original");updateGenerate();if(state.workerUrl&&state.accessCode)testConnection();
+})();
+</script>
+</body>
+</html>
