@@ -62,6 +62,18 @@ function validProductImage(value) {
       "ecimg.cafe24img.com",
       "i5.walmartimages.com",
       "i5.walmartimages.cl",
+      "f.nooncdn.com",
+      "images.pexels.com",
+      "www.greiche-scaff.com",
+      "images.unsplash.com",
+      "i.ebayimg.com",
+      "pvot-apparel.com",
+      "luxemeadow.co.uk",
+      "jayeshgoswami26.github.io",
+      "www.bossinisa.co.za",
+      "cdn.aboutstatic.com",
+      "www.gearlabnow.com",
+      "cdn-mms.hktvmall.com",
       "s.yimg.com"
     ]);
     return url.protocol === "https:" && allowedHosts.has(url.hostname);
