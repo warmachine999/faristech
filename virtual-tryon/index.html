@@ -162,7 +162,7 @@ function renderCatalog(){
 }
 function selectProduct(p){
  state.selected=p;state.result=null;$("resultPreview").removeAttribute("src");$("viewResult").disabled=true;$("viewPhoto").classList.add("active");$("viewResult").classList.remove("active");$("resultPreview").style.display="none";$("personPreview").style.display=state.personUrl?"block":"none";
- $("selectedItemLabel").textContent=p.name.toUpperCase();$("applyButton").disabled=!(state.personData&&state.workerUrl&&state.accessCode);renderCatalog();toast(p.name+" selected");
+ $("selectedItemLabel").textContent=p.name.toUpperCase();$("applyButton").disabled=!(state.personData&&state.selected);renderCatalog();toast(p.name+" selected");
 }
 function setCategory(cat){
  state.activeCategory=cat;document.querySelectorAll(".category-tab").forEach(b=>b.classList.toggle("active",b.dataset.category===cat));renderCatalog();
@@ -186,7 +186,7 @@ async function loadPerson(file){
   $("personPreview").src=url;$("personPreview").style.display="block";$("stageEmpty").style.display="none";
   $("personThumbImg").src=url;$("personFileName").textContent=file.name;$("personThumb").style.display="flex";
   $("stageState").textContent="PERSON PHOTO LOADED";$("privacyStatus").textContent="Your original photo is previewed locally. It is only sent to the AI provider when you apply a selected item.";
-  $("applyButton").disabled=!(state.selected&&state.workerUrl&&state.accessCode);toast("Photo loaded");
+  $("applyButton").disabled=!(state.selected&&state.personData);toast("Photo loaded");
  }catch(e){toast(e.message||"Could not open that photo")}
 }
 $("personFile").addEventListener("change",e=>loadPerson(e.target.files[0]));
@@ -244,7 +244,7 @@ async function applyOutfit(){
   }
   if(!complete)throw new Error("Generation timed out. Try again");
  }catch(err){progress(err.message||"Generation failed",0);toast(err.message||"AI try-on failed")}
- finally{state.busy=false;$("applyButton").textContent="Apply Selected Outfit";$("applyButton").disabled=!(state.personData&&state.selected&&state.workerUrl&&state.accessCode)}
+ finally{state.busy=false;$("applyButton").textContent="Apply Selected Outfit";$("applyButton").disabled=!(state.personData&&state.selected)}
 }
 $("applyButton").addEventListener("click",applyOutfit);
 function downloadResult(){
