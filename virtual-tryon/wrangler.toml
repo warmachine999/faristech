@@ -1,0 +1,6 @@
+name = "fitlab-virtual-tryon"
+main = "worker.js"
+compatibility_date = "2026-11-23"
+
+[vars]
+ALLOWED_ORIGINS = "https://warmachine999.github.io"
