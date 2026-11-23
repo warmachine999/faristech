@@ -38,10 +38,35 @@ function requireAccess(request, env) {
   return !!expected && received.length === expected.length && received === expected;
 }
 
-function validImage(value) {
+function validModelImage(value) {
   return typeof value === "string" &&
     value.length <= MAX_DATA_URI_LENGTH &&
     /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(value);
+}
+
+function validProductImage(value) {
+  if (typeof value !== "string") return false;
+  if (value.length <= MAX_DATA_URI_LENGTH &&
+      /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(value)) return true;
+  try {
+    const url = new URL(value);
+    const allowedHosts = new Set([
+      "cdn11.bigcommerce.com",
+      "images.teamshirts.net",
+      "kuchupuchu.store",
+      "www.miteckenundkanten.com",
+      "miteckenundkanten.com",
+      "daanmmausa.com",
+      "i00.eu",
+      "image.hm.com",
+      "ecimg.cafe24img.com",
+      "i5.walmartimages.com",
+      "s.yimg.com"
+    ]);
+    return url.protocol === "https:" && allowedHosts.has(url.hostname);
+  } catch {
+    return false;
+  }
 }
 
 export default {
@@ -70,8 +95,8 @@ export default {
       try { body = await request.json(); }
       catch { return json({ message: "Invalid request body." }, 400, cors); }
 
-      if (!validImage(body.modelImage) || !validImage(body.garmentImage)) {
-        return json({ message: "Upload valid JPG, PNG, or WebP images, then try again." }, 400, cors);
+      if (!validModelImage(body.modelImage) || !validProductImage(body.productImage)) {
+        return json({ message: "The person photo or selected clothing image is invalid." }, 400, cors);
       }
 
       const allowedFits = ["natural fit", "relaxed fit", "oversized fit", "slim fit"];
@@ -91,7 +116,7 @@ export default {
           model_name: "tryon-max",
           inputs: {
             model_image: body.modelImage,
-            product_image: body.garmentImage,
+            product_image: body.productImage,
             prompt,
             resolution: "1k",
             generation_mode: "fast",
