@@ -87,6 +87,7 @@ async function loadFile(kind,file){
  if(!file)return;
  try{
   const data=await compressImage(file),url=URL.createObjectURL(file);
+  if(state.resultUrl){state.resultUrl=null;$("resultPreview").removeAttribute("src");$("showResult").disabled=true;const oldDownload=$("downloadResult");if(oldDownload)oldDownload.remove();setStatus("",0,false);}
   if(kind==="person"){
    if(state.personUrl)URL.revokeObjectURL(state.personUrl);state.person={data,name:file.name};state.personUrl=url;setImagePreview($("personPreview"),url);
    $("personFileName").textContent=file.name;$("personThumb").innerHTML="";const thumb=document.createElement("img");thumb.src=url;thumb.alt="";$("personThumb").appendChild(thumb);setMode("original");
