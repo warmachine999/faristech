@@ -25,7 +25,7 @@
 .rail-arrow:hover{border-color:#8e71fa;color:#fff;background:#292241}
 .rail-track{display:flex;gap:9px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;scroll-behavior:smooth;padding:4px 1px 10px;overscroll-behavior-x:contain;scroll-snap-type:x proximity}
 .rail-track::-webkit-scrollbar{display:none}
-.rail-track .product-card{flex:0 0 205px;width:205px;scroll-snap-align:start}
+.rail-track .product-card{flex:0 0 280px;width:280px;scroll-snap-align:start}
 .rail-track .product-image{aspect-ratio:1.16/1;background:#f0f1f4}
 .rail-track .product-image img{object-fit:contain;padding:8px;mix-blend-mode:multiply}
 .rail-track .product-info{padding:8px 9px 9px}
@@ -33,9 +33,9 @@
 .rail-track .product-meta{font-size:8px}
 .rail-track .product-card.selected{border:1.5px solid #a184ff;box-shadow:0 0 0 2px #8b62ff25,0 0 18px #7952ef2b}
 .rail-empty{padding:18px 8px;font-size:9px;color:#8995aa;border:1px dashed #344057;border-radius:9px}
-@media(max-width:1200px){.wardrobe-rails{max-height:none}.rail-track .product-card{flex-basis:190px;width:190px}}
-@media(max-width:760px){.wardrobe-rails{max-height:none;min-height:0;gap:12px}.rail-track .product-card{flex-basis:178px;width:178px}}
-@media(max-width:420px){.rail-track .product-card{flex-basis:155px;width:155px}.rail-arrow{width:29px;height:28px}}
+@media(max-width:1200px){.wardrobe-rails{max-height:none}.rail-track .product-card{flex-basis:240px;width:240px}}
+@media(max-width:760px){.wardrobe-rails{max-height:none;min-height:0;gap:12px}.rail-track .product-card{flex-basis:220px;width:220px}}
+@media(max-width:420px){.rail-track .product-card{flex-basis:190px;width:190px}.rail-arrow{width:29px;height:28px}}
 
 @media(max-width:1200px){.layout{grid-template-columns:220px minmax(320px,1fr)}.wardrobe-column{grid-column:1/-1}.wardrobe{min-height:600px}.catalog-grid{grid-template-columns:repeat(5,minmax(0,1fr));max-height:430px}.stage-panel{min-height:520px}}@media(max-width:760px){.app{grid-template-rows:64px 1fr 38px}.topbar{height:64px;padding:0 13px;gap:10px}.brand{min-width:0}.brand-mark{width:33px;height:33px}.brand-name{font-size:18px}.brand-tag{font-size:7px}.nav{display:none}.status-chip{font-size:8px;padding:7px 9px}.layout{padding:12px;grid-template-columns:1fr;gap:11px}.left-column{display:grid;grid-template-columns:1fr 1fr;align-items:stretch}.smart-card{display:none}.upload-panel{padding:11px}.upload-drop{min-height:165px}.tools-panel{padding:11px}.center-column{grid-row:1}.left-column{grid-row:2}.wardrobe-column{grid-row:3}.preview-heading h1{font-size:18px}.stage-panel{min-height:430px}.catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-height:520px}.style-panel{padding:11px}.footer{padding:0 13px}.footer span:last-child{display:none}}@media(max-width:420px){.layout{padding:8px}.left-column{grid-template-columns:1fr}.tools-panel{display:grid;grid-template-columns:repeat(2,1fr);gap:5px}.tools-heading{grid-column:1/-1}.tool-btn{margin:0}.stage-panel{min-height:370px}.catalog-grid{gap:6px}.product-info{padding:6px}.product-name{font-size:8px}.category-tab{padding:7px 9px}}
 </style>
@@ -144,6 +144,7 @@ const products=[
 {id:"cap-noon-3",name:"Black Cap — Detail View",category:"Hats & Caps",detail:"Everyday baseball cap",image:"https://f.nooncdn.com/p/v1608972284/N20136295V_3.jpg",source:"https://www.noon.com/saudi-en/baseball-cap-black/N20136295V/p/"},
 {id:"glasses-rect",name:"Black Rectangular Glasses",category:"Glasses",detail:"Clear lens · Rectangular",image:"https://images.pexels.com/photos/25389282/pexels-photo-25389282.jpeg?cs=srgb&dl=pexels-marcio-carvalho-1334537412-25389282.jpg&fm=jpg",source:"https://www.pexels.com/photo/close-up-on-black-glasses-against-white-background-25389282/"},
 {id:"glasses-frame",name:"Black Optical Frames",category:"Glasses",detail:"Classic frame · Black",image:"https://www.greiche-scaff.com/cdn/shop/files/5340101070_2_grande.jpg?v=1772110613",source:"https://www.greiche-scaff.com/collections/eyeglasses"},
+{id:"glasses-round",name:"Black Round Eyeglasses",category:"Glasses",detail:"Thin frame · Black",image:"https://images.unsplash.com/photo-1523657895111-376b5d07a55a?auto=format&fit=crop&fm=jpg&ixid=NHwxMjA3fDA%3D&ixlib=rb-4.1.0&q=60&w=3000",source:"https://unsplash.com/photos/eyeglasses-with-black-frames-on-white-surface-NtNBbiaqH1I"},
 {id:"tee-white",name:"Classic White T-Shirt",category:"T-Shirts",detail:"Crew neck · White",image:"https://i.ebayimg.com/images/g/ezoAAOSwPzpgqEwf/s-l1200.jpg",source:"https://www.ebay.com/itm/164878109397"},
 {id:"tee-loose",name:"White Loose-Fit T-Shirt",category:"T-Shirts",detail:"Relaxed cut · White",image:"https://pvot-apparel.com/cdn/shop/products/Whiteloose.png?v=1674560506&width=805",source:"https://pvot-apparel.com/collections/t-shirts"},
 {id:"tee-black",name:"Black Everyday T-Shirt",category:"T-Shirts",detail:"Crew neck · Black",image:"https://images.teamshirts.net/image/upload/q_auto%2Cfl_lossy%2Cf_auto%2Cw_800/sprd-eu/productTypes/1219/views/1/appearances/2%2CmediaType%3Dpng%2Cwidth%3D1200%2Cheight%3D1200",source:"https://www.teamshirts.co.uk/"},
@@ -164,7 +165,7 @@ const products=[
 {id:"underwear-folded",name:"Folded Boxer Briefs",category:"Underwear",detail:"Everyday basics · Assorted",image:"https://cdn-mms.hktvmall.com/hktv/mms/uploadProductImage/855d/ad6e/a274/LwRGUWKoIQ20211210023238_1200.jpg",source:"https://www.hktvmall.com/"},
 ];
 
-const state={personData:null,personUrl:null,selected:null,activeCategory:"All",style:"Casual",fit:"natural fit",workerUrl:localStorage.getItem("fitlab_worker_url")||"",accessCode:sessionStorage.getItem("fitlab_access_code")||"",result:null,busy:false,zoom:false,favorites:new Set(JSON.parse(localStorage.getItem("fitlab_favorites")||"[]")),custom:[]};
+const state={personData:null,personUrl:null,selected:null,activeCategory:"All",viewFavorites:false,style:"Casual",fit:"natural fit",workerUrl:localStorage.getItem("fitlab_worker_url")||"",accessCode:sessionStorage.getItem("fitlab_access_code")||"",result:null,busy:false,zoom:false,favorites:new Set(JSON.parse(localStorage.getItem("fitlab_favorites")||"[]")),custom:[]};
 $("workerUrl").value=state.workerUrl;$("accessCode").value=state.accessCode;
 function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove("show"),2600)}
 function renderCatalog(){
@@ -220,9 +221,6 @@ function renderCatalog(){
 function selectProduct(p){
  state.selected=p;state.result=null;$("resultPreview").removeAttribute("src");$("viewResult").disabled=true;$("viewPhoto").classList.add("active");$("viewResult").classList.remove("active");$("resultPreview").style.display="none";$("personPreview").style.display=state.personUrl?"block":"none";
  $("selectedItemLabel").textContent=p.name.toUpperCase();$("applyButton").disabled=!(state.personData&&state.selected);renderCatalog();toast(p.name+" selected");
-}
-function setCategory(cat){
- state.activeCategory=cat;document.querySelectorAll(".category-tab").forEach(b=>b.classList.toggle("active",b.dataset.category===cat));renderCatalog();
 }
 $("catalogSearch").addEventListener("input",renderCatalog);
 async function imageToData(file){
