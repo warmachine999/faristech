@@ -1,15 +1,16 @@
 # FitLab — Virtual Outfit Studio
 
-A static GitHub Pages frontend plus a Cloudflare Worker proxy for FASHN Try-On Max.
+A visual wardrobe studio with real garment catalog photos, custom product uploads, and a Cloudflare Worker proxy for FASHN Try-On Max.
 
 ## Live page
 
-https://warmachine999.github.io/faristech/virtual-tryon/
+https://faristech.makerlab.workers.dev/virtual-tryon/
 
 ## Features
 
 - Upload a full-body photo and a photo of one garment or accessory.
-- Choose a type: top, pants, one-piece, jacket, hat/cap, shoes, bag, or accessory.
+- Select actual catalog product photographs for T-shirts, polos, hoodies, jackets, pants, sneakers, and caps.
+- Upload a custom garment image and send that exact image to the AI model.
 - Select a fit preference and request an AI try-on.
 - View and save the generated result.
 - Images are resized in the browser. The site does not write them to GitHub or its own storage.
