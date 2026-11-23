@@ -61,6 +61,7 @@ function validProductImage(value) {
       "image.hm.com",
       "ecimg.cafe24img.com",
       "i5.walmartimages.com",
+      "i5.walmartimages.cl",
       "s.yimg.com"
     ]);
     return url.protocol === "https:" && allowedHosts.has(url.hostname);
@@ -102,9 +103,11 @@ export default {
       const allowedFits = ["natural fit", "relaxed fit", "oversized fit", "slim fit"];
       const category = String(body.category || "clothing item").slice(0, 60);
       const fit = allowedFits.includes(body.fit) ? body.fit : "natural fit";
-      const prompt = "Apply the uploaded " + category +
+      const allowedStyles = ["Casual", "Sport", "Streetwear", "Smart casual", "Formal", "Techwear"];
+      const style = allowedStyles.includes(body.style) ? body.style : "Casual";
+      const prompt = "Apply the exact uploaded " + category +
         " naturally to the person. Aim for a " + fit +
-        ". Preserve the person's identity, pose, proportions, and original photo setting. Keep other clothing unchanged.";
+        " and a " + style + " styling direction. Preserve the person's identity, face, pose, proportions, and original photo setting. Reproduce the garment shown in the product image, including its color, shape, fabric, seams, and visible design. Do not substitute a different garment. Keep other clothing unchanged.";
 
       const upstream = await fetch(FASHN_API + "/v1/run", {
         method: "POST",
