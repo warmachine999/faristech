@@ -9,8 +9,9 @@ https://faristech.makerlab.workers.dev/virtual-tryon/
 ## Features
 
 - Upload a full-body photo and a photo of one garment or accessory.
-- Select actual catalog product photographs for T-shirts, polos, hoodies, jackets, pants, sneakers, and caps.
-- Upload a custom garment image and send that exact image to the AI model.
+- Browse independent horizontal product rails for hats and caps, glasses, T-shirts, shirts, hoodies, jackets, pants, shoes, and underwear.
+- Scroll each category left or right without switching a global category filter.
+- Select a catalog product photograph or upload a custom garment image; the selected image becomes the AI reference.
 - Select a fit preference and request an AI try-on.
 - View and save the generated result.
 - Images are resized in the browser. The site does not write them to GitHub or its own storage.
