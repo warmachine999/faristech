@@ -96,7 +96,7 @@ async function loadFile(kind,file){
    $("garmentFileName").textContent=file.name;$("garmentThumb").innerHTML="";const thumb=document.createElement("img");thumb.src=url;thumb.alt="";$("garmentThumb").appendChild(thumb);
    $("selectedGarmentImg").src=url;$("selectedGarmentText").textContent=file.name;$("selectedGarment").style.display="flex";$("garmentDropTitle").textContent="Item photo added";$("garmentDropSub").textContent=file.name;
   }
-  updateGenerate();toast(kind==="person"?"Your photo is ready":"Clothing item added");
+  setMode("original");updateGenerate();toast(kind==="person"?"Your photo is ready":"Clothing item added");
  }catch(err){toast(err.message||"Could not load that image.")}
 }
 $("uploadPersonBtn").addEventListener("click",()=>$("personFile").click());$("changePersonBtn").addEventListener("click",()=>$("personFile").click());$("changeGarmentBtn").addEventListener("click",()=>$("garmentFile").click());
